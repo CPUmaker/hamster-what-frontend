@@ -5,6 +5,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -22,76 +23,81 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.svg_container}>
-        <LoginSVG height={300} width={300} />
-      </View>
-
-      <Text style={styles.font}>Login</Text>
-
-      <View style={styles.text_input_container}>
-        <AntDesign
-          name="user"
-          size={20}
-          color="#666"
-          style={{ marginRight: 5 }}
-        />
-        <TextInput
-          placeholder="Username"
-          autoCapitalize="none"
-          style={styles.text_input}
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-        />
-      </View>
-
-      <View style={styles.text_input_container}>
-        <AntDesign
-          name="lock"
-          size={20}
-          color="#666"
-          style={{ marginRight: 5 }}
-        />
-        <TextInput
-          placeholder="Password"
-          style={styles.text_input}
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <TouchableOpacity onPress={() => {}}>
-          <Text style={styles.forgot_text}>Forgot?</Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity
-        style={styles.login_button}
-        onPress={() => {
-          login(username, password);
-        }}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ paddingHorizontal: 25 }}
       >
-        <Text style={styles.login_text}>Login</Text>
-      </TouchableOpacity>
+        <View style={styles.svg_container}>
+          <LoginSVG height={300} width={300} />
+        </View>
 
-      <Text style={styles.alter_login_text}>Or, login with ...</Text>
+        <Text style={styles.font}>Login</Text>
 
-      <View style={styles.alter_login_container}>
-        <TouchableOpacity style={styles.alter_login_icon} onPress={() => {}}>
-          <GoogleSVG height={24} width={24} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.alter_login_icon} onPress={() => {}}>
-          <AppleSVG height={24} width={24} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.alter_login_icon} onPress={() => {}}>
-          <TwitterSVG height={24} width={24} />
-        </TouchableOpacity>
-      </View>
+        <View style={styles.text_input_container}>
+          <AntDesign
+            name="user"
+            size={20}
+            color="#666"
+            style={{ marginRight: 5 }}
+          />
+          <TextInput
+            placeholder="Username"
+            autoCapitalize="none"
+            style={styles.text_input}
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+          />
+        </View>
 
-      <View style={styles.register_container}>
-        <Text>New to the app?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={styles.register_text}> Register</Text>
+        <View style={styles.text_input_container}>
+          <AntDesign
+            name="lock"
+            size={20}
+            color="#666"
+            style={{ marginRight: 5 }}
+          />
+          <TextInput
+            placeholder="Password"
+            style={styles.text_input}
+            secureTextEntry={true}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+          <TouchableOpacity onPress={() => { }}>
+            <Text style={styles.forgot_text}>Forgot?</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={styles.login_button}
+          onPress={() => {
+            login(username, password);
+          }}
+        >
+          <Text style={styles.login_text}>Login</Text>
         </TouchableOpacity>
-      </View>
+
+        <Text style={styles.alter_login_text}>Or, login with ...</Text>
+
+        <View style={styles.alter_login_container}>
+          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { }}>
+            <GoogleSVG height={24} width={24} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { }}>
+            <AppleSVG height={24} width={24} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { }}>
+            <TwitterSVG height={24} width={24} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.register_container}>
+          <Text>New to the app?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+            <Text style={styles.register_text}> Register</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }
