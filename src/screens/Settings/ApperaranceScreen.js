@@ -1,4 +1,4 @@
-import React,  { useState }from "react";
+import React,  { useEffect, useState }from "react";
 import { StyleSheet, Button, View, SafeAreaView, Text, Alert, ScrollView, TouchableOpacity} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { Card, Icon, ListItem} from '@rneui/themed';
@@ -10,30 +10,33 @@ import { MaterialCommunityIcons,
          AntDesign,} from '@expo/vector-icons';
 
 export default function Apperarance({ navigation }) {
-    
+  useEffect(() => {
+    navigation.getParent().setOptions({swipeEnabled: false});
+  }, [])
+  useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      navigation.getParent().setOptions({swipeEnabled: true});
+    })
+  }, [navigation]);
+
     return (
         <SafeAreaView style={styles.container}>
         <ScrollView style={{ padding: 20 }}>
 
             <View>
-            <Text style={styles.settings_title}>Apperarance</Text>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+
             <ListItem containerStyle={styles.container_item}>
                 <MaterialCommunityIcons name="account" size={24} color="black" />
                 <ListItem.Content>
-                <ListItem.Title>Profile</ListItem.Title>
+                <ListItem.Title>Follow system</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
-            </TouchableOpacity>
 
             </View>
-           
-
+          
         </ScrollView>
         </SafeAreaView>
-
-
     );
 }
 

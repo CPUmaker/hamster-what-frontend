@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity} from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Alert} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+
 
 
 import { Card, Icon, ListItem} from '@rneui/themed';
@@ -12,7 +13,16 @@ import { MaterialCommunityIcons,
          Entypo,
          AntDesign,} from '@expo/vector-icons';
 
-         
+const deleteCheck = () => 
+Alert.alert('Deleting profile', 'This action will permanently delete your profile and can not be undo, are you sure?', [
+{
+    text: 'Confirm',
+    onPress: () => console.log('Confirm Pressed'),
+    style: 'destructive',
+},
+{   text: 'Cancel', 
+    onPress: () => console.log('Cancel Pressed')},
+]);   
 
 export default function SettingsScreen({ navigation }) {
     return (
@@ -55,7 +65,7 @@ export default function SettingsScreen({ navigation }) {
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
-            
+
             <TouchableOpacity onPress={() => {navigation.navigate('ApperaranceScreen')}}>
             <ListItem containerStyle={styles.container_item}>
                 <MaterialCommunityIcons name="theme-light-dark" size={24} color="black" />
@@ -98,6 +108,8 @@ export default function SettingsScreen({ navigation }) {
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
+
+            <TouchableOpacity onPress={deleteCheck}>
             <ListItem containerStyle={styles.container_item}>
                 <MaterialIcons name="delete-outline" size={24} color="black" />
                 <ListItem.Content>
@@ -105,6 +117,8 @@ export default function SettingsScreen({ navigation }) {
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
+            </TouchableOpacity>
+
 
             
 
