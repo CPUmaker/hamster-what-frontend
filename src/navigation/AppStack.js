@@ -2,9 +2,10 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 import ProfileScreen from "../screens/ProfileScreen";
-import SettingsScreen from "../screens/SettingsScreen";
 import CustomDrawer from "../components/CustomDrawer";
 import TabNavigator from "./TabNavigator";
+
+import SettingStack from "./SettingStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -38,7 +39,7 @@ export default function AppStack() {
       />
       <Drawer.Screen
         name="Settings"
-        component={SettingsScreen}
+        component={SettingStack}
         options={{
           drawerIcon: ({ color }) => (
             <Ionicons name="settings-outline" size={22} color={color} />
