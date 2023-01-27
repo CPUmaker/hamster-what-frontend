@@ -35,7 +35,7 @@ const SignUpSchema = Yup.object().shape({
     .required("Please enter your password."),
   confirmPassword: Yup.string()
     .min(8, "Must be 8 characters or more.")
-    .oneOf(Yup.ref("password"), "Your passwords do not match")
+    .oneOf([Yup.ref("password")], "Your passwords do not match")
     .required("Confirm password is required."),
 });
 
@@ -58,6 +58,7 @@ export default function RegisterScreen({ navigation }) {
           })
           .then((res) => {
             console.log(res.data);
+            navigation.goBack();
           })
           .catch((error) => {
             console.log(JSON.stringify(error.response.data));
@@ -85,6 +86,10 @@ export default function RegisterScreen({ navigation }) {
 
             <Text style={styles.font}>Register</Text>
 
+            {touched.username && errors.username && (
+              <Text style={styles.error_text}>{errors.username}</Text>
+            )}
+
             <View style={styles.text_input_container}>
               <AntDesign
                 name="user"
@@ -100,10 +105,11 @@ export default function RegisterScreen({ navigation }) {
                 onChangeText={handleChange("username")}
                 onBlur={() => setFieldTouched("username")}
               />
-              {touched.username && errors.username && (
-                <Text style={styles.error_text}>{errors.username}</Text>
-              )}
             </View>
+
+            {touched.email && errors.email && (
+              <Text style={styles.error_text}>{errors.email}</Text>
+            )}
 
             <View style={styles.text_input_container}>
               <MaterialIcons
@@ -118,8 +124,13 @@ export default function RegisterScreen({ navigation }) {
                 style={styles.text_input}
                 value={values.email}
                 onChangeText={handleChange("email")}
+                onBlur={() => setFieldTouched("email")}
               />
             </View>
+
+            {touched.password && errors.password && (
+              <Text style={styles.error_text}>{errors.password}</Text>
+            )}
 
             <View style={styles.text_input_container}>
               <AntDesign
@@ -134,8 +145,13 @@ export default function RegisterScreen({ navigation }) {
                 secureTextEntry={true}
                 value={values.password}
                 onChangeText={handleChange("password")}
+                onBlur={() => setFieldTouched("password")}
               />
             </View>
+
+            {touched.confirmPassword && errors.confirmPassword && (
+              <Text style={styles.error_text}>{errors.confirmPassword}</Text>
+            )}
 
             <View style={styles.text_input_container}>
               <AntDesign
@@ -149,17 +165,18 @@ export default function RegisterScreen({ navigation }) {
                 style={styles.text_input}
                 secureTextEntry={true}
                 value={values.confirmPassword}
-                onChangeText={(text) => handleChange("confirmPassword")}
+                onChangeText={handleChange("confirmPassword")}
+                onBlur={() => setFieldTouched("confirmPassword")}
               />
             </View>
 
             <TouchableOpacity
               style={[
                 styles.login_button,
-                { backgroundColor: isValid ? "#AD40AF" : "#A5C9CA" },
+                { backgroundColor: !!touched.username && !!touched.email && !!touched.password && !!touched.confirmPassword && isValid ? "#AD40AF" : "#A5C9CA" },
               ]}
               onPress={handleSubmit}
-              disabled={!isValid}
+              disabled={!(!!touched.username && !!touched.email && !!touched.password && !!touched.confirmPassword) || !isValid}
             >
               <Text style={styles.login_text}>Register</Text>
             </TouchableOpacity>
@@ -232,7 +249,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   login_button: {
-    backgroundColor: "#AD40AF",
     padding: 20,
     borderRadius: 10,
     marginBottom: 30,
@@ -272,5 +288,6 @@ const styles = StyleSheet.create({
   error_text: {
     fontSize: 10,
     color: "#FF0D10",
+    marginBottom: 5,
   },
 });
