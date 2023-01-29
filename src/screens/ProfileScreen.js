@@ -56,21 +56,21 @@ export default function ProfileScreen({ navigation }) {
     )
 
     return (
-    <View style={styles.container}>
-    <ListItem bottomDivider>          
-        <ListItem.Content>
-        <ListItem.Title>Profile Photo</ListItem.Title>
-        </ListItem.Content>
-        <Avatar
-        rounded
-        source={ require("../../assets/profile.jpg") }           
-        />
-        <TouchableOpacity onPress={() => navigation.navigate("Set")}>
-        <ListItem.Chevron />
-        </TouchableOpacity>
-    </ListItem>   
-    {mapItems}
-    </View>    
+        <View style={styles.container}>
+        <ListItem bottomDivider>          
+            <ListItem.Content>
+                <ListItem.Title>Profile Photo</ListItem.Title>
+            </ListItem.Content>
+            <Avatar
+                rounded
+                source={ require("../../assets/profile.jpg") }           
+            />
+            <TouchableOpacity onPress={() => navigation.navigate("Set")}>
+                <ListItem.Chevron />
+            </TouchableOpacity>
+        </ListItem>   
+            {mapItems}
+        </View>    
     );
 }
 

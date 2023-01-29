@@ -9,7 +9,6 @@ export default function ProfileStack() {
   return (
     <Stack.Navigator
       initialRouteName="Profile"
-      //screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Set" component={SetProfileScreen} />
