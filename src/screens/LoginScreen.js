@@ -36,7 +36,7 @@ export default function LoginScreen({ navigation }) {
           style={{ marginRight: 5 }}
         />
         <TextInput
-          placeholder="Username"
+          placeholder="Username/Email"
           autoCapitalize="none"
           style={styles.text_input}
           value={username}
