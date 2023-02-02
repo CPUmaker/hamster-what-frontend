@@ -6,17 +6,22 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 import RegisterSVG from "../../assets/misc/register.svg";
 import GoogleSVG from "../../assets/misc/google.svg";
 import AppleSVG from "../../assets/misc/apple.svg";
 import TwitterSVG from "../../assets/misc/twitter.svg";
 import { BASE_URL } from "../config";
+import {
+  useTogglePasswordVisibility,
+  useToggleConfirmPasswordVisibility,
+} from "../components/PasswordVisibility";
 
 const SignUpSchema = Yup.object().shape({
   username: Yup.string()
@@ -29,8 +34,8 @@ const SignUpSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Must be 8 characters or more.")
     .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Must contain 8 characters, at least one uppercase letter, one lowercase letter, one numeric character, and one special character."
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[_=#?!@$%^&.*+-]).{8,}$/,
+      "Must contain 8 characters, at least one uppercase letter, one lowercase letter, one numeric character, and one special character (_=#?!@$%^&.*+-)."
     )
     .required("Please enter your password."),
   confirmPassword: Yup.string()
@@ -40,6 +45,14 @@ const SignUpSchema = Yup.object().shape({
 });
 
 export default function RegisterScreen({ navigation }) {
+  const { passwordVisibility, pvIcon, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
+  const {
+    confirmPasswordVisibility,
+    cpvIcon,
+    handleConfirmPasswordVisibility,
+  } = useToggleConfirmPasswordVisibility();
+
   return (
     <Formik
       initialValues={{
@@ -141,12 +154,18 @@ export default function RegisterScreen({ navigation }) {
               />
               <TextInput
                 placeholder="Password"
+                autoCapitalize="none"
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
                 style={styles.text_input}
-                secureTextEntry={true}
+                secureTextEntry={passwordVisibility}
                 value={values.password}
                 onChangeText={handleChange("password")}
                 onBlur={() => setFieldTouched("password")}
               />
+              <Pressable onPress={handlePasswordVisibility}>
+                <Ionicons name={pvIcon} size={20} color="#666" />
+              </Pressable>
             </View>
 
             {touched.confirmPassword && errors.confirmPassword && (
@@ -162,21 +181,43 @@ export default function RegisterScreen({ navigation }) {
               />
               <TextInput
                 placeholder="Confirm Password"
+                autoCapitalize="none"
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
                 style={styles.text_input}
-                secureTextEntry={true}
+                secureTextEntry={confirmPasswordVisibility}
                 value={values.confirmPassword}
                 onChangeText={handleChange("confirmPassword")}
                 onBlur={() => setFieldTouched("confirmPassword")}
               />
+              <Pressable onPress={handleConfirmPasswordVisibility}>
+                <Ionicons name={cpvIcon} size={20} color="#666" />
+              </Pressable>
             </View>
 
             <TouchableOpacity
               style={[
                 styles.login_button,
-                { backgroundColor: !!touched.username && !!touched.email && !!touched.password && !!touched.confirmPassword && isValid ? "#AD40AF" : "#A5C9CA" },
+                {
+                  backgroundColor:
+                    !!touched.username &&
+                    !!touched.email &&
+                    !!touched.password &&
+                    !!touched.confirmPassword &&
+                    isValid
+                      ? "#AD40AF"
+                      : "#A5C9CA",
+                },
               ]}
               onPress={handleSubmit}
-              disabled={!(!!touched.username && !!touched.email && !!touched.password && !!touched.confirmPassword) || !isValid}
+              disabled={
+                !(
+                  !!touched.username &&
+                  !!touched.email &&
+                  !!touched.password &&
+                  !!touched.confirmPassword
+                ) || !isValid
+              }
             >
               <Text style={styles.login_text}>Register</Text>
             </TouchableOpacity>
