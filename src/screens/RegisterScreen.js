@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
+import Modal from "react-native-modal";
 import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -17,11 +18,13 @@ import RegisterSVG from "../../assets/misc/register.svg";
 import GoogleSVG from "../../assets/misc/google.svg";
 import AppleSVG from "../../assets/misc/apple.svg";
 import TwitterSVG from "../../assets/misc/twitter.svg";
+import Exclamation from "../../assets/misc/exclamation-circle.svg";
 import { BASE_URL } from "../config";
 import {
   useTogglePasswordVisibility,
   useToggleConfirmPasswordVisibility,
-} from "../components/PasswordVisibility";
+  useToggleModalVisibility,
+} from "../components/RegisterHelper";
 
 const SignUpSchema = Yup.object().shape({
   username: Yup.string()
@@ -45,6 +48,7 @@ const SignUpSchema = Yup.object().shape({
 });
 
 export default function RegisterScreen({ navigation }) {
+  const [modalMessage, setModalMessage] = useState(null);
   const { passwordVisibility, pvIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
   const {
@@ -52,6 +56,13 @@ export default function RegisterScreen({ navigation }) {
     cpvIcon,
     handleConfirmPasswordVisibility,
   } = useToggleConfirmPasswordVisibility();
+  const { isModalVisible, toggleModal } = useToggleModalVisibility();
+
+  useEffect(() => {
+    setTimeout(() => {
+      isModalVisible && toggleModal();
+    }, 5000);
+  }, [isModalVisible]);
 
   return (
     <Formik
@@ -71,11 +82,17 @@ export default function RegisterScreen({ navigation }) {
           })
           .then((res) => {
             console.log(res.data);
-            navigation.goBack();
+            setModalMessage("Register Successfully! Go back to login...");
+            toggleModal();
+            setTimeout(() => {
+              navigation.goBack();
+            }, 2000);
           })
           .catch((error) => {
-            console.log(JSON.stringify(error.response.data));
-            // toast.show({title: error.response.data.username, placement: 'top'});
+            let data = error.response.data;
+            console.log(JSON.stringify(data));
+            setModalMessage(Object.values(data).pop()[0]);
+            toggleModal();
           });
       }}
     >
@@ -89,6 +106,20 @@ export default function RegisterScreen({ navigation }) {
         handleSubmit,
       }) => (
         <View style={styles.container}>
+          <Modal
+            isVisible={isModalVisible}
+            hasBackdrop={false}
+            onSwipeComplete={() => toggleModal()}
+            swipeDirection={["up"]}
+            animationOut={"slideOutUp"}
+            style={styles.modal_style}
+          >
+            <View style={styles.modal_container}>
+              <Exclamation height={20} width={20} style={{ marginRight: 10 }} />
+              <Text style={{ fontSize: 16 }}>{modalMessage}</Text>
+            </View>
+          </Modal>
+
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{ paddingHorizontal: 25 }}
@@ -330,5 +361,17 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#FF0D10",
     marginBottom: 5,
+  },
+  modal_style: {
+    justifyContent: "flex-start",
+    marginTop: 60,
+  },
+  modal_container: {
+    backgroundColor: "#ddd",
+    padding: 16,
+    borderRadius: 10,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    flexDirection: "row",
+    justifyContent: "flex-start",
   },
 });

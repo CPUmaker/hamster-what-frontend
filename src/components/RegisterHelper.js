@@ -42,3 +42,16 @@ export const useToggleConfirmPasswordVisibility = () => {
     handleConfirmPasswordVisibility,
   };
 };
+
+export const useToggleModalVisibility = () => {
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  return {
+    isModalVisible,
+    toggleModal,
+  };
+};

@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+// import * as AppleAuthentication from 'expo-apple-authentication';
 import React, { createContext, useState, useEffect } from "react";
-// import { useToast } from 'native-base';
 import { BASE_URL } from "../config";
 
 export const AuthContext = createContext();
@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
-  const login = (username, password) => {
+  const login = (username, password, errorHandle) => {
     setIsLoading(true);
     axios
       .post(`${BASE_URL}/api/auth/login`, { username, password })
@@ -30,8 +30,8 @@ export const AuthProvider = ({ children }) => {
         console.log('User Token: ' + data.token);
       })
       .catch((error) => {
-        console.log(`Login error: ${error}`);
-        // toast.show({title: error.response.data.non_field_errors[0]});
+        console.log(`Login error: ${JSON.stringify(error.response.data)}`);
+        errorHandle(Object.values(error.response.data).pop()[0]);
       });
     setIsLoading(false);
   };
