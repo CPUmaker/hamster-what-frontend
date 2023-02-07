@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import * as AppleAuthentication from 'expo-apple-authentication';
+import * as Google from "expo-auth-session/providers/google";
 import React, { createContext, useState, useEffect } from "react";
-// import { useToast } from 'native-base';
-import { BASE_URL } from "../config";
+import { BASE_URL, endpoints } from "../config";
 
 export const AuthContext = createContext();
 
@@ -13,11 +14,11 @@ export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
-  const login = (username, password) => {
-    setIsLoading(true);
+  const login = (username, password, errorHandle) => {
     axios
-      .post(`${BASE_URL}/api/auth/login`, { username, password })
-      .then((res) => {
+    .post(endpoints.login, { username, password })
+    .then((res) => {
+        setIsLoading(true);
         let data = res.data;
         setUserInfo(data.user);
         setUserToken(data.token);
@@ -28,19 +29,19 @@ export const AuthProvider = ({ children }) => {
 
         console.log(data.user);
         console.log('User Token: ' + data.token);
+        setIsLoading(false);
       })
       .catch((error) => {
-        console.log(`Login error: ${error}`);
-        // toast.show({title: error.response.data.non_field_errors[0]});
+        console.log(`Login error: ${JSON.stringify(error.response.data)}`);
+        errorHandle(Object.values(error.response.data).pop()[0]);
       });
-    setIsLoading(false);
   };
 
   const logout = () => {
     setIsLoading(true);
     setUserToken(null);
 
-    axios.post(`${BASE_URL}/api/auth/logout`)
+    axios.post(endpoints.logout)
     .then((res) => {
         console.log('Logout success.')
     })
