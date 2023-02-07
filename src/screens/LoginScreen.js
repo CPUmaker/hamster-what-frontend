@@ -24,6 +24,11 @@ export default function LoginScreen({ navigation }) {
 
   const { login } = useContext(AuthContext);
 
+  const loginErrorHandle = (errorMessage) => {
+    setModalMessage(errorMessage);
+    setModalVisible(true);
+  }
+
   useEffect(() => {
     setTimeout(() => {
       setModalVisible(false);
@@ -90,10 +95,6 @@ export default function LoginScreen({ navigation }) {
       <TouchableOpacity
         style={styles.login_button}
         onPress={() => {
-          const loginErrorHandle = (errorMessage) => {
-            setModalMessage(errorMessage);
-            setModalVisible(true);
-          }
           login(username, password, loginErrorHandle);
         }}
       >
