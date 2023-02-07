@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-import ProfileScreen from "../screens/ProfileScreen";
+import ProfileStack from "./ProfileStack";
 import CustomDrawer from "../components/CustomDrawer";
 import TabNavigator from "./TabNavigator";
 
