@@ -1,10 +1,10 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import CustomDrawer from "../components/CustomDrawer";
 import TabNavigator from "./TabNavigator";
+import ProfileStack from "./ProfileStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -29,7 +29,7 @@ export default function AppStack() {
       />
       <Drawer.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStack}
         options={{
           drawerIcon: ({ color }) => (
             <Ionicons name="person-circle-outline" size={22} color={color} />
