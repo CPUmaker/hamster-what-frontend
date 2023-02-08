@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from "expo-auth-session/providers/google";
+import * as Facebook from "expo-auth-session/providers/facebook";
 import React, { createContext, useState, useEffect } from "react";
 import { BASE_URL, endpoints } from "../config";
 
@@ -77,6 +78,21 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     isLoggedIn();
   }, []);
+
+  const [_, googleResponse, googleAuth] = Google.useAuthRequest({
+    expoClientId:
+      "1080382822276-eqklp58m1q9fl85m7aj89n1ofp8bdj7p.apps.googleusercontent.com",
+    iosClientId:
+      "1080382822276-a0ms51p5cfc523bivhchs8nk04u2scq0.apps.googleusercontent.com",
+    androidClientId:
+      "1080382822276-dqohv9donltabnijor1uun2765hstr4v.apps.googleusercontent.com",
+    webClientId: "GOOGLE_GUID.apps.googleusercontent.com",
+    selectAccount: true,
+  });
+
+  const [___, ____, fbPromptAsync] = Facebook.useAuthRequest({
+    clientId: "723313165600806",
+  });
 
   return (
     <AuthContext.Provider value={{ login, logout, isLoading, userToken, userInfo }}>
