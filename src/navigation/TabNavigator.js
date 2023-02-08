@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import FindingScreen from "../screens/FindingScreen";
 import BillDetailsScreen from "../screens/BillDetailsScreen";
+import AddNew from "../screens/AddNew";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -39,6 +40,16 @@ export default function TabNavigator() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="cash-outline" size={size} color={color} />
           ),
+        }}
+      />
+      <Tab.Screen
+        name="AddButton"
+        component={AddNew}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="add-circle" size={50} color="black" />
+          ),
+
         }}
       />
       <Tab.Screen
