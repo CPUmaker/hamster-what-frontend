@@ -1,0 +1,46 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import React, { createContext, useState, useEffect } from "react";
+import { BASE_URL, endpoints } from "../config";
+
+export const ProfileContext = createContext();
+
+export const PeofileProvider = ({ children }) => {
+  let [userProfile, setUserProfile] = useState(null);
+  
+  const readProfile = () => {
+    axios
+      .get(`${BASE_URL}/api/profile`)
+      .then((res) => {
+        let data = res.data;
+        setUserProfile(data);;    
+        AsyncStorage.setItem("userProfile", JSON.stringify(data));
+      })
+      .catch((error) => {
+        console.log(`read Profile error: ${error}`);
+      });
+  };
+
+  const isReadProfile = async() =>{
+    try{
+      userProfile = await AsyncStorage.getItem("userProfile");
+      userProfile = JSON.parse(userProfile);
+      if(userProfile){
+        setUserProfile(userProfile);
+      }
+    }
+    catch (error) {
+        console.log(`ReadProfile error: ${error}`);
+    }
+};
+
+useEffect(()=>{
+    isReadProfile();
+}, [])
+
+  return (
+    <ProfileContext.Provider value={{ readProfile, userProfile }}>
+      {children}
+    </ProfileContext.Provider>
+  );
+};
