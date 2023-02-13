@@ -1,17 +1,20 @@
 {
   "expo": {
     "name": "ece651_frontend",
-    "slug": "ece651_frontend",
+    "slug": "ece651-hamsterwhat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "com.hamsterwhat",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": ["expo-apple-authentication"],
+    "plugins": [
+      "expo-apple-authentication"
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -19,16 +22,27 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.hamsterwhat.ios",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.hamsterwhat.android"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ccd7efb1-0b6a-4de5-a20d-1af6aa95c89a"
+      }
+    },
+    "owner": "celestial39"
   }
 }
