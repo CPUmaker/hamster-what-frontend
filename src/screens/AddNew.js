@@ -13,10 +13,14 @@ import {
   TextInput,
   Keyboard,
   KeyboardAvoidingView } from "react-native";
+
 import Modal from "react-native-modal";
 import { Card, Icon } from '@rneui/themed';
 import { ListItem, Avatar} from "@rneui/base";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+// only needs to keep one datepicker
+// import DatePicker from 'react-native-date-picker'
 import {DatePicker} from "react-native-common-date-picker";
 
 import { AuthContext } from "../context/AuthContext";
@@ -32,14 +36,19 @@ import {
   FontAwesome5,
 } from '@expo/vector-icons';
 
+// get the screen height
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-
-
+//// content for Expense interface
 function Expense({ navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState('');
 
+  // variable for date picker
+  const [date, setDate] = useState(new Date())
+  const [open, setOpen] = useState(false)
+
+  // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {
     navigation.getParent().setOptions({ swipeEnabled: false });
   }, [])
@@ -48,30 +57,11 @@ function Expense({ navigation }) {
     navigation.addListener('beforeRemove', (e) => {
       navigation.getParent().setOptions({ swipeEnabled: true });
     })
-  }, [navigation]);
-
-    // const [keyboardStatus, setKeyboardStatus] = useState('');
-  
-    // useEffect(() => {
-    //   const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-    //     setKeyboardStatus('Keyboard Shown');
-    //   });
-    //   const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-    //     setKeyboardStatus('Keyboard Hidden');
-    //   });
-  
-    //   return () => {
-    //     showSubscription.remove();
-    //     hideSubscription.remove();
-    //   };
-    // }, []);
+  }, [navigation])
   
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="padding"
-    >
-<View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <View style={styles.container}>
       <ListItem bottomDivider>
       <Entypo name="box" size={24} color="#B2B2B2" />
           <ListItem.Content>
@@ -103,7 +93,8 @@ function Expense({ navigation }) {
           </ListItem.Content>
           <ListItem.Chevron />
       </ListItem>
-
+      
+      <TouchableOpacity>
       <ListItem bottomDivider>
       <Entypo name="calendar" size={24} color="#B2B2B2" />
           <ListItem.Content>
@@ -111,6 +102,7 @@ function Expense({ navigation }) {
           </ListItem.Content>
           <ListItem.Chevron />
       </ListItem>
+      </TouchableOpacity>
 
       </View> 
     </KeyboardAvoidingView>
@@ -119,11 +111,28 @@ function Expense({ navigation }) {
   );
 }
 
+//// content for income screen
 function Income() {
+  // variable for date picker
+  const [date, setDate] = useState(new Date())
+  const [open, setOpen] = useState(false)
+  
   return(
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>income</Text>
-  </View>
+    <>
+      <Button title="Open" onPress={() => setOpen(true)} />
+      <DatePicker
+        modal
+        open={open}
+        date={date}
+        onConfirm={(date) => {
+          setOpen(false)
+          setDate(date)
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      />
+    </>
   )
 }
 
@@ -149,18 +158,7 @@ export default function AddNewTab() {
 
 
 const styles = StyleSheet.create({
-  homeContainer: {
-    flex: 1,
-    backgroundColor: '#F27D52',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  homeButton: {
-    backgroundColor: '#F2E1AC',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderBottonRadius: 10
-  },
+  
   container: {
     flex: 1,
     margin: 8,
