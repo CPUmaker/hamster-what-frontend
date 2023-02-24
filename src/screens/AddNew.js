@@ -1,89 +1,181 @@
-import React,  { useEffect, useState }from "react";
-import { StyleSheet, Button, View, SafeAreaView, Text, Alert, ScrollView, TouchableOpacity, Switch} from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import { Card, Icon, ListItem} from '@rneui/themed';
+import React, { useEffect, useState, useContext} from "react";
+import { 
+  StyleSheet, 
+  Button, 
+  View, 
+  SafeAreaView, 
+  Text, 
+  Alert, 
+  ScrollView, 
+  TouchableOpacity, 
+  Switch, 
+  Dimensions,
+  TextInput,
+  Keyboard,
+  KeyboardAvoidingView } from "react-native";
+import Modal from "react-native-modal";
+import { Card, Icon } from '@rneui/themed';
+import { ListItem, Avatar} from "@rneui/base";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {DatePicker} from "react-native-common-date-picker";
 
-import { MaterialCommunityIcons, 
-         MaterialIcons,
-         Octicons,
-         Entypo,
-         AntDesign,} from '@expo/vector-icons';
+import { AuthContext } from "../context/AuthContext";
 
-export default function AddNew({ navigation }) {
+import {
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Ionicons,
+  Octicons,
+  Entypo,
+  Foundation,
+  AntDesign,
+  FontAwesome5,
+} from '@expo/vector-icons';
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+
+
+
+function Expense({ navigation }) {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [text, setText] = useState('');
+
   useEffect(() => {
-    navigation.getParent().setOptions({swipeEnabled: false});
+    navigation.getParent().setOptions({ swipeEnabled: false });
   }, [])
+
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
-      navigation.getParent().setOptions({swipeEnabled: true});
+      navigation.getParent().setOptions({ swipeEnabled: true });
     })
   }, [navigation]);
 
-    return (
-        <SafeAreaView style={styles.container}>
-        <ScrollView style={{ padding: 20 }}>
-            <View>
+    // const [keyboardStatus, setKeyboardStatus] = useState('');
+  
+    // useEffect(() => {
+    //   const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+    //     setKeyboardStatus('Keyboard Shown');
+    //   });
+    //   const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+    //     setKeyboardStatus('Keyboard Hidden');
+    //   });
+  
+    //   return () => {
+    //     showSubscription.remove();
+    //     hideSubscription.remove();
+    //   };
+    // }, []);
+  
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+    >
+<View style={styles.container}>
+      <ListItem bottomDivider>
+      <Entypo name="box" size={24} color="#B2B2B2" />
+          <ListItem.Content>
+          <ListItem.Title>Category:</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+      </ListItem>
 
-            <ListItem containerStyle={styles.container_item}>
-                <MaterialCommunityIcons name="account" size={24} color="black" />
-                <ListItem.Content>
-                <ListItem.Title>Follow system</ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-            </ListItem>
+      <ListItem bottomDivider>
+      <Entypo name="wallet" size={24} color="#B2B2B2" />
+          <ListItem.Content>
+          <ListItem.Title>From:</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+      </ListItem>
 
-            </View>
-          
-        </ScrollView>
-        </SafeAreaView>
-    );
+      <ListItem bottomDivider>
+      <FontAwesome5 name="sticky-note" size={24} color="#B2B2B2" />
+          <ListItem.Content>
+          <ListItem.Title>Note: </ListItem.Title>
+          <TextInput
+            style={styles.input}
+            placeholder="Type here to write down your note "
+            onChangeText={newText => setText(newText)}
+            defaultValue={text}
+            keyboardType="default"
+            onSubmitEditing={Keyboard.dismiss}
+          />
+          </ListItem.Content>
+          <ListItem.Chevron />
+      </ListItem>
+
+      <ListItem bottomDivider>
+      <Entypo name="calendar" size={24} color="#B2B2B2" />
+          <ListItem.Content>
+          <ListItem.Title>Date</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+      </ListItem>
+
+      </View> 
+    </KeyboardAvoidingView>
+
+    
+  );
+}
+
+function Income() {
+  return(
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text>income</Text>
+  </View>
+  )
+}
+
+function Transfer() {
+  return(
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text>Transfer</Text>
+  </View>
+  )
+}
+
+const Tab = createMaterialTopTabNavigator();
+
+export default function AddNewTab() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Expense" component={Expense} />
+      <Tab.Screen name="Income" component={Income} />
+      <Tab.Screen name="Transfer" component={Transfer} />
+    </Tab.Navigator>
+  );
 }
 
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-    },
-    settings_title:{
-        fontSize: 18,
-        fontFamily: "Roboto-Medium",
-    },
-    container_item: {
-        flex: 1,
-        paddingLeft: 0,
-        paddingRight: 0,
-    },
-    profile_container: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 20,
-    },
-    profile_img: {
-      width: 35,
-      height: 35,
-    },
-    profile_font: {
-      fontSize: 18,
-      fontFamily: "Roboto-Medium",
-    },
-    search_container: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderColor: "#C6C6C6",
-      borderWidth: 1,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-    },
-    bank_container: {
-      marginVertical: 15,
-      flexDirection: "row",
-      justifyContent: "space-between",
-    },
-    bank_title: {
-      fontSize: 18,
-      fontFamily: "Roboto-Medium",
-    },
-  });
+  homeContainer: {
+    flex: 1,
+    backgroundColor: '#F27D52',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  homeButton: {
+    backgroundColor: '#F2E1AC',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottonRadius: 10
+  },
+  container: {
+    flex: 1,
+    margin: 8,
+    backgroundColor: '#fff',
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+  },
+  content:{
+      margin:3
+  },
+  input: {
+    height: 40,
+    margin: -5,
+    borderWidth: 0,
+    padding: 5,
+  },
+
+});
