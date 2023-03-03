@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext, Component} from "react";
 import { 
   StyleSheet, 
   Button, 
@@ -19,9 +19,10 @@ import { Card, Icon } from '@rneui/themed';
 import { ListItem, Avatar} from "@rneui/base";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-// only needs to keep one datepicker
-// import DatePicker from 'react-native-date-picker'
-import {DatePicker} from "react-native-common-date-picker";
+
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
+
 
 import { AuthContext } from "../context/AuthContext";
 
@@ -45,8 +46,16 @@ function Expense({ navigation }) {
   const [text, setText] = useState('');
 
   // variable for date picker
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const handleDateConfirm = (date) => {
+    setSelectedDate(moment(date).format('YYYY-MM-DD'));
+    setIsDatePickerVisible(false);
+  };
+  const handleDateCancel = () => {
+    setIsDatePickerVisible(false);
+  };
+
 
   // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {
@@ -94,55 +103,79 @@ function Expense({ navigation }) {
           <ListItem.Chevron />
       </ListItem>
       
-      <TouchableOpacity>
-      <ListItem bottomDivider>
-      <Entypo name="calendar" size={24} color="#B2B2B2" />
-          <ListItem.Content>
-          <ListItem.Title>Date</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Chevron />
-      </ListItem>
+      <TouchableOpacity onPress={() => setIsDatePickerVisible(true)}>
+        <ListItem bottomDivider>
+          <Entypo name="calendar" size={24} color="#B2B2B2" />
+              <ListItem.Content>
+              <ListItem.Title>Date: {selectedDate}</ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron />
+        </ListItem>
       </TouchableOpacity>
+      {/* {selectedDate && (
+        <Text style={styles.selectedDateText}>
+          Selected Date: {selectedDate}
+        </Text>
+      )} */}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleDateConfirm}
+        onCancel={handleDateCancel}
+      />
 
       </View> 
     </KeyboardAvoidingView>
 
     
   );
-}
+};
 
 //// content for income screen
-function Income() {
-  // variable for date picker
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
-  
-  return(
-    <>
-      <Button title="Open" onPress={() => setOpen(true)} />
-      <DatePicker
-        modal
-        open={open}
-        date={date}
-        onConfirm={(date) => {
-          setOpen(false)
-          setDate(date)
-        }}
-        onCancel={() => {
-          setOpen(false)
-        }}
-      />
-    </>
-  )
-}
+const Income = () => {
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
 
+  const handleDateConfirm = (date) => {
+    setSelectedDate(moment(date).format('YYYY-MM-DD'));
+    setIsDatePickerVisible(false);
+  };
+
+  const handleDateCancel = () => {
+    setIsDatePickerVisible(false);
+  };
+
+  return (
+    <View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setIsDatePickerVisible(true)}>
+        <Text style={styles.buttonText}>Select Date</Text>
+      </TouchableOpacity>
+      {selectedDate && (
+        <Text style={styles.selectedDateText}>
+          Selected Date: {selectedDate}
+        </Text>
+      )}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleDateConfirm}
+        onCancel={handleDateCancel}
+      />
+    </View>
+  );
+};
+
+
+//// content for transfer screen
 function Transfer() {
   return(
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Transfer</Text>
-  </View>
+    <View>
+      <Text>transfer</Text>
+    </View>
   )
-}
+};
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -154,7 +187,7 @@ export default function AddNewTab() {
       <Tab.Screen name="Transfer" component={Transfer} />
     </Tab.Navigator>
   );
-}
+};
 
 
 const styles = StyleSheet.create({
@@ -174,6 +207,19 @@ const styles = StyleSheet.create({
     margin: -5,
     borderWidth: 0,
     padding: 5,
+  },
+
+  button: {
+    backgroundColor: '#007AFF',
+    borderRadius: 5,
+    padding: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  selectedDateText: {
+    marginVertical: 10,
   },
 
 });
