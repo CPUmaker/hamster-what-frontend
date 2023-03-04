@@ -1,22 +1,23 @@
-import React, { useEffect, useState, useContext, Component} from "react";
-import { 
-  StyleSheet, 
-  Button, 
-  View, 
-  SafeAreaView, 
-  Text, 
-  Alert, 
-  ScrollView, 
-  TouchableOpacity, 
-  Switch, 
+import React, { useEffect, useState, useContext, Component } from "react";
+import {
+  StyleSheet,
+  Button,
+  View,
+  SafeAreaView,
+  Text,
+  Alert,
+  ScrollView,
+  TouchableOpacity,
+  Switch,
   Dimensions,
   TextInput,
   Keyboard,
-  KeyboardAvoidingView } from "react-native";
+  KeyboardAvoidingView
+} from "react-native";
 
 import Modal from "react-native-modal";
 import { Card, Icon } from '@rneui/themed';
-import { ListItem, Avatar} from "@rneui/base";
+import { ListItem, Avatar } from "@rneui/base";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 
@@ -37,144 +38,54 @@ import {
   FontAwesome5,
 } from '@expo/vector-icons';
 
+// import different screen
+import { Expense } from './AddNewScreen/AddNewExpense.js'
+import { Income } from './AddNewScreen/AddNewIncome.js'
+
 // get the screen height
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-//// content for Expense interface
-function Expense({ navigation }) {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [text, setText] = useState('');
-
-  // variable for date picker
-  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const handleDateConfirm = (date) => {
-    setSelectedDate(moment(date).format('YYYY-MM-DD'));
-    setIsDatePickerVisible(false);
-  };
-  const handleDateCancel = () => {
-    setIsDatePickerVisible(false);
-  };
-
-
-  // fix the issues when swipe to the right will bring out sidebar
-  useEffect(() => {
-    navigation.getParent().setOptions({ swipeEnabled: false });
-  }, [])
-
-  useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      navigation.getParent().setOptions({ swipeEnabled: true });
-    })
-  }, [navigation])
-  
-  return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-    <View style={styles.container}>
-      <ListItem bottomDivider>
-      <Entypo name="box" size={24} color="#B2B2B2" />
-          <ListItem.Content>
-          <ListItem.Title>Category:</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Chevron />
-      </ListItem>
-
-      <ListItem bottomDivider>
-      <Entypo name="wallet" size={24} color="#B2B2B2" />
-          <ListItem.Content>
-          <ListItem.Title>From:</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Chevron />
-      </ListItem>
-
-      <ListItem bottomDivider>
-      <FontAwesome5 name="sticky-note" size={24} color="#B2B2B2" />
-          <ListItem.Content>
-          <ListItem.Title>Note: </ListItem.Title>
-          <TextInput
-            style={styles.input}
-            placeholder="Type here to write down your note "
-            onChangeText={newText => setText(newText)}
-            defaultValue={text}
-            keyboardType="default"
-            onSubmitEditing={Keyboard.dismiss}
-          />
-          </ListItem.Content>
-          <ListItem.Chevron />
-      </ListItem>
-      
-      <TouchableOpacity onPress={() => setIsDatePickerVisible(true)}>
-        <ListItem bottomDivider>
-          <Entypo name="calendar" size={24} color="#B2B2B2" />
-              <ListItem.Content>
-              <ListItem.Title>Date: {selectedDate}</ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-        </ListItem>
-      </TouchableOpacity>
-      {/* {selectedDate && (
-        <Text style={styles.selectedDateText}>
-          Selected Date: {selectedDate}
-        </Text>
-      )} */}
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleDateConfirm}
-        onCancel={handleDateCancel}
-      />
-
-      </View> 
-    </KeyboardAvoidingView>
-
-    
-  );
-};
+const categories = ['Food', 'Shopping', 'Accommodation', 'Transportation', 'Entertainment'];
 
 //// content for income screen
-const Income = () => {
-  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  const handleDateConfirm = (date) => {
-    setSelectedDate(moment(date).format('YYYY-MM-DD'));
-    setIsDatePickerVisible(false);
-  };
-
-  const handleDateCancel = () => {
-    setIsDatePickerVisible(false);
-  };
-
-  return (
-    <View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => setIsDatePickerVisible(true)}>
-        <Text style={styles.buttonText}>Select Date</Text>
-      </TouchableOpacity>
-      {selectedDate && (
-        <Text style={styles.selectedDateText}>
-          Selected Date: {selectedDate}
-        </Text>
-      )}
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleDateConfirm}
-        onCancel={handleDateCancel}
-      />
-    </View>
-  );
-};
-
+// const Income = () => {
+//   const handleCategorySelect = (category) => {
+//     console.log(`Selected category: ${category}`);
+//   };
+//   return (
+//     <View>
+//       {categories.map((category, index) => (
+//         <TouchableOpacity key={index} onPress={() => handleCategorySelect(category)}>
+//           <Text>{category}</Text>
+//         </TouchableOpacity>
+//       ))}
+//     </View>
+//   );
+// };
 
 //// content for transfer screen
 function Transfer() {
-  return(
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleModalVisibility = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  return (
     <View>
-      <Text>transfer</Text>
+      <Button title="Open Modal" onPress={handleModalVisibility} />
+      <Modal
+        visible={isModalVisible}
+        animationType="slide"
+        onRequestClose={handleModalVisibility}
+        >
+        <View style={styles.container}>
+          <Text>This is the modal content</Text>
+          <Button title="Close Modal" onPress={handleModalVisibility} />
+        </View>
+      </Modal>
     </View>
-  )
+  );
 };
 
 const Tab = createMaterialTopTabNavigator();
@@ -191,7 +102,7 @@ export default function AddNewTab() {
 
 
 const styles = StyleSheet.create({
-  
+
   container: {
     flex: 1,
     margin: 8,
@@ -199,8 +110,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
   },
-  content:{
-      margin:3
+  content: {
+    margin: 3
   },
   input: {
     height: 40,
