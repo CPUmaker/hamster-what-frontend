@@ -1,11 +1,12 @@
 import { Formik } from "formik";
-import React, {useEffect, useContext} from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import React, {useEffect, useContext, useState} from "react";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, DeviceEventEmitter } from "react-native";
 import * as yup from 'yup';
 import axios from "axios";
-import { BASE_URL } from "../../config";
+import { BASE_URL, endpoints } from "../../config";
 
 import { AuthContext } from "../../context/AuthContext";
+import { ProfileContext } from "../../context/ProfileContext";
 
 const setUsernameSchema = yup.object().shape({
   username: yup
@@ -16,7 +17,10 @@ const setUsernameSchema = yup.object().shape({
 });
 
 export default function SetUsername({navigation}) {
+    const [isEmit, setEmit] = useState(true);
     const {userInfo} = useContext(AuthContext);
+    const {userProfile} = useContext(ProfileContext);
+
     useEffect(() => {
         navigation.getParent().setOptions({swipeEnabled: false});
       }, [])
@@ -30,20 +34,18 @@ export default function SetUsername({navigation}) {
       //TODO onSubmit   
       <Formik
         validationSchema={ setUsernameSchema }
-        initialValues={{ username: userInfo.username }}
+        initialValues={{ username: userProfile.user.username }}
         onSubmit={values => {
         axios
-          /*.patch(`${BASE_URL}/api/profile`, {bio: "123456"})
+          .patch(endpoints.profile, {user: {username: values.username}})
           .catch((error) => {
             console.log(`Set user name error: ${error}`)
-          })*/
-          .get(`${BASE_URL}/api/profile`)
-          .then((res) => {
-            let data = res.data;
-            console.log(data);
-
           })
           console.log(values.username);
+          if(isEmit){
+            DeviceEventEmitter.emit('bio_receive', true);
+            setEmit(false);
+          }
           navigation.goBack();
         }}
       >

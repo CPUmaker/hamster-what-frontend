@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, DeviceEventEmitter
 import * as yup from 'yup';
 import axios from "axios";
 
-import { BASE_URL } from "../../config";
+import { BASE_URL, endpoints } from "../../config";
 import { ProfileContext } from "../../context/ProfileContext";
 
 const setBioSchema = yup.object().shape({
@@ -34,7 +34,7 @@ export default function SetBio({navigation}) {
         initialValues={{ bio: userProfile.bio }}
         onSubmit={values => {
         axios
-          .patch(`${BASE_URL}/api/profile`, {bio: values.bio})
+          .patch(endpoints.profile, {bio: values.bio})
           .catch((error) => {
             console.log(`Set bio error: ${error}`)
           })

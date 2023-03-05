@@ -6,7 +6,7 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import axios from "axios";
 import CountryStateList from "../../assets/country-state-list.json"
 
-import { BASE_URL } from "../config";
+import { BASE_URL, endpoints } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { ProfileContext } from "../context/ProfileContext";
 
@@ -45,13 +45,13 @@ export default function ProfileScreen({ navigation }) {
     const list = [
         {
             Title:'User Name',
-            Subtitle: userInfo.username,
+            Subtitle: userProfile.user.username,
             Nav:'User Name'
         },
         /* TODO */
         {
             Title:'Email',
-            Subtitle: userInfo.email,
+            Subtitle: userProfile.user.email,
             Nav:'Email'
         },
         {
@@ -85,7 +85,7 @@ export default function ProfileScreen({ navigation }) {
     const handleDateConfirm = (date) => {
         //console.log(date);
         axios
-          .patch(`${BASE_URL}/api/profile`, {birthday: date.toLocaleDateString('en-CA')})
+          .patch(endpoints.profile, {birthday: date.toLocaleDateString('en-CA')})
           .catch((error) => {
             console.log(`Set birthday error: ${error}`)
           })    
@@ -111,7 +111,7 @@ export default function ProfileScreen({ navigation }) {
 
     const handleCountryStateConfirm = (country, state) => {
         axios
-          .patch(`${BASE_URL}/api/profile`, {country: country, city: state})
+          .patch(endpoints.profile, {country: country, city: state})
           .catch((error) => {
             console.log(`Set Country City error: ${error}`)
           })    

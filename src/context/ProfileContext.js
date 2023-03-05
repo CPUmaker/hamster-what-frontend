@@ -10,7 +10,7 @@ export const PeofileProvider = ({ children }) => {
   
   const readProfile = () => {
     axios
-      .get(`${BASE_URL}/api/profile`)
+      .get(endpoints.profile)
       .then((res) => {
         let data = res.data;
         setUserProfile(data);;    
@@ -27,6 +27,7 @@ export const PeofileProvider = ({ children }) => {
       userProfile = JSON.parse(userProfile);
       if(userProfile){
         setUserProfile(userProfile);
+        console.log(userProfile);
       }
     }
     catch (error) {

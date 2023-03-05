@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-export default function ListItem({
+export default function CatagoryItem({
     name,
     money,
-    onPressCallback
+    date,
 }) {
   return (
     <View style={styles.container}>
@@ -13,12 +13,13 @@ export default function ListItem({
         <AntDesign name="shoppingcart" size={32} color="black" />
         <View style={{marginLeft: 10}}>
           <Text style={styles.detail_text}>{name}</Text>
+          <Text style={styles.detail_text}>date: {date}</Text>
         </View>
       </View>
+      <View style={{marginRight: 10}}>
+          <Text style={styles.detail_text}>{money}$</Text>
+        </View>
 
-      <TouchableOpacity style={styles.button} onPress={onPressCallback}>
-        <Text style={styles.money_text}>{money}$</Text>
-      </TouchableOpacity>
     </View>
   );
 }

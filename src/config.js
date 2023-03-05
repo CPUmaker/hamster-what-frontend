@@ -10,4 +10,5 @@ export const endpoints = {
     apple: API_URL + "/auth/apple",
     google: API_URL + "/auth/google",
     facebook: API_URL + "/auth/facebook",
+    profile: API_URL + "/profile"
 }

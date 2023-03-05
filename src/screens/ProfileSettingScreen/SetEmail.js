@@ -1,9 +1,11 @@
 import { Formik } from "formik";
-import React, {useEffect, useContext} from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from "react-native";
+import React, {useEffect, useContext, useState} from "react";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, DeviceEventEmitter} from "react-native";
 import * as yup from 'yup';
+import axios from "axios";
+import { BASE_URL, endpoints } from "../../config";
 
-import { AuthContext } from "../../context/AuthContext";
+import { ProfileContext } from "../../context/ProfileContext";
 
 const setEmailSchema = yup.object().shape({
   email: yup
@@ -13,7 +15,8 @@ const setEmailSchema = yup.object().shape({
 });
 
 export default function SetEmail({navigation}) {
-    const {userInfo} = useContext(AuthContext);
+    const {userProfile} = useContext(ProfileContext);
+    const [isEmit, setEmit] = useState(true);
 
     useEffect(() => {
         navigation.getParent().setOptions({swipeEnabled: false});
@@ -27,11 +30,20 @@ export default function SetEmail({navigation}) {
       //TODO onSubmit   
       <Formik
         validationSchema={ setEmailSchema }
-        initialValues={{ email: userInfo.email }}
+        initialValues={{ email: userProfile.user.email }}
         onSubmit={values => {
-          console.log(values.email);
-          Alert.alert('Confirmation has been sent')
-          navigation.goBack();
+          axios
+            .patch(endpoints.profile, {user: {email: values.email}})
+            .catch((error) => {
+              console.log(`Set user name error: ${error}`)
+            })
+            if(isEmit){
+              DeviceEventEmitter.emit('bio_receive', true);
+              setEmit(false);
+            }
+            console.log(values.email);
+            Alert.alert('Confirmation has been sent')
+            navigation.goBack();
         }}
       >
       {({

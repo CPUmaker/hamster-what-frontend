@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, DeviceEventEmitter
 import * as yup from 'yup';
 import axios from "axios";
 
-import { BASE_URL } from "../../config";
+import { BASE_URL, endpoints } from "../../config";
 import { ProfileContext } from "../../context/ProfileContext";
 
 const setAffiliationSchema = yup.object().shape({
@@ -34,7 +34,7 @@ export default function SetAffiliation({navigation}) {
         initialValues={{ affiliation: userProfile.affiliation }}
         onSubmit={values => {
         axios
-          .patch(`${BASE_URL}/api/profile`, {affiliation: values.affiliation})
+          .patch(endpoints.profile, {affiliation: values.affiliation})
           .catch((error) => {
             console.log(`Set affiliation error: ${error}`)
           })
