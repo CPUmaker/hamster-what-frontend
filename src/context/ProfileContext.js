@@ -1,13 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { BASE_URL, endpoints } from "../config";
+import { AuthContext } from "./AuthContext";
 
 export const ProfileContext = createContext();
 
 export const PeofileProvider = ({ children }) => {
   let [userProfile, setUserProfile] = useState(null);
-  
+  const {logout} = useContext(AuthContext);
+
   const readProfile = () => {
     axios
       .get(endpoints.profile)
@@ -18,6 +20,9 @@ export const PeofileProvider = ({ children }) => {
       })
       .catch((error) => {
         console.log(`read Profile error: ${error}`);
+        if(error.response.status === 401){
+          logout();
+        }
       });
   };
 
