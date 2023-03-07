@@ -21,36 +21,37 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 // import different screen
 import { Expense } from './AddNewScreen/AddNewExpense.js'
 import { Income } from './AddNewScreen/AddNewIncome.js'
+import { Transfer } from './AddNewScreen/AddNewTransfer.js'
 
-// get the screen height
+// get the screen heightr
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const categories = ['Food', 'Shopping', 'Accommodation', 'Transportation', 'Entertainment'];
 
 // content for transfer screen
-function Transfer() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+// function Transfer() {
+//   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleModalVisibility = () => {
-    setIsModalVisible(!isModalVisible);
-  };
+//   const handleModalVisibility = () => {
+//     setIsModalVisible(!isModalVisible);
+//   };
 
-  return (
-    <View>
-      <Button title="Open Modal" onPress={handleModalVisibility} />
-      <Modal
-        visible={isModalVisible}
-        animationType="slide"
-        onRequestClose={handleModalVisibility}
-        >
-        <View style={styles.container}>
-          <Text>This is the modal content</Text>
-          <Button title="Close Modal" onPress={handleModalVisibility} />
-        </View>
-      </Modal>
-    </View>
-  );
-};
+//   return (
+//     <View>
+//       <Button title="Open Modal" onPress={handleModalVisibility} />
+//       <Modal
+//         visible={isModalVisible}
+//         animationType="slide"
+//         onRequestClose={handleModalVisibility}
+//         >
+//         <View style={styles.container}>
+//           <Text>This is the modal content</Text>
+//           <Button title="Close Modal" onPress={handleModalVisibility} />
+//         </View>
+//       </Modal>
+//     </View>
+//   );
+// };
 
 const Tab = createMaterialTopTabNavigator();
 

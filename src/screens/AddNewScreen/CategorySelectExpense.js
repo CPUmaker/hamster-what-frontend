@@ -11,7 +11,7 @@ const categories = [
   { id: 6, name: 'Utilities', icon: 'flash-outline', color: '#27ae60' },
 ];
 
-export function CategorySelection(setSelectedCategoryName) {
+export function CategorySelectionExpense(setSelectedCategoryName) {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const handleCategoryPress = (categoryId, categoryName) => {
@@ -32,14 +32,11 @@ export function CategorySelection(setSelectedCategoryName) {
           onPress={() => handleCategoryPress(category.id, category.name)}
         >
           <View style={styles.categoryIcon}>
-            <Ionicons name={category.icon} size={32} color={selectedCategoryId === category.id ? '#ffffff' : category.color} />
+            <Ionicons name={category.icon} size={32} color={category.color} />
           </View>
           <Text style={[styles.categoryName, selectedCategoryId === category.id && { color: '#ffffff' }]}>{category.name}</Text>
         </TouchableOpacity>
       ))}
-      <Text>
-        {/* You selected the {selectedCategoryName} category. */}
-      </Text>
 
     </View>
   );
@@ -58,6 +55,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   categoryButton: {
+    width: 380,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#ffffff',

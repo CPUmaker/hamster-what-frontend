@@ -37,9 +37,9 @@ import {
   FontAwesome5,
 } from '@expo/vector-icons';
 
-import {CategorySelection} from './CategorySelectExpense.js'
-import {MoneyInput} from './MoneyInput.js'
-import {WalletSelect} from './WalletSelect.js'
+import { CategorySelectionExpense } from './CategorySelectExpense.js'
+import { MoneyInput } from './MoneyInput.js'
+import { WalletSelect } from './WalletSelect.js'
 
 // get the screen height
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -48,15 +48,20 @@ const Stack = createStackNavigator();
 // list of categories
 // const categories = ['Food', 'Shopping', 'Accommodation', 'Transportation', 'Entertainment'];
 
-//// content for Expense interface
+//// content for Expense interface -------------
 export function Expense({ navigation }) {
   const [text, setText] = useState('');
 
-  // for category modal
+  // Category modal
   const [modalVisible, setModalVisible] = useState(false);
   const openModal = () => { setModalVisible(true); };
   const closeModal = () => { setModalVisible(false); };
-  
+
+  // From Modal
+  const [WalletmodalVisible, setWalletModalVisible] = useState(false);
+  const WalletOpenModal = () => { setWalletModalVisible(true); };
+  const WalletCloseModal = () => { setWalletModalVisible(false); };
+
   // variable for date picker
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -67,6 +72,8 @@ export function Expense({ navigation }) {
   const handleDateCancel = () => {
     setIsDatePickerVisible(false);
   };
+
+  // variable for category select
   const [selectedCategoryName, setSelectedCategoryName] = useState(null);
   const [selectedWallet, setselectedWallet] = useState(null);
 
@@ -86,46 +93,47 @@ export function Expense({ navigation }) {
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.container}>
         {MoneyInput()}
-        
-      <TouchableOpacity onPress={openModal}>
-        <Modal visible={modalVisible} animationType="slide" onRequestClose={closeModal}>
+
+        {/* -------------1--------------- */}
+        <TouchableOpacity onPress={openModal}>
+          <Modal visible={modalVisible} animationType="slide" onRequestClose={closeModal}>
             <View style={styles.modal}>
 
-            <TouchableOpacity onPress={closeModal} style={styles.button}>
+              {CategorySelectionExpense(setSelectedCategoryName)}
+              <TouchableOpacity onPress={closeModal} style={styles.button}>
                 <Text style={styles.buttonText}>Done</Text>
-            </TouchableOpacity>
-            {CategorySelection(setSelectedCategoryName)}
+              </TouchableOpacity>
             </View>
-        </Modal>
-        <ListItem bottomDivider>
+          </Modal>
+          <ListItem bottomDivider>
             <Entypo name="box" size={24} color="#B2B2B2" />
             <ListItem.Content>
-                <ListItem.Title>Category: {selectedCategoryName}</ListItem.Title>
-                
+              <ListItem.Title>Category: {selectedCategoryName}</ListItem.Title>
+
             </ListItem.Content>
             <ListItem.Chevron />
-            </ListItem>
+          </ListItem>
         </TouchableOpacity>
 
         {/* -------------2--------------- */}
-        <TouchableOpacity onPress={openModal}>
-        <Modal visible={modalVisible} animationType="slide" onRequestClose={closeModal}>
+        <TouchableOpacity onPress={WalletOpenModal}>
+          <Modal visible={WalletmodalVisible} animationType="slide" onRequestClose={WalletCloseModal}>
             <View style={styles.modal}>
 
-            <TouchableOpacity onPress={closeModal} style={styles.button}>
+              {WalletSelect(setselectedWallet)}
+              <TouchableOpacity onPress={WalletCloseModal} style={styles.button}>
                 <Text style={styles.buttonText}>Done</Text>
-            </TouchableOpacity>
-            {WalletSelect(setselectedWallet)}
+              </TouchableOpacity>
             </View>
-        </Modal>
-        <ListItem bottomDivider>
+          </Modal>
+          <ListItem bottomDivider>
             <Entypo name="wallet" size={24} color="#B2B2B2" />
             <ListItem.Content>
-                <ListItem.Title>From: {selectedWallet}</ListItem.Title>
-                
+              <ListItem.Title>From: {selectedWallet}</ListItem.Title>
+
             </ListItem.Content>
             <ListItem.Chevron />
-            </ListItem>
+          </ListItem>
         </TouchableOpacity>
 
         <ListItem bottomDivider>
@@ -165,6 +173,10 @@ export function Expense({ navigation }) {
           onCancel={handleDateCancel}
         />
 
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.saveButton}>
+          <Text style={styles.buttonText}>SAVE</Text>
+        </TouchableOpacity>
+
       </View>
     </KeyboardAvoidingView>
 
@@ -175,39 +187,55 @@ export function Expense({ navigation }) {
 
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      margin: 8,
-      backgroundColor: '#fff',
-      borderBottomLeftRadius: 50,
-      borderBottomRightRadius: 50,
-    },
-    content: {
-      margin: 3
-    },
-    input: {
-      height: 40,
-      margin: -5,
-      borderWidth: 0,
-      padding: 5,
-    },
-    button: {
-      backgroundColor: '#007AFF',
-      borderRadius: 5,
-      padding: 10,
-    },
-    buttonText: {
-      color: 'white',
-      fontWeight: 'bold',
-    },
-    selectedDateText: {
-      marginVertical: 10,
-    },
-    modal: {
-        flex: 0.7,
-        margin: 0,
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 10,
-      },
-  });
+  container: {
+    flex: 1,
+    margin: 8,
+    backgroundColor: '#fff',
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+  },
+  content: {
+    margin: 3
+  },
+  input: {
+    height: 40,
+    margin: -5,
+    borderWidth: 0,
+    padding: 5,
+  },
+  
+  button: {
+    backgroundColor: '#007AFF',
+    width: 160,
+    alignItems: 'center',
+    borderRadius: 50,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginTop: 40,
+  },
+  saveButton: {
+    alignSelf: 'center',
+    backgroundColor: '#A04AAA',
+    width: 370,
+    alignItems: 'center',
+    borderRadius: 50,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginTop: 40,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  selectedDateText: {
+    marginVertical: 10,
+  },
+  modal: {
+    flex: 0.7,
+    margin: 0,
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+});

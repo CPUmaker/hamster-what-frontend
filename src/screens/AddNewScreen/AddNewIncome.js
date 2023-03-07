@@ -149,10 +149,13 @@ export function Income({ navigation }) {
           onConfirm={handleDateConfirm}
           onCancel={handleDateCancel}
         />
-
+        {/* -------------save button--------------- */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.saveButton}>
+          <Text style={styles.buttonText}>SAVE</Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
-
+  
 
   );
 };
@@ -175,6 +178,16 @@ const styles = StyleSheet.create({
       margin: -5,
       borderWidth: 0,
       padding: 5,
+    },
+    saveButton: {
+      alignSelf: 'center',
+      backgroundColor: '#A04AAA',
+      width: 370,
+      alignItems: 'center',
+      borderRadius: 50,
+      paddingVertical: 12,
+      paddingHorizontal: 20,
+      marginTop: 40,
     },
     button: {
       backgroundColor: '#007AFF',
