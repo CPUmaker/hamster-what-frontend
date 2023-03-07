@@ -8,6 +8,7 @@ import {
 
 import useFonts from "./hooks/useFonts";
 import { AuthProvider } from './src/context/AuthContext';
+import { PeofileProvider } from './src/context/ProfileContext'
 import AppNav from './src/navigation/AppNav';
 
 // Keep the splash screen visible while we fetch resources
@@ -49,11 +50,13 @@ export default function App() {
 
   return (
     <AuthProvider>
+      <PeofileProvider>
       {/* <NativeBaseProvider> */}
         <SafeAreaView style={{flex: 1}} onLayout={onLayoutRootView}>
           <AppNav />
         </SafeAreaView>
       {/* </NativeBaseProvider> */}
+      </PeofileProvider>
     </AuthProvider>
   );
 }

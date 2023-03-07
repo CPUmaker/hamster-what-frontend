@@ -13,9 +13,11 @@ import {
 } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
+import { ProfileContext } from "../context/ProfileContext";
 
 export default function CustomDrawer(props) {
   const {logout} = useContext(AuthContext);
+  const {userProfile} = useContext(ProfileContext);
 
   return (
     <View style={{ flex: 1 }}>
@@ -31,8 +33,8 @@ export default function CustomDrawer(props) {
             source={require("../../assets/profile.jpg")}
             style={styles.profile_img}
           ></Image>
-          <Text style={styles.name_text}>Chris Li</Text>
-          <Text style={styles.email_text}>xjhmlcy@gmail.com</Text>
+          <Text style={styles.name_text}>{ userProfile.user.username }</Text>
+          <Text style={styles.email_text}>{ userProfile.user.email }</Text>
         </ImageBackground>
         <View style={styles.drawer_container}>
           <DrawerItemList {...props} />
