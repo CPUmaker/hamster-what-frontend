@@ -37,8 +37,9 @@ import {
   FontAwesome5,
 } from '@expo/vector-icons';
 
-import {CategorySelection} from './CategorySelect.js'
+import {CategorySelection} from './CategorySelectExpense.js'
 import {MoneyInput} from './MoneyInput.js'
+import {WalletSelect} from './WalletSelect.js'
 
 // get the screen height
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -67,6 +68,7 @@ export function Expense({ navigation }) {
     setIsDatePickerVisible(false);
   };
   const [selectedCategoryName, setSelectedCategoryName] = useState(null);
+  const [selectedWallet, setselectedWallet] = useState(null);
 
   console.log(selectedCategoryName);
   // fix the issues when swipe to the right will bring out sidebar
@@ -105,13 +107,26 @@ export function Expense({ navigation }) {
             </ListItem>
         </TouchableOpacity>
 
+        {/* -------------2--------------- */}
+        <TouchableOpacity onPress={openModal}>
+        <Modal visible={modalVisible} animationType="slide" onRequestClose={closeModal}>
+            <View style={styles.modal}>
+
+            <TouchableOpacity onPress={closeModal} style={styles.button}>
+                <Text style={styles.buttonText}>Done</Text>
+            </TouchableOpacity>
+            {WalletSelect(setselectedWallet)}
+            </View>
+        </Modal>
         <ListItem bottomDivider>
-          <Entypo name="wallet" size={24} color="#B2B2B2" />
-          <ListItem.Content>
-            <ListItem.Title>From:</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Chevron />
-        </ListItem>
+            <Entypo name="wallet" size={24} color="#B2B2B2" />
+            <ListItem.Content>
+                <ListItem.Title>From: {selectedWallet}</ListItem.Title>
+                
+            </ListItem.Content>
+            <ListItem.Chevron />
+            </ListItem>
+        </TouchableOpacity>
 
         <ListItem bottomDivider>
           <FontAwesome5 name="sticky-note" size={24} color="#B2B2B2" />

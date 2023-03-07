@@ -16,28 +16,8 @@ import {
 } from "react-native";
 
 import Modal from "react-native-modal";
-import { Card, Icon } from '@rneui/themed';
-import { ListItem, Avatar } from "@rneui/base";
+
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
-
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-
-
-import { AuthContext } from "../context/AuthContext";
-
-import {
-  MaterialCommunityIcons,
-  MaterialIcons,
-  Ionicons,
-  Octicons,
-  Entypo,
-  Foundation,
-  AntDesign,
-  FontAwesome5,
-} from '@expo/vector-icons';
-
 // import different screen
 import { Expense } from './AddNewScreen/AddNewExpense.js'
 import { Income } from './AddNewScreen/AddNewIncome.js'
@@ -47,23 +27,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const categories = ['Food', 'Shopping', 'Accommodation', 'Transportation', 'Entertainment'];
 
-//// content for income screen
-// const Income = () => {
-//   const handleCategorySelect = (category) => {
-//     console.log(`Selected category: ${category}`);
-//   };
-//   return (
-//     <View>
-//       {categories.map((category, index) => (
-//         <TouchableOpacity key={index} onPress={() => handleCategorySelect(category)}>
-//           <Text>{category}</Text>
-//         </TouchableOpacity>
-//       ))}
-//     </View>
-//   );
-// };
-
-//// content for transfer screen
+// content for transfer screen
 function Transfer() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
