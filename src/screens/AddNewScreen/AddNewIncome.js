@@ -150,7 +150,7 @@ export function Income({ navigation }) {
           onCancel={handleDateCancel}
         />
         {/* -------------save button--------------- */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.saveButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.saveButton}>
           <Text style={styles.buttonText}>SAVE</Text>
         </TouchableOpacity>
       </View>

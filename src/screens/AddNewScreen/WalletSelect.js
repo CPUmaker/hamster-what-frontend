@@ -6,7 +6,7 @@ const categories = [
   { id: 1, name: 'Checking account', icon: 'wallet', color: '#f39c12' },
   { id: 2, name: 'Credit account', icon: 'card-outline', color: '#9b59b6' },
   { id: 3, name: 'Cash', icon: 'cash-outline', color: '#3498db' },
-  { id: 3, name: 'Savings account', icon: null, other_icon: <MaterialCommunityIcons name="piggy-bank" size={32} color={'#2c3e50'}/>, color: null },
+  { id: 4, name: 'Savings account', icon: null, other_icon: <MaterialCommunityIcons name="piggy-bank" size={32} color={'#2c3e50'}/>, color: '#2c3e50'},
 ];
 
 export function WalletSelect(WalletName) {
@@ -32,7 +32,7 @@ export function WalletSelect(WalletName) {
           <View style={styles.categoryIcon}>
             {category.icon === null ?
             category.other_icon
-            : <Ionicons name={category.icon} size={32} color={selectedCategoryId === category.id ? '#ffffff' : category.color} />}
+            : <Ionicons name={category.icon} size={32} color={category.color} />}
           </View>
           <Text style={[styles.categoryName, selectedCategoryId === category.id && { color: '#ffffff' }]}>{category.name}</Text>
         </TouchableOpacity>

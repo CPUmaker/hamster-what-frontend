@@ -173,7 +173,8 @@ export function Expense({ navigation }) {
           onCancel={handleDateCancel}
         />
 
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.saveButton}>
+        {/* -------------save button--------------- */}
+        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.saveButton}>
           <Text style={styles.buttonText}>SAVE</Text>
         </TouchableOpacity>
 
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
   },
   
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#A04AAA',
     width: 160,
     alignItems: 'center',
     borderRadius: 50,
