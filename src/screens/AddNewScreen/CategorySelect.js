@@ -11,13 +11,12 @@ const categories = [
   { id: 6, name: 'Utilities', icon: 'flash-outline', color: '#27ae60' },
 ];
 
-export function CategorySelection() {
+export function CategorySelection(setSelectedCategoryName) {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
-  const handleCategoryPress = (categoryId) => {
-    const category = categories.find((c) => c.id === categoryId);
-    setSelectedCategoryId(categoryId);
-    // setSelectedCategory(category);
+  const handleCategoryPress = (categoryId, categoryName) => {
+    setSelectedCategoryId(categoryId)
+    setSelectedCategoryName(categoryName)
   };
 
   return (
@@ -30,7 +29,7 @@ export function CategorySelection() {
             styles.categoryButton,
             selectedCategoryId === category.id && { backgroundColor: category.color },
           ]}
-          onPress={() => handleCategoryPress(category.id)}
+          onPress={() => handleCategoryPress(category.id, category.name)}
         >
           <View style={styles.categoryIcon}>
             <Ionicons name={category.icon} size={32} color={selectedCategoryId === category.id ? '#ffffff' : category.color} />
@@ -38,6 +37,10 @@ export function CategorySelection() {
           <Text style={[styles.categoryName, selectedCategoryId === category.id && { color: '#ffffff' }]}>{category.name}</Text>
         </TouchableOpacity>
       ))}
+      <Text>
+        {/* You selected the {selectedCategoryName} category. */}
+      </Text>
+
     </View>
   );
 };

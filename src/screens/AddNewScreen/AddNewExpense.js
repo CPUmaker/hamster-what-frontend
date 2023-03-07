@@ -55,7 +55,7 @@ export function Expense({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const openModal = () => { setModalVisible(true); };
   const closeModal = () => { setModalVisible(false); };
-
+  
   // variable for date picker
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -66,8 +66,9 @@ export function Expense({ navigation }) {
   const handleDateCancel = () => {
     setIsDatePickerVisible(false);
   };
+  const [selectedCategoryName, setSelectedCategoryName] = useState(null);
 
-
+  console.log(selectedCategoryName);
   // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {
     navigation.getParent().setOptions({ swipeEnabled: false });
@@ -91,13 +92,13 @@ export function Expense({ navigation }) {
             <TouchableOpacity onPress={closeModal} style={styles.button}>
                 <Text style={styles.buttonText}>Done</Text>
             </TouchableOpacity>
-            {CategorySelection()}
+            {CategorySelection(setSelectedCategoryName)}
             </View>
         </Modal>
         <ListItem bottomDivider>
             <Entypo name="box" size={24} color="#B2B2B2" />
             <ListItem.Content>
-                <ListItem.Title>Category:</ListItem.Title>
+                <ListItem.Title>Category: {selectedCategoryName}</ListItem.Title>
                 
             </ListItem.Content>
             <ListItem.Chevron />

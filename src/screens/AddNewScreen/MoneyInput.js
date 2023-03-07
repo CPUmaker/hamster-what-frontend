@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet , TouchableOpacity, Keyboard} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export function MoneyInput() {
   const [amount, setAmount] = useState('');
@@ -12,6 +13,11 @@ export function MoneyInput() {
     setAmount(formattedText);
   }
 
+  function handleConfirmClick() {
+    console.log(`Amount confirmed: ${amount}`);
+    Keyboard.dismiss();
+  }
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -21,20 +27,29 @@ export function MoneyInput() {
         onChangeText={handleAmountChange}
         value={amount}
       />
+      <TouchableOpacity onPress={handleConfirmClick}>
+        <Ionicons name="checkmark-outline" size={30} color="#4CAF50" />
+      </TouchableOpacity>
     </View>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
+    maxWidth: 200,
     padding: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-    fontSize: 20,
+    borderWidth: 0,
+    borderRadius: 0,
+    fontSize: 35,
     fontWeight: 'bold',
     textAlign: 'center',
+    alignContent:'center',
   },
 });
