@@ -93,10 +93,30 @@ export function Expense({ navigation }) {
   // for money input
   const [amount, setAmount] = useState('');
 
-
+  const categories_map = {
+    "Food": 1,
+    "Groceries": 2,
+    "Transportation": 3,
+    "clothing": 4,
+    "Entertainment": 5,
+    "Bill": 6,
+    "Sports": 7,
+    "Electronics": 8,
+    "Travel": 9,
+    "House & Car": 10,
+    "Others": 11
+  }
   const done = (amount) => {
+    data = {
+      title:selectedCategoryName.toString(),
+      date:selectedDate.toString(),
+      price:amount.toString(),
+      categories:categories_map[selectedCategoryName.toString()],
+      comment:text.toString()
+    };
+    console.log(data);
     axios
-      .post(endpoints.bill, {Title:selectedCategoryName.toString(), date:selectedDate.toString(), price:amount.toString(), categories:selectedCategoryName.toString(), comment:text.toString()})
+      .post(endpoints.bill, data)
     // console.log(text.toString())
     navigation.navigate('Home')
   };

@@ -1,21 +1,36 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
 import { AuthContext } from "../context/AuthContext";
+import { ProfileContext } from "../context/ProfileContext";
 
 export default function AppNav() {
+  const [isReading, setIsReading] = useState(true);
   const { isLoading, userToken } = useContext(AuthContext);
+  const { readProfile, userProfile } = useContext(ProfileContext);
 
-  if (isLoading) {
+  useEffect(() => {
+    console.log(userToken)
+    if(userToken !== null) {
+        readProfile();
+        setIsReading(false);
+    }
+  }, [userToken]);
+
+  if (isLoading || (isReading && userToken !== null)) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size={"large"} />
       </View>
     );
   }
+
+  // if (userToken !== null) {
+  //   readProfile();
+  // }
 
   return (
     <NavigationContainer>
