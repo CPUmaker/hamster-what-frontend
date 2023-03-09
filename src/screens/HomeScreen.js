@@ -8,11 +8,14 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
-import { EvilIcons } from "@expo/vector-icons";
+import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import PaymentSwitch from "../components/PaymentSwitch";
 import ListItem from "../components/ListItem";
 import { ProfileContext } from "../context/ProfileContext";
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const dayBills = [
   {
@@ -125,6 +128,18 @@ export default function HomeScreen({ navigation }) {
             />
           ))}
       </ScrollView>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AddNew')}
+        style={{
+          position: 'absolute',
+          justifyContent: 'center',
+          alignItems: 'center',
+          bottom: 1,
+          left: SCREEN_WIDTH * 0.5 - 25,
+        }}
+      >
+        <Ionicons name="add-circle" size={50} color="#283044" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

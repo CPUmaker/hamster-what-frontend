@@ -1,89 +1,75 @@
-import React,  { useEffect, useState }from "react";
-import { StyleSheet, Button, View, SafeAreaView, Text, Alert, ScrollView, TouchableOpacity, Switch} from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import { Card, Icon, ListItem} from '@rneui/themed';
+import React, { useEffect, useState, useContext, Component } from "react";
+import {
+  StyleSheet,
+  Button,
+  View,
+  SafeAreaView,
+  Text,
+  Alert,
+  ScrollView,
+  TouchableOpacity,
+  Switch,
+  Dimensions,
+  TextInput,
+  Keyboard,
+  KeyboardAvoidingView
+} from "react-native";
 
-import { MaterialCommunityIcons, 
-         MaterialIcons,
-         Octicons,
-         Entypo,
-         AntDesign,} from '@expo/vector-icons';
+import Modal from "react-native-modal";
 
-export default function AddNew({ navigation }) {
-  useEffect(() => {
-    navigation.getParent().setOptions({swipeEnabled: false});
-  }, [])
-  useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      navigation.getParent().setOptions({swipeEnabled: true});
-    })
-  }, [navigation]);
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+// import different screen
+import { Expense } from './AddNewScreen/AddNewExpense.js'
+import { Income } from './AddNewScreen/AddNewIncome.js'
+import { Transfer } from './AddNewScreen/AddNewTransfer.js'
 
-    return (
-        <SafeAreaView style={styles.container}>
-        <ScrollView style={{ padding: 20 }}>
-            <View>
+// get the screen heightr
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-            <ListItem containerStyle={styles.container_item}>
-                <MaterialCommunityIcons name="account" size={24} color="black" />
-                <ListItem.Content>
-                <ListItem.Title>Follow system</ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-            </ListItem>
+const categories = ['Food', 'Shopping', 'Accommodation', 'Transportation', 'Entertainment'];
 
-            </View>
-          
-        </ScrollView>
-        </SafeAreaView>
-    );
-}
+const Tab = createMaterialTopTabNavigator();
 
+export default function AddNewTab() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Expense" component={Expense} />
+      <Tab.Screen name="Income" component={Income} />
+      {/* <Tab.Screen name="Transfer" component={Transfer} /> */}
+    </Tab.Navigator>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-    },
-    settings_title:{
-        fontSize: 18,
-        fontFamily: "Roboto-Medium",
-    },
-    container_item: {
-        flex: 1,
-        paddingLeft: 0,
-        paddingRight: 0,
-    },
-    profile_container: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 20,
-    },
-    profile_img: {
-      width: 35,
-      height: 35,
-    },
-    profile_font: {
-      fontSize: 18,
-      fontFamily: "Roboto-Medium",
-    },
-    search_container: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderColor: "#C6C6C6",
-      borderWidth: 1,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-    },
-    bank_container: {
-      marginVertical: 15,
-      flexDirection: "row",
-      justifyContent: "space-between",
-    },
-    bank_title: {
-      fontSize: 18,
-      fontFamily: "Roboto-Medium",
-    },
-  });
+
+  container: {
+    flex: 1,
+    margin: 8,
+    backgroundColor: '#fff',
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+  },
+  content: {
+    margin: 3
+  },
+  input: {
+    height: 40,
+    margin: -5,
+    borderWidth: 0,
+    padding: 5,
+  },
+
+  button: {
+    backgroundColor: '#007AFF',
+    borderRadius: 5,
+    padding: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  selectedDateText: {
+    marginVertical: 10,
+  },
+
+});

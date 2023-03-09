@@ -9,6 +9,7 @@ export const endpoints = {
     validate_token: API_URL + "/auth/validate-token",
     apple: API_URL + "/auth/apple",
     google: API_URL + "/auth/google",
+    bill: API_URL + "/bill/",
     facebook: API_URL + "/auth/facebook",
     profile: API_URL + "/profile",
     bill: API_URL + "/bill/"

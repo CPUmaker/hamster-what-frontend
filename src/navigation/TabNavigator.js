@@ -1,4 +1,5 @@
 import React from "react";
+import { Dimensions } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,13 +8,21 @@ import HomeScreen from "../screens/HomeScreen";
 import FindingScreen from "../screens/FindingScreen";
 import BillDetailsScreen from "../screens/BillDetailsScreen";
 import ListAllScreen from "../screens/ListAllScreen";
+import AddNew from "../screens/AddNew";
 
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator
+      initialRouteName="Home"
+      cardStyle={{ backgroundColor: 'transparent' }}
+      screenOptions={{
+        headerShown: false
+      }}
+    >
       <Stack.Screen
         name="Home"
         component={HomeScreen}
@@ -29,6 +38,19 @@ const HomeStack = () => {
         component={ListAllScreen}
         options={() => ({ title: "See All" })}
       />
+      <Stack.Screen
+          name={`AddNew`}
+          component={AddNew}
+          options={{
+            cardStyle: {
+              backgroundColor: 'transparent'
+            },
+            presentation: 'modal',
+            gestureResponseDistance: SCREEN_HEIGHT * 0.9,
+            gestureVelocityImpact: 0.5 // default 0.3,
+          }}
+        />
+
     </Stack.Navigator>
   );
 };
@@ -47,6 +69,15 @@ export default function TabNavigator() {
           ),
         }}
       />
+      {/* <Tab.Screen
+        name="AddButton"
+        component={AddNew}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="add-circle" size={50} color="black" />
+          ),
+        }}
+      /> */}
       <Tab.Screen
         name="Finding"
         component={FindingScreen}
