@@ -9,7 +9,16 @@ import { BASE_URL, endpoints } from "../config";
 const ItemCategory = ["Food", "Groceries", "Transportation", "clothing", "Entertainment", 
                     "Bill", "Sports", "Electronics", "Travel", "House & Car", "Others"]
 
-export default function ListAllScreen() {
+export default function ListAllScreen({ navigation }) {
+  useEffect(() => {
+    navigation.getParent().setOptions({swipeEnabled: false});
+  }, [])
+  useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      navigation.getParent().setOptions({swipeEnabled: true});
+    })
+  }, [navigation]);
+
   let [listAll, setListAll] = useState(null);
 
   let showItems;

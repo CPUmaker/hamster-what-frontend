@@ -42,6 +42,7 @@ import { MoneyInput } from './MoneyInput.js'
 import { WalletSelect } from './WalletSelect.js'
 import axios from "axios";
 import { BAS_URL, endpoints} from '../../config'
+import { getToday } from "react-native-common-date-picker/src/utils/dateFormat.js";
 
 // get the screen height
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -66,7 +67,7 @@ export function Expense({ navigation }) {
 
   // variable for date picker
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(getToday);
   const handleDateConfirm = (date) => {
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
     setIsDatePickerVisible(false);
@@ -76,8 +77,8 @@ export function Expense({ navigation }) {
   };
 
   // variable for category select
-  const [selectedCategoryName, setSelectedCategoryName] = useState(null);
-  const [selectedWallet, setselectedWallet] = useState(null);
+  const [selectedCategoryName, setSelectedCategoryName] = useState("Food");
+  const [selectedWallet, setselectedWallet] = useState("");
 
   // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {
@@ -110,7 +111,7 @@ export function Expense({ navigation }) {
     data = {
       title:selectedCategoryName.toString(),
       date:selectedDate.toString(),
-      price:amount.toString(),
+      price: amount == "" ? "0" : amount.replace(/[^0-9.]/g, '').toString(),
       categories:categories_map[selectedCategoryName.toString()],
       comment:text.toString()
     };
@@ -125,6 +126,7 @@ export function Expense({ navigation }) {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.container}>
+        {/* -------------0--------------- */}
         {MoneyInput(amount, setAmount)}
 
         {/* -------------1--------------- */}
