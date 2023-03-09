@@ -8,11 +8,14 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
-import { EvilIcons } from "@expo/vector-icons";
+import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import PaymentSwitch from "../components/PaymentSwitch";
 import ListItem from "../components/ListItem";
 import { AuthContext } from "../context/AuthContext";
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const dayBills = [
   {
@@ -29,6 +32,78 @@ const dayBills = [
   },
 ];
 const monthBills = [
+  {
+    key: 3,
+    name: "b1",
+    date: "2023-01-01",
+    money: "14,122",
+  },
+  {
+    key: 4,
+    name: "b2",
+    date: "2023-01-02",
+    money: "49",
+  },
+  {
+    key: 3,
+    name: "b1",
+    date: "2023-01-01",
+    money: "14,122",
+  },
+  {
+    key: 4,
+    name: "b2",
+    date: "2023-01-02",
+    money: "49",
+  },
+  {
+    key: 3,
+    name: "b1",
+    date: "2023-01-01",
+    money: "14,122",
+  },
+  {
+    key: 4,
+    name: "b2",
+    date: "2023-01-02",
+    money: "49",
+  },
+  {
+    key: 3,
+    name: "b1",
+    date: "2023-01-01",
+    money: "14,122",
+  },
+  {
+    key: 4,
+    name: "b2",
+    date: "2023-01-02",
+    money: "49",
+  },
+  {
+    key: 3,
+    name: "b1",
+    date: "2023-01-01",
+    money: "14,122",
+  },
+  {
+    key: 4,
+    name: "b2",
+    date: "2023-01-02",
+    money: "49",
+  },
+  {
+    key: 3,
+    name: "b1",
+    date: "2023-01-01",
+    money: "14,122",
+  },
+  {
+    key: 4,
+    name: "b2",
+    date: "2023-01-02",
+    money: "49",
+  },
   {
     key: 3,
     name: "b1",
@@ -123,6 +198,18 @@ export default function HomeScreen({ navigation }) {
             />
           ))}
       </ScrollView>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AddNew')}
+        style={{
+          position: 'absolute',
+          justifyContent: 'center',
+          alignItems: 'center',
+          bottom: 1,
+          left: SCREEN_WIDTH * 0.5 - 25,
+        }}
+      >
+        <Ionicons name="add-circle" size={50} color="#283044" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
