@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation }) {
   const [switchTab, setSwitchTab] = useState(1);
   const [ifReadProfile, setReadProfile] = useState(true);
   const {readProfile, userProfile} = useContext(ProfileContext);
-
+  //readProfile();
   useEffect(() => {
     if(ifReadProfile) {
         readProfile();
@@ -83,7 +83,7 @@ export default function HomeScreen({ navigation }) {
 
         <View style={styles.bank_container}>
           <Text style={styles.bank_title}>Bank Account</Text>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => navigation.navigate("SeeAll")}>
             <Text style={{ color: "#0aada8" }}>See all</Text>
           </TouchableOpacity>
         </View>

@@ -15,7 +15,7 @@ export const PeofileProvider = ({ children }) => {
       .get(endpoints.profile)
       .then((res) => {
         let data = res.data;
-        setUserProfile(data);;    
+        setUserProfile(data);
         AsyncStorage.setItem("userProfile", JSON.stringify(data));
       })
       .catch((error) => {

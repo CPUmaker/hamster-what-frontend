@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import FindingScreen from "../screens/FindingScreen";
 import BillDetailsScreen from "../screens/BillDetailsScreen";
+import ListAllScreen from "../screens/ListAllScreen";
 import AddNew from "../screens/AddNew";
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -33,6 +34,11 @@ const HomeStack = () => {
         options={({ route }) => ({ title: route.params?.title })}
       />
       <Stack.Screen
+        name="SeeAll"
+        component={ListAllScreen}
+        options={() => ({ title: "See All" })}
+      />
+      <Stack.Screen
           name={`AddNew`}
           component={AddNew}
           options={{
@@ -44,6 +50,7 @@ const HomeStack = () => {
             gestureVelocityImpact: 0.5 // default 0.3,
           }}
         />
+
     </Stack.Navigator>
   );
 };
