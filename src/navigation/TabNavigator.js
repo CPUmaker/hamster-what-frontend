@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import FindingScreen from "../screens/FindingScreen";
 import BillDetailsScreen from "../screens/BillDetailsScreen";
+import ListAllScreen from "../screens/ListAllScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -22,6 +23,11 @@ const HomeStack = () => {
         name="BillDetails"
         component={BillDetailsScreen}
         options={({ route }) => ({ title: route.params?.title })}
+      />
+      <Stack.Screen
+        name="SeeAll"
+        component={ListAllScreen}
+        options={() => ({ title: "See All" })}
       />
     </Stack.Navigator>
   );
