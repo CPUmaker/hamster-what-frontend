@@ -2,6 +2,9 @@ import React from "react";
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Alert} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
+// for password and faceID
+import ReactNativeBiometrics from 'react-native-biometrics'
+
 
 
 import { Card, Icon, ListItem} from '@rneui/themed';
@@ -92,6 +95,8 @@ export default function SettingsScreen({ navigation }) {
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
+
+            <TouchableOpacity onPress={() => {navigation.navigate('FaceID_TouchID')}}>
             <ListItem containerStyle={styles.container_item}>
                 <MaterialCommunityIcons name="face-recognition" size={24} color="black" />
                 <ListItem.Content>
@@ -99,6 +104,7 @@ export default function SettingsScreen({ navigation }) {
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
+            </TouchableOpacity>
 
             <Text style={styles.settings_title}>Support</Text>
             <ListItem containerStyle={styles.container_item}>

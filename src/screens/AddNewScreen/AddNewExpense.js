@@ -40,6 +40,8 @@ import {
 import { CategorySelectionExpense } from './CategorySelectExpense.js'
 import { MoneyInput } from './MoneyInput.js'
 import { WalletSelect } from './WalletSelect.js'
+import axios from "axios";
+import { BAS_URL, endpoints} from '../../config'
 
 // get the screen height
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -77,7 +79,6 @@ export function Expense({ navigation }) {
   const [selectedCategoryName, setSelectedCategoryName] = useState(null);
   const [selectedWallet, setselectedWallet] = useState(null);
 
-  console.log(selectedCategoryName);
   // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {
     navigation.getParent().setOptions({ swipeEnabled: false });
@@ -89,10 +90,22 @@ export function Expense({ navigation }) {
     })
   }, [navigation])
 
+  // for money input
+  const [amount, setAmount] = useState('');
+
+
+  const done = (amount) => {
+    axios
+      .post(endpoints.bill, {Title:selectedCategoryName.toString(), date:selectedDate.toString(), price:amount.toString(), categories:selectedCategoryName.toString(), comment:text.toString()})
+    // console.log(text.toString())
+    navigation.navigate('Home')
+  };
+
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.container}>
-        {MoneyInput()}
+        {MoneyInput(amount, setAmount)}
 
         {/* -------------1--------------- */}
         <TouchableOpacity onPress={openModal}>
@@ -174,7 +187,7 @@ export function Expense({ navigation }) {
         />
 
         {/* -------------save button--------------- */}
-        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.saveButton}>
+        <TouchableOpacity onPress={() => done(amount)} style={styles.saveButton}>
           <Text style={styles.buttonText}>SAVE</Text>
         </TouchableOpacity>
 
@@ -204,7 +217,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     padding: 5,
   },
-  
+
   button: {
     backgroundColor: '#A04AAA',
     width: 160,

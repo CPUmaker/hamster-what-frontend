@@ -28,31 +28,6 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const categories = ['Food', 'Shopping', 'Accommodation', 'Transportation', 'Entertainment'];
 
-// content for transfer screen
-// function Transfer() {
-//   const [isModalVisible, setIsModalVisible] = useState(false);
-
-//   const handleModalVisibility = () => {
-//     setIsModalVisible(!isModalVisible);
-//   };
-
-//   return (
-//     <View>
-//       <Button title="Open Modal" onPress={handleModalVisibility} />
-//       <Modal
-//         visible={isModalVisible}
-//         animationType="slide"
-//         onRequestClose={handleModalVisibility}
-//         >
-//         <View style={styles.container}>
-//           <Text>This is the modal content</Text>
-//           <Button title="Close Modal" onPress={handleModalVisibility} />
-//         </View>
-//       </Modal>
-//     </View>
-//   );
-// };
-
 const Tab = createMaterialTopTabNavigator();
 
 export default function AddNewTab() {
@@ -60,11 +35,10 @@ export default function AddNewTab() {
     <Tab.Navigator>
       <Tab.Screen name="Expense" component={Expense} />
       <Tab.Screen name="Income" component={Income} />
-      <Tab.Screen name="Transfer" component={Transfer} />
+      {/* <Tab.Screen name="Transfer" component={Transfer} /> */}
     </Tab.Navigator>
   );
 };
-
 
 const styles = StyleSheet.create({
 

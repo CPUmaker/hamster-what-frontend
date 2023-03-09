@@ -68,7 +68,7 @@ export function Income({ navigation }) {
   };
   const [selectedCategoryName, setSelectedCategoryName] = useState(null);
 
-  console.log(selectedCategoryName);
+  // console.log(selectedCategoryName);
   // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {
     navigation.getParent().setOptions({ swipeEnabled: false });

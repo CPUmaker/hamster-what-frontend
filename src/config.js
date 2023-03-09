@@ -8,4 +8,5 @@ export const endpoints = {
     logout: API_URL + "/auth/logout",
     apple: API_URL + "/auth/apple",
     google: API_URL + "/auth/google",
+    bill: API_URL + "/bill/",
 }
