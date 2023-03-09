@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import LoginSVG from "../../assets/misc/login.svg";
 import GoogleSVG from "../../assets/misc/google.svg";
 import AppleSVG from "../../assets/misc/apple.svg";
-import TwitterSVG from "../../assets/misc/twitter.svg";
+import MetaSVG from "../../assets/misc/meta.svg";
 import Exclamation from "../../assets/misc/exclamation-circle.svg";
 import { AuthContext } from "../context/AuthContext";
 
@@ -23,7 +23,7 @@ export default function LoginScreen({ navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState(null);
 
-  const { login } = useContext(AuthContext);
+  const { login, googleAuth, facebookAuth, appleAuth } = useContext(AuthContext);
 
   const loginErrorHandle = (errorMessage) => {
     setModalMessage(errorMessage);
@@ -109,14 +109,14 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.alter_login_text}>Or, login with ...</Text>
 
         <View style={styles.alter_login_container}>
-          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { }}>
+          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { googleAuth() }}>
             <GoogleSVG height={24} width={24} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { }}>
+          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { appleAuth() }}>
             <AppleSVG height={24} width={24} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { }}>
-            <TwitterSVG height={24} width={24} />
+          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { facebookAuth() }}>
+            <MetaSVG height={24} width={24} />
           </TouchableOpacity>
         </View>
 

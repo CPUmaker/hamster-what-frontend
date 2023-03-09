@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -13,35 +13,31 @@ import {
 import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import PaymentSwitch from "../components/PaymentSwitch";
 import ListItem from "../components/ListItem";
-import { AuthContext } from "../context/AuthContext";
+import { ProfileContext } from "../context/ProfileContext";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const dayBills = [
   {
     key: 1,
-    name: "a1",
-    date: "2022-01-01",
+    name: "Food",
     money: "13,122",
   },
   {
     key: 2,
-    name: "a2",
-    date: "2022-01-02",
+    name: "Groceries",
     money: "59",
   },
 ];
 const monthBills = [
   {
     key: 3,
-    name: "b1",
-    date: "2023-01-01",
+    name: "Food",
     money: "14,122",
   },
   {
     key: 4,
-    name: "b2",
-    date: "2023-01-02",
+    name: "Groceries",
     money: "49",
   },
   {
@@ -120,9 +116,15 @@ const monthBills = [
 
 export default function HomeScreen({ navigation }) {
   const [switchTab, setSwitchTab] = useState(1);
+  const [ifReadProfile, setReadProfile] = useState(true);
+  const {readProfile, userProfile} = useContext(ProfileContext);
 
-  const {userInfo} = useContext(AuthContext);
-
+  useEffect(() => {
+    if(ifReadProfile) {
+        readProfile();
+        setReadProfile(false);
+    }
+  })
   const onSelectSwitch = (value) => {
     setSwitchTab(value);
   };
@@ -131,7 +133,7 @@ export default function HomeScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ padding: 20 }}>
         <View style={styles.profile_container}>
-          <Text style={styles.profile_font}>Hello {userInfo.username}</Text>
+          <Text style={styles.profile_font}>Hello {userProfile.user.username}</Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <ImageBackground
               source={require("../../assets/profile.jpg")}
@@ -172,7 +174,7 @@ export default function HomeScreen({ navigation }) {
             <ListItem
               key={item.key}
               name={item.name}
-              date={item.date}
+              //date={item.date}
               money={item.money}
               onPressCallback={() =>
                 navigation.navigate("BillDetails", {
@@ -187,7 +189,7 @@ export default function HomeScreen({ navigation }) {
             <ListItem
               key={item.key}
               name={item.name}
-              date={item.date}
+              //date={item.date}
               money={item.money}
               onPressCallback={() =>
                 navigation.navigate("BillDetails", {
