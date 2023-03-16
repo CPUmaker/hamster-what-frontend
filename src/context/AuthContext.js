@@ -64,11 +64,11 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((error) => {
         console.log(`Logout error: ${error}`);
+      })
+      .finally(() => {
+        clearUserAuthContext();
+        setIsLoading(false);
       });
-
-    clearUserAuthContext();
-
-    setIsLoading(false);
   };
 
   const isTokenValid = async () => {
@@ -175,9 +175,7 @@ export const AuthProvider = ({ children }) => {
       if (identityToken) {
         setIsLoading(true);
 
-        const data = await appleLoginOrRegister(
-          identityToken
-        );
+        const data = await appleLoginOrRegister(identityToken);
         handleSignInUser(data);
       }
     } catch (error) {
