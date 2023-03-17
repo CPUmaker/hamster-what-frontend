@@ -9,6 +9,7 @@ import FindingScreen from "../screens/FindingScreen";
 import BillDetailsScreen from "../screens/BillDetailsScreen";
 import ListAllScreen from "../screens/ListAllScreen";
 import AddNew from "../screens/AddNew";
+import CouponStack from "./CouponStack";
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const Tab = createBottomTabNavigator();
@@ -83,6 +84,15 @@ export default function TabNavigator() {
         component={FindingScreen}
         options={{
           tabBarBadge: 2,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="analytics-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Coupon"
+        component={CouponStack}
+        options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="bulb-outline" size={size} color={color} />
           ),

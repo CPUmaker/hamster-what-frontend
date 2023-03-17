@@ -12,5 +12,6 @@ export const endpoints = {
     bill: API_URL + "/bill/",
     facebook: API_URL + "/auth/facebook",
     profile: API_URL + "/profile",
-    bill: API_URL + "/bill/"
+    bill: API_URL + "/bill/",
+    coupon: API_URL + "/coupon",
 }
