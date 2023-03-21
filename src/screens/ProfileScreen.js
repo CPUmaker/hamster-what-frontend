@@ -194,20 +194,20 @@ export default function ProfileScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate("Set")}>        
+            <TouchableOpacity onPress={() => navigation.navigate("Photo")}>        
                 <ListItem bottomDivider >       
                     <ListItem.Content>
                         <ListItem.Title>Profile Photo</ListItem.Title>
                     </ListItem.Content>
                     <Avatar
                         rounded
-                        source={ require("../../assets/profile.jpg") }           
+                        source={ require("../../assets/profile01.jpg") }           
                     />           
                     <ListItem.Chevron />   
                 </ListItem> 
             </TouchableOpacity> 
             {mapItems}
-        </View>    
+        </View>            
     );
     
 }
