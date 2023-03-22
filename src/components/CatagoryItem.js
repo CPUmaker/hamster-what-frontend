@@ -8,7 +8,7 @@ export default function CatagoryItem({
     date,
 }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <View style={styles.item_container}>
         <AntDesign name="shoppingcart" size={32} color="black" />
         <View style={{marginLeft: 10}}>
@@ -19,7 +19,6 @@ export default function CatagoryItem({
       <View style={{marginRight: 10}}>
           <Text style={styles.detail_text}>{money}$</Text>
         </View>
-
     </View>
   );
 }
@@ -29,7 +28,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 20,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginHorizontal: 10,
+    marginBottom: 10,
+    backgroundColor: "#fff",
   },
   item_container: {
     flexDirection: "row",

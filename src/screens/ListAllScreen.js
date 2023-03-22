@@ -1,96 +1,102 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView, Text} from "react-native";
-
+import { StyleSheet, View, Text, TouchableOpacity, FlatList } from "react-native";
 import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { BASE_URL, endpoints } from "../config";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-const ItemCategory = ["Food", "Groceries", "Transportation", "clothing", "Entertainment", 
-                    "Bill", "Sports", "Electronics", "Travel", "House & Car", "Others"]
+const ItemCategory = ["Food", "Groceries", "Transportation", "clothing", "Entertainment", "Bill", "Sports", "Electronics", "Travel", "House & Car", "Others"];
 
 export default function ListAllScreen({ navigation }) {
   useEffect(() => {
     navigation.getParent().setOptions({swipeEnabled: false});
   }, [])
+
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
       navigation.getParent().setOptions({swipeEnabled: true});
     })
   }, [navigation]);
 
-  let [listAll, setListAll] = useState(null);
+  const [listAll, setListAll] = useState(null);
 
-  let showItems;
-  if(listAll){
-    showItems = listAll.map((l) =>
-    <CatagoryItem
-      key = {listAll.indexOf(l)}
-      name={ItemCategory[l.categories-1]}
-      money={l.price}
-      date={l.date}
-    >
-    </CatagoryItem>
-    )
-  }else{
-    showItems = <Text>loading...</Text>
-  }
-  
-  const readAllItems = async()=>{
-    await axios
-      .get(endpoints.bill)
-      .then((res) => {
-        let data = res.data;
-        setListAll(data);
-        listAll = data;
-        //console.log(data);
+  const deleteItem = (id) => {
+    axios
+      .delete(`${id}`)
+      .then(() => {
+        const newList = listAll.filter(item => item.url !== id);
+        setListAll(newList);
       })
       .catch((error) => {
-        console.log(`Get List: ${error}`)
-      })
-  }
+        console.log(`Delete Item: ${error}`);
+      });
+  };
+
+  const renderLeftActions = () => (
+    <TouchableOpacity style={[styles.button, styles.leftButton]}>
+      <Text style={styles.money_text}>Details</Text>
+    </TouchableOpacity>
+  );
+  
+  const renderRightActions = (id) => (
+    <TouchableOpacity style={[styles.button, styles.rightButton]} onPress={() => deleteItem(id)}>
+      <Text style={styles.money_text}>Delete</Text>
+    </TouchableOpacity>
+  );
+
+  const renderItem = ({ item }) => (
+    <Swipeable renderLeftActions={renderLeftActions} renderRightActions={() => renderRightActions(item.url)}>
+      <CatagoryItem
+        name={ItemCategory[item.categories-1]}
+        money={item.price}
+        date={item.date}
+      />
+    </Swipeable>
+  );
 
   useEffect(() => {
-    if(listAll == null){
-     readAllItems();
-    }
-    setListAll(listAll);
-  })
-  
+    axios
+      .get(`${endpoints.bill}`)
+      .then((response) => {
+        setListAll(response.data.reverse());
+      })
+      .catch((error) => {
+        console.log(`Get List: ${error}`);
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ padding: 20 }}>
-      <View>
-        {showItems}
-      </View>
-    </ScrollView>
+      <FlatList
+        data={listAll}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.url.toString()}
+        contentContainerStyle={{ padding: 20 }}
+        extraData={listAll} // add extraData to force re-render when listAll changes
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: '#fff',
-    alignItems: "center",
-    margin: 4,
-  },
-  item_container: {
-    flexDirection: "row",
-    alignContent: "center",
     flex: 1,
-  },
-  detail_text: {
-    color: "#333",
-    fontFamily: "Roboto-Medium",
-    fontSize: 14,
+    backgroundColor: '#fff',
   },
   button: {
-    backgroundColor: "#0aada8",
     padding: 10,
     width: 100,
+    margin: 10,
     borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  leftButton: {
+    backgroundColor: '#4CAF50',
+  },
+  rightButton: {
+    backgroundColor: '#f44336',
   },
   money_text: {
     color: "#fff",
@@ -99,4 +105,3 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
-
