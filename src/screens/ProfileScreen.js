@@ -121,26 +121,23 @@ export default function ProfileScreen({ navigation }) {
     }
 
     const mapItems = list.map((l, i) =>
-        <ListItem bottomDivider key={i}>
+    <TouchableOpacity key = {i} onPress={() => {
+        if(i == 2){
+            setDatePickerVisibility(true);
+        }
+        else if(i == 3){
+            setModalVisible(true);
+        }
+        else{
+            navigation.navigate(l.Nav);
+        }
+    }
+    }> 
+        <ListItem bottomDivider >
             <ListItem.Content>
                 <ListItem.Title >{l.Title}
                 </ListItem.Title>
-            </ListItem.Content>       
-            <Avatar style={styles.content}>
-                <ListItem.Subtitle >{l.Subtitle}
-                </ListItem.Subtitle>
-            </Avatar>
-            <TouchableOpacity onPress={() => {
-                if(i == 2){
-                    setDatePickerVisibility(true);
-                }
-                else if(i == 3){
-                    setModalVisible(true);
-                }
-                else{
-                    navigation.navigate(l.Nav);
-                }
-            }}>           
+            </ListItem.Content>                                   
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
                     mode="date"
@@ -156,13 +153,10 @@ export default function ProfileScreen({ navigation }) {
                     setModalVisible(!modalVisible);
                     }}>
                     <View style={styles.centeredView}>
-                    <TouchableWithoutFeedback onPress={()=>this.setState({modalVisible:false})}>
-                        <View  style={{position:'absolute',backgroundColor:'rgba(0,0,0,.5)'}}/>
-                    </TouchableWithoutFeedback>
+                    
                     <View style={styles.modalView}>
                         <View style = {styles.selectBoxStyle}>
                             <SelectList 
-                                //boxStyle = {styles.selectBoxStyle}
                                 setSelected={(val) => setCountryRegion(val)} 
                                 data={countryList} 
                                 save="value"
@@ -170,7 +164,6 @@ export default function ProfileScreen({ navigation }) {
                         </View>
                         <View style = {styles.selectBoxStyle}>
                         <SelectList 
-                            //boxStyles= {styles.selectBoxStyle}
                             setSelected={(val) => setStateRegion(val)} 
                             data={getStatelist(CountryRegion)}  
                             save="value"
@@ -192,26 +185,27 @@ export default function ProfileScreen({ navigation }) {
                     </View>
                     </View>
                 </Modal>
-                <ListItem.Chevron />
-            </TouchableOpacity>
-        </ListItem>       
+                <ListItem.Subtitle >{l.Subtitle}
+                </ListItem.Subtitle>
+                <ListItem.Chevron />         
+            </ListItem>    
+        </TouchableOpacity>   
     )
 
     return (
         <View style={styles.container}>
-        <ListItem bottomDivider>          
-            <ListItem.Content>
-                <ListItem.Title>Profile Photo</ListItem.Title>
-            </ListItem.Content>
-            <Avatar
-                rounded
-                source={ require("../../assets/profile.jpg") }           
-            />
-            <TouchableOpacity onPress={() => navigation.navigate("Set")}>
-                <ListItem.Chevron />
-            </TouchableOpacity>
-            
-        </ListItem>   
+            <TouchableOpacity onPress={() => navigation.navigate("Set")}>        
+                <ListItem bottomDivider >       
+                    <ListItem.Content>
+                        <ListItem.Title>Profile Photo</ListItem.Title>
+                    </ListItem.Content>
+                    <Avatar
+                        rounded
+                        source={ require("../../assets/profile.jpg") }           
+                    />           
+                    <ListItem.Chevron />   
+                </ListItem> 
+            </TouchableOpacity> 
             {mapItems}
         </View>    
     );
@@ -225,7 +219,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     content:{
-        margin:3
+        margin:0
     },
     centeredView: {
         flex: 1,
