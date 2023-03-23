@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, MaterialCommunityIcons, MaterialIcons, Entypo } from '@expo/vector-icons';
 
 const categories = [
-  { id: 1, name: 'Salary', icon: 'Salary', color: '#f39c12' },
-  { id: 2, name: 'Transportation', icon: 'bus-outline', color: '#9b59b6' },
-  { id: 3, name: 'Shopping', icon: 'cart-outline', color: '#3498db' },
+  { id: 1, name: 'Salary', icon: null, other_icon: <FontAwesome5 name="hand-holding-usd" size={30} color={"#f39c12"}/>, color: '#f39c12' },
+  { id: 2, name: 'Interest', icon: null, other_icon: <MaterialCommunityIcons name="bank-outline" size={30} color={"#9b59b6"} />, color: '#9b59b6' },
+  { id: 3, name: 'Investments', icon: null, other_icon: <MaterialIcons name="attach-money" size={30} color={"#3498db"} />, color: '#3498db' },
+  { id: 4, name: 'Child benefit', icon: null, other_icon: <MaterialCommunityIcons name="baby-face-outline" size={30} color={"#f39c12"} />, color: '#f39c12' },
+  { id: 5, name: 'Pension', icon: null, other_icon: <Entypo name="shield" size={30} color="#4E6E81" />, color: '#4E6E81' },
+  { id: 6, name: 'Income', icon: null, other_icon: <FontAwesome5 name="money-bill-alt" size={30} color="#68B984" />, color: '#68B984' },
 ];
 
 export function CategorySelectionIncome(setSelectedCategoryName) {
@@ -29,14 +32,13 @@ export function CategorySelectionIncome(setSelectedCategoryName) {
           onPress={() => handleCategoryPress(category.id, category.name)}
         >
           <View style={styles.categoryIcon}>
-            <Ionicons name={category.icon} size={32} color={selectedCategoryId === category.id ? '#ffffff' : category.color} />
+          {category.icon === null ?
+            category.other_icon
+            : <Ionicons name={category.icon} size={32} color={category.color} />}
           </View>
           <Text style={[styles.categoryName, selectedCategoryId === category.id && { color: '#ffffff' }]}>{category.name}</Text>
         </TouchableOpacity>
       ))}
-      <Text>
-        {/* You selected the {selectedCategoryName} category. */}
-      </Text>
 
     </View>
   );
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   categoryButton: {
+    width: 380,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#ffffff',

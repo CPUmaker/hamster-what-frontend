@@ -1,47 +1,25 @@
 import React, { useEffect, useState, useContext, Component } from "react";
 import {
   StyleSheet,
-  Button,
   View,
-  SafeAreaView,
   Text,
-  Alert,
-  ScrollView,
   TouchableOpacity,
-  Switch,
   Dimensions,
   TextInput,
   Keyboard,
   KeyboardAvoidingView
 } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
-
 import Modal from "react-native-modal";
-import { Card, Icon } from '@rneui/themed';
-import { ListItem, Avatar } from "@rneui/base";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
-
+import { ListItem } from "@rneui/base";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-
-
-import {
-  MaterialCommunityIcons,
-  MaterialIcons,
-  Ionicons,
-  Octicons,
-  Entypo,
-  Foundation,
-  AntDesign,
-  FontAwesome5,
-} from '@expo/vector-icons';
-
+import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 import { CategorySelectionExpense } from './CategorySelectExpense.js'
 import { MoneyInput } from './MoneyInput.js'
 import { WalletSelect } from './WalletSelect.js'
 import axios from "axios";
-import { BAS_URL, endpoints} from '../../config'
+import { endpoints} from '../../config'
 import { getToday } from "react-native-common-date-picker/src/utils/dateFormat.js";
 
 // get the screen height

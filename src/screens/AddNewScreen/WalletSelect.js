@@ -7,6 +7,7 @@ const categories = [
   { id: 2, name: 'Credit account', icon: 'card-outline', color: '#9b59b6' },
   { id: 3, name: 'Cash', icon: 'cash-outline', color: '#3498db' },
   { id: 4, name: 'Savings account', icon: null, other_icon: <MaterialCommunityIcons name="piggy-bank" size={32} color={'#2c3e50'}/>, color: '#2c3e50'},
+  { id: 5, name: 'Other', icon: 'reorder-three', color: '#A4907C' },
 ];
 
 export function WalletSelect(WalletName) {
