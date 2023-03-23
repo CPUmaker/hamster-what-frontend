@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { BASE_URL, endpoints } from "../config";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { AntDesign } from '@expo/vector-icons';
 
 const ItemCategory = ["Food", "Groceries", "Transportation", "clothing", "Entertainment", "Bill", "Sports", "Electronics", "Travel", "House & Car", "Others"];
 
@@ -20,6 +21,10 @@ export default function ListAllScreen({ navigation }) {
   }, [navigation]);
 
   const [listAll, setListAll] = useState(null);
+  const [selectMonth, setSelectMonth] = useState(false);
+  const [selectToday, setSelectToday] = useState(false);
+  const [monthColor, setMonthColor] = useState('#fff');
+  const [todayColor, setTodayColor] = useState('#fff');
 
   const deleteItem = (id) => {
     axios
@@ -32,6 +37,69 @@ export default function ListAllScreen({ navigation }) {
         console.log(`Delete Item: ${error}`);
       });
   };
+
+  function ListAll(){
+    axios
+    .get(`${endpoints.bill}`)
+    .then((response) => {
+      setListAll(response.data.reverse());
+    })
+    .catch((error) => {
+      console.log(`Get List: ${error}`);
+    });
+  }
+
+  function ListToday(){
+    axios
+    .get(`${endpoints.search}`, {params: {item: "date", keyword:"today"}})
+    .then((response) => {
+      setListAll(response.data.reverse());
+    })
+    .catch((error) => {
+      console.log(`Get List: ${error}`);
+    });
+  }
+
+  function ListMonth(){
+    axios
+    .get(`${endpoints.search}`, {params: {item: "date", keyword:"month"}})
+    .then((response) => {
+      setListAll(response.data.reverse());
+    })
+    .catch((error) => {
+      console.log(`Get List: ${error}`);
+    });
+  }
+
+  const searchToday = () =>{
+    if(selectToday){
+      setSelectToday(false);
+      setTodayColor('#fff');
+      ListAll();
+    }
+    else{
+      setSelectToday(true);
+      setTodayColor('#ddd');
+      setMonthColor('#fff');
+      setSelectMonth(false);
+      ListToday();
+    }
+  }
+
+  const searchMonthly = () =>{
+    if(selectMonth){
+      setSelectMonth(false);
+      setMonthColor('#fff');
+      ListAll();
+    }
+    else{
+      setSelectMonth(true);
+      setMonthColor('#ddd');
+      setTodayColor('#fff');
+      setSelectToday(false);
+      ListMonth();
+    }
+  }
 
   const renderLeftActions = () => (
     <TouchableOpacity style={[styles.button, styles.leftButton]}>
@@ -56,18 +124,22 @@ export default function ListAllScreen({ navigation }) {
   );
 
   useEffect(() => {
-    axios
-      .get(`${endpoints.bill}`)
-      .then((response) => {
-        setListAll(response.data.reverse());
-      })
-      .catch((error) => {
-        console.log(`Get List: ${error}`);
-      });
+    ListAll();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.filterIcon}>
+          <AntDesign name="filter" size={24} color="black" />
+        </View>
+        <TouchableOpacity style={[styles.emptyButton, {backgroundColor: todayColor}]} onPress = {searchToday}>
+          <Text>Today</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.emptyButton, {backgroundColor: monthColor}]} onPress = {searchMonthly}>
+          <Text>Month</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={listAll}
         renderItem={renderItem}
@@ -84,6 +156,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  filterIcon: {
+    marginRight: 10,
+    marginLeft: 20,
+  },
   button: {
     padding: 10,
     width: 100,
@@ -92,6 +175,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  emptyButton:{
+    margin: 5,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#888',
+    height: 30,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },  
   leftButton: {
     backgroundColor: '#4CAF50',
   },
