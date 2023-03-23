@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList } from "react-native";
 import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -126,6 +126,17 @@ export default function ListAllScreen({ navigation }) {
   useEffect(() => {
     ListAll();
   }, []);
+
+  useEffect(() => {
+    axios
+    .get(`${endpoints.search}`, {params: {item: "categories", keyword: "1"}} )
+    .then((response) => {
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.log(`Get sum: ${error}`);
+    });
+  })
 
   return (
     <SafeAreaView style={styles.container}>
