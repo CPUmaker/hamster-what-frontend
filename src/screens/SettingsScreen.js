@@ -6,7 +6,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import ReactNativeBiometrics from 'react-native-biometrics'
 
 
-
 import { Card, Icon, ListItem} from '@rneui/themed';
 
 
@@ -107,13 +106,16 @@ export default function SettingsScreen({ navigation }) {
             </TouchableOpacity>
 
             <Text style={styles.settings_title}>Support</Text>
-            <ListItem containerStyle={styles.container_item}>
-                <AntDesign name="phone" size={24} color="black" />
-                <ListItem.Content>
-                <ListItem.Title>Contact us</ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-            </ListItem>
+            <TouchableOpacity onPress={() => {navigation.navigate('ContactUsScreen')}}>
+                <ListItem containerStyle={styles.container_item}>
+                    <AntDesign name="phone" size={24} color="black" />
+                    <ListItem.Content>
+                    <ListItem.Title>Contact us</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                </ListItem>
+            </TouchableOpacity>
+            
 
             <TouchableOpacity onPress={deleteCheck}>
             <ListItem containerStyle={styles.container_item}>
@@ -124,6 +126,24 @@ export default function SettingsScreen({ navigation }) {
                 <ListItem.Chevron />
             </ListItem>
             </TouchableOpacity>
+
+            <View style={{marginBottom: 5}}></View>
+            <View></View>
+
+            <Text style={styles.settings_title}>Miscellaneous</Text>
+            <ListItem containerStyle={styles.container_item}>
+                <ListItem.Content>
+                <ListItem.Title>Terms & Conditions</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron />
+            </ListItem>
+
+            <ListItem containerStyle={styles.container_item}>
+                <ListItem.Content>
+                <ListItem.Title>Privacy Policy</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron />
+            </ListItem>
 
 
             
@@ -148,11 +168,13 @@ const styles = StyleSheet.create({
     settings_title:{
         fontSize: 18,
         fontFamily: "Roboto-Medium",
+        paddingTop: 10,
     },
     container_item: {
         flex: 1,
         paddingLeft: 0,
         paddingRight: 0,
+
     },
     profile_container: {
       flexDirection: "row",

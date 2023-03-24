@@ -26,9 +26,6 @@ import { getToday } from "react-native-common-date-picker/src/utils/dateFormat.j
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const Stack = createStackNavigator();
 
-// list of categories
-// const categories = ['Food', 'Shopping', 'Accommodation', 'Transportation', 'Entertainment'];
-
 //// content for Expense interface -------------
 export function Expense({ navigation }) {
   const [text, setText] = useState('');
