@@ -46,6 +46,13 @@ export default function HomeScreen({ navigation }) {
   const [switchTab, setSwitchTab] = useState(1);
   const [ifReadProfile, setReadProfile] = useState(true);
   const {readProfile, userProfile} = useContext(ProfileContext);
+  const photoAddr = [require(`../../assets/profile.jpg`),
+                    require(`../../assets/profile01.jpg`),
+                    require(`../../assets/profile02.jpg`), 
+                    require(`../../assets/profile03.jpg`), 
+                    require(`../../assets/profile04.jpg`), 
+                    require(`../../assets/profile05.jpg`),
+                    require(`../../assets/profile06.jpg`)]
   //readProfile();
   useEffect(() => {
     if(ifReadProfile) {
@@ -64,7 +71,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.profile_font}>Hello {userProfile.user.username}</Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <ImageBackground
-              source={require("../../assets/profile.jpg")}
+              source={photoAddr[userProfile.photo]}
               style={styles.profile_img}
               imageStyle={{ borderRadius: 25 }}
             />

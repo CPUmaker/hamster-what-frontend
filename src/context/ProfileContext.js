@@ -14,7 +14,7 @@ export const PeofileProvider = ({ children }) => {
     axios
       .get(endpoints.profile)
       .then((res) => {
-        let data = res.data;
+        let data = res.data; 
         setUserProfile(data);
         AsyncStorage.setItem("userProfile", JSON.stringify(data));
       })

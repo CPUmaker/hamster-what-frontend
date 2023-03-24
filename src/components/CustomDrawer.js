@@ -18,6 +18,13 @@ import { ProfileContext } from "../context/ProfileContext";
 export default function CustomDrawer(props) {
   const {logout} = useContext(AuthContext);
   const {userProfile} = useContext(ProfileContext);
+  const photoAddr = [require(`../../assets/profile.jpg`),
+                      require(`../../assets/profile01.jpg`),
+                      require(`../../assets/profile02.jpg`), 
+                      require(`../../assets/profile03.jpg`), 
+                      require(`../../assets/profile04.jpg`), 
+                      require(`../../assets/profile05.jpg`),
+                      require(`../../assets/profile06.jpg`)]
 
   return (
     <View style={{ flex: 1 }}>
@@ -30,7 +37,7 @@ export default function CustomDrawer(props) {
           style={{ padding: 20 }}
         >
           <Image
-            source={require("../../assets/profile.jpg")}
+            source={photoAddr[userProfile.photo]}
             style={styles.profile_img}
           ></Image>
           <Text style={styles.name_text}>{ userProfile.user.username }</Text>

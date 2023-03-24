@@ -33,7 +33,7 @@ const ImageSelector = ({navigation}) => {
     if (selectedImage !== null) {
       console.log(`Selected [image index]: ${selectedImage}`);
       axios
-        .patch(endpoints.profile, {photo : selectedImage})
+        .patch(endpoints.profile, {photo : (selectedImage + 1)})
         .catch((error) => {
           console.log(`Set photo error: ${error}`)
         })

@@ -10,6 +10,7 @@ import { BASE_URL, endpoints } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { ProfileContext } from "../context/ProfileContext";
 
+
 export default function ProfileScreen({ navigation }) {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [ifReadProfile, setReadProfile] = useState(true);
@@ -81,6 +82,14 @@ export default function ProfileScreen({ navigation }) {
         },
     ]
 
+    const photoAddr = [require(`../../assets/profile.jpg`),
+                        require(`../../assets/profile01.jpg`),
+                        require(`../../assets/profile02.jpg`), 
+                        require(`../../assets/profile03.jpg`), 
+                        require(`../../assets/profile04.jpg`), 
+                        require(`../../assets/profile05.jpg`),
+                        require(`../../assets/profile06.jpg`)]
+
     /* date */
     const handleDateConfirm = (date) => {
         //console.log(date);
@@ -130,6 +139,7 @@ export default function ProfileScreen({ navigation }) {
         }
         else{
             navigation.navigate(l.Nav);
+            console.log(photoAddr[userProfile.photo])
         }
     }
     }> 
@@ -201,7 +211,7 @@ export default function ProfileScreen({ navigation }) {
                     </ListItem.Content>
                     <Avatar
                         rounded
-                        source={ require("../../assets/profile01.jpg") }           
+                        source={ photoAddr[userProfile.photo] }         
                     />           
                     <ListItem.Chevron />   
                 </ListItem> 
