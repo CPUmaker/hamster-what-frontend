@@ -17,7 +17,7 @@ import { endpoints } from "../../config";
 export default function CouponListScreen() {
   const [coupons, setCoupons] = useState(null);
 
-  useEffect(() => {
+  if (coupons === null) {
     axios
       .get(endpoints.coupon)
       .then((res) => {
@@ -26,7 +26,7 @@ export default function CouponListScreen() {
       .catch((error) => {
         console.log(`ConponList error: ${JSON.stringify(error.response.data)}`);
       });
-  });
+  }
 
   if (coupons === null) {
     return (
@@ -162,7 +162,7 @@ export default function CouponListScreen() {
             </Card>
           );
         }}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
   );
