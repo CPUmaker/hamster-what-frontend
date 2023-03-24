@@ -83,12 +83,13 @@ export default function ProfileScreen({ navigation }) {
     ]
 
     const photoAddr = [require(`../../assets/profile.jpg`),
-                        require(`../../assets/profile01.jpg`),
-                        require(`../../assets/profile02.jpg`), 
-                        require(`../../assets/profile03.jpg`), 
-                        require(`../../assets/profile04.jpg`), 
-                        require(`../../assets/profile05.jpg`),
-                        require(`../../assets/profile06.jpg`)]
+                        require('../../assets/profile01.png'),
+                        require('../../assets/profile02.png'),
+                        require('../../assets/profile03.png'),
+                        require('../../assets/profile04.png'),
+                        require('../../assets/profile05.png'),
+                        require('../../assets/profile06.png'),
+                    ];
 
     /* date */
     const handleDateConfirm = (date) => {

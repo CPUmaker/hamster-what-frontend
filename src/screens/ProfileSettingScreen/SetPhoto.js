@@ -4,17 +4,18 @@ import axios from "axios";
 
 import { BASE_URL, endpoints } from "../../config";
 const images = [
-  require('../../../assets/profile01.jpg'),
-  require('../../../assets/profile02.jpg'),
-  require('../../../assets/profile03.jpg'),
-  require('../../../assets/profile04.jpg'),
-  require('../../../assets/profile05.jpg'),
-  require('../../../assets/profile06.jpg'),
+  require('../../../assets/profile01.png'),
+  require('../../../assets/profile02.png'),
+  require('../../../assets/profile03.png'),
+  require('../../../assets/profile04.png'),
+  require('../../../assets/profile05.png'),
+  require('../../../assets/profile06.png'),
 ];
 
 const ImageSelector = ({navigation}) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isEmit, setEmit] = useState(true);
+  const [confirmColor, setConfirmColor] = useState("#A5C9CA")
 
   useEffect(() => {
     navigation.getParent().setOptions({swipeEnabled: false});
@@ -27,11 +28,12 @@ const ImageSelector = ({navigation}) => {
 
   const handleImagePress = (index) => {
     setSelectedImage(index);
+    setConfirmColor("#AD40AF")
   };
 
   const handleConfirmPress = () => {
     if (selectedImage !== null) {
-      console.log(`Selected [image index]: ${selectedImage}`);
+      //console.log(`Selected [image index]: ${selectedImage}`);
       axios
         .patch(endpoints.profile, {photo : (selectedImage + 1)})
         .catch((error) => {
@@ -79,7 +81,7 @@ const ImageSelector = ({navigation}) => {
         ))}
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleConfirmPress} style={styles.saveButton}>
+        <TouchableOpacity onPress={handleConfirmPress} style={[styles.saveButton, {backgroundColor: confirmColor}]}>
           <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
@@ -90,7 +92,6 @@ const ImageSelector = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   imageContainer: {
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
   },
   image: {
     marginVertical: 5,
-    marginHorizontal: 5,
+    marginHorizontal: 3,
   },
   selectedImage: {
     borderWidth: 2,
@@ -111,13 +112,12 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     alignSelf: 'center',
-    backgroundColor: '#A04AAA',
     width: 370,
     alignItems: 'center',
     borderRadius: 50,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    marginTop: 40,
+    marginTop: 10,
   },
   buttonText: {
     color: 'white',
