@@ -23,9 +23,25 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default function HomeScreen({ navigation, route }) {
   const [switchTab, setSwitchTab] = useState(1);
+  const [ifReadProfile, setReadProfile] = useState(true);
   const {readProfile, userProfile} = useContext(ProfileContext);
+  const photoAddr = [require(`../../assets/profile.jpg`),
+                      require('../../assets/profile01.png'),
+                      require('../../assets/profile02.png'),
+                      require('../../assets/profile03.png'),
+                      require('../../assets/profile04.png'),
+                      require('../../assets/profile05.png'),
+                      require('../../assets/profile06.png'),
+      ];
   const [dayBills, setDayBills] = useState(null);
   const [monthBills, setMonthBills] = useState(null);
+  //readProfile();
+  useEffect(() => {
+    if(ifReadProfile) {
+        readProfile();
+        setReadProfile(false);
+    }
+  })
   const onSelectSwitch = (value) => {
     setSwitchTab(value);
   };
@@ -87,7 +103,7 @@ export default function HomeScreen({ navigation, route }) {
           <Text style={styles.profile_font}>Hello {userProfile.user.username}</Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <ImageBackground
-              source={require("../../assets/profile.jpg")}
+              source={photoAddr[userProfile.photo]}
               style={styles.profile_img}
               imageStyle={{ borderRadius: 25 }}
             />

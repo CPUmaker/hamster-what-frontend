@@ -8,13 +8,13 @@ export const ProfileContext = createContext();
 
 export const PeofileProvider = ({ children }) => {
   let [userProfile, setUserProfile] = useState(null);
-  const {logout} = useContext(AuthContext);
+  const {logout} = useContext(AuthContext); 
 
   const readProfile = () => {
     axios
       .get(endpoints.profile)
       .then((res) => {
-        let data = res.data;
+        let data = res.data; 
         setUserProfile(data);
         AsyncStorage.setItem("userProfile", JSON.stringify(data));
       })

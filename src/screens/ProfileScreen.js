@@ -10,6 +10,7 @@ import { BASE_URL, endpoints } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { ProfileContext } from "../context/ProfileContext";
 
+
 export default function ProfileScreen({ navigation }) {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [ifReadProfile, setReadProfile] = useState(true);
@@ -81,6 +82,15 @@ export default function ProfileScreen({ navigation }) {
         },
     ]
 
+    const photoAddr = [require(`../../assets/profile.jpg`),
+                        require('../../assets/profile01.png'),
+                        require('../../assets/profile02.png'),
+                        require('../../assets/profile03.png'),
+                        require('../../assets/profile04.png'),
+                        require('../../assets/profile05.png'),
+                        require('../../assets/profile06.png'),
+                    ];
+
     /* date */
     const handleDateConfirm = (date) => {
         //console.log(date);
@@ -130,6 +140,7 @@ export default function ProfileScreen({ navigation }) {
         }
         else{
             navigation.navigate(l.Nav);
+            console.log(photoAddr[userProfile.photo])
         }
     }
     }> 
@@ -194,20 +205,20 @@ export default function ProfileScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate("Set")}>        
+            <TouchableOpacity onPress={() => navigation.navigate("Photo")}>        
                 <ListItem bottomDivider >       
                     <ListItem.Content>
                         <ListItem.Title>Profile Photo</ListItem.Title>
                     </ListItem.Content>
                     <Avatar
                         rounded
-                        source={ require("../../assets/profile.jpg") }           
+                        source={ photoAddr[userProfile.photo] }         
                     />           
                     <ListItem.Chevron />   
                 </ListItem> 
             </TouchableOpacity> 
             {mapItems}
-        </View>    
+        </View>            
     );
     
 }
