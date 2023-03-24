@@ -33,7 +33,7 @@ export default function SettingsScreen({ navigation }) {
             <View>
             <Text style={styles.settings_title}>Account Settings</Text>
             
-
+            <TouchableOpacity onPress={() => {navigation.navigate('')}}>
             <ListItem containerStyle={styles.container_item}>
                 <MaterialCommunityIcons name="account" size={24} color="black" />
                 <ListItem.Content>
@@ -41,6 +41,7 @@ export default function SettingsScreen({ navigation }) {
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
+            </TouchableOpacity>
 
 
 
@@ -78,6 +79,7 @@ export default function SettingsScreen({ navigation }) {
             </ListItem>
             </TouchableOpacity>
             
+            <TouchableOpacity onPress={() => {navigation.navigate('Notification')}}>
             <ListItem containerStyle={styles.container_item}>
                 <Entypo name="notification" size={24} color="black" />
                 <ListItem.Content>
@@ -85,15 +87,19 @@ export default function SettingsScreen({ navigation }) {
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
+            </TouchableOpacity>
 
             <Text style={styles.settings_title}>Security</Text>
-            <ListItem containerStyle={styles.container_item}>
-                <MaterialCommunityIcons name="form-textbox-password" size={24} color="black" />
-                <ListItem.Content>
-                <ListItem.Title>Password</ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-            </ListItem>
+            <TouchableOpacity onPress={() => {navigation.navigate('Password')}}>
+                
+                <ListItem containerStyle={styles.container_item}>
+                    <MaterialCommunityIcons name="form-textbox-password" size={24} color="black" />
+                    <ListItem.Content>
+                    <ListItem.Title>Password</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                </ListItem>
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {navigation.navigate('FaceID_TouchID')}}>
             <ListItem containerStyle={styles.container_item}>
