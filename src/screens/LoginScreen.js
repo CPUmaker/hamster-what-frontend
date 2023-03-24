@@ -5,7 +5,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import Modal from "react-native-modal";
 import { AntDesign } from "@expo/vector-icons";
@@ -23,12 +23,13 @@ export default function LoginScreen({ navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState(null);
 
-  const { login, googleAuth, facebookAuth, appleAuth } = useContext(AuthContext);
+  const { login, googleAuth, facebookAuth, appleAuth } =
+    useContext(AuthContext);
 
   const loginErrorHandle = (errorMessage) => {
     setModalMessage(errorMessage);
     setModalVisible(true);
-  }
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,21 +63,21 @@ export default function LoginScreen({ navigation }) {
 
         <Text style={styles.font}>Login</Text>
 
-      <View style={styles.text_input_container}>
-        <AntDesign
-          name="user"
-          size={20}
-          color="#666"
-          style={{ marginRight: 5 }}
-        />
-        <TextInput
-          placeholder="Username/Email"
-          autoCapitalize="none"
-          style={styles.text_input}
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-        />
-      </View>
+        <View style={styles.text_input_container}>
+          <AntDesign
+            name="user"
+            size={20}
+            color="#666"
+            style={{ marginRight: 5 }}
+          />
+          <TextInput
+            placeholder="Username/Email"
+            autoCapitalize="none"
+            style={styles.text_input}
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+          />
+        </View>
 
         <View style={styles.text_input_container}>
           <AntDesign
@@ -92,30 +93,45 @@ export default function LoginScreen({ navigation }) {
             value={password}
             onChangeText={(text) => setPassword(text)}
           />
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity onPress={() => {}}>
             <Text style={styles.forgot_text}>Forgot?</Text>
           </TouchableOpacity>
         </View>
 
-      <TouchableOpacity
-        style={styles.login_button}
-        onPress={() => {
-          login(username, password, loginErrorHandle);
-        }}
-      >
-        <Text style={styles.login_text}>Login</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.login_button}
+          onPress={() => {
+            login(username, password, loginErrorHandle);
+          }}
+        >
+          <Text style={styles.login_text}>Login</Text>
+        </TouchableOpacity>
 
         <Text style={styles.alter_login_text}>Or, login with ...</Text>
 
         <View style={styles.alter_login_container}>
-          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { googleAuth() }}>
+          <TouchableOpacity
+            style={styles.alter_login_icon}
+            onPress={() => {
+              googleAuth();
+            }}
+          >
             <GoogleSVG height={24} width={24} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { appleAuth() }}>
+          <TouchableOpacity
+            style={styles.alter_login_icon}
+            onPress={() => {
+              appleAuth();
+            }}
+          >
             <AppleSVG height={24} width={24} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.alter_login_icon} onPress={() => { facebookAuth() }}>
+          <TouchableOpacity
+            style={styles.alter_login_icon}
+            onPress={() => {
+              facebookAuth();
+            }}
+          >
             <MetaSVG height={24} width={24} />
           </TouchableOpacity>
         </View>
