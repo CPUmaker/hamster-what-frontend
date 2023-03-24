@@ -53,7 +53,7 @@ export function Income({ navigation }) {
 
   // variable for category select
   const [selectedCategoryName, setSelectedCategoryName] = useState("Salary");
-  const [selectedWallet, setselectedWallet] = useState("");
+  const [selectedWallet, setselectedWallet] = useState("Savings account");
 
   // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {

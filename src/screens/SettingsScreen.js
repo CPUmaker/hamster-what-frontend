@@ -106,7 +106,7 @@ export default function SettingsScreen({ navigation }) {
             </TouchableOpacity>
 
             <Text style={styles.settings_title}>Support</Text>
-            <TouchableOpacity onPress={() => {navigation.navigate('ContactUsScreen')}}>
+            <TouchableOpacity onPress={() => {navigation.navigate('Contact Us')}}>
                 <ListItem containerStyle={styles.container_item}>
                     <AntDesign name="phone" size={24} color="black" />
                     <ListItem.Content>
@@ -131,19 +131,23 @@ export default function SettingsScreen({ navigation }) {
             <View></View>
 
             <Text style={styles.settings_title}>Miscellaneous</Text>
+            <TouchableOpacity onPress={() => {navigation.navigate('Terms & Conditions')}}>
             <ListItem containerStyle={styles.container_item}>
                 <ListItem.Content>
                 <ListItem.Title>Terms & Conditions</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
-
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => {navigation.navigate('Privacy Policy')}}>
             <ListItem containerStyle={styles.container_item}>
                 <ListItem.Content>
                 <ListItem.Title>Privacy Policy</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
+            </TouchableOpacity>
 
 
             

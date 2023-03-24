@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 
 export function ContactUsScreen () {
@@ -28,28 +29,42 @@ export function ContactUsScreen () {
     <View style={styles.container}>
       <Text style={styles.heading}>Contact Us</Text>
       <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={name}
-          onChangeText={setName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={[styles.input, styles.messageInput]}
-          placeholder="Message"
-          value={message}
-          onChangeText={setMessage}
-          multiline={true}
-          numberOfLines={4}
-        />
-        <Button title="Submit" onPress={handleSubmit} />
+        <View style={styles.inputContainer}>
+          <Ionicons name="person-outline" size={24} color="#ccc" />
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+            placeholderTextColor="#ccc"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Ionicons name="mail-outline" size={24} color="#ccc" />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            placeholderTextColor="#ccc"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Ionicons name="chatbubble-outline" size={24} color="#ccc" />
+          <TextInput
+            style={[styles.input, styles.messageInput]}
+            placeholder="Message"
+            value={message}
+            onChangeText={setMessage}
+            multiline={true}
+            numberOfLines={4}
+            placeholderTextColor="#ccc"
+          />
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -63,21 +78,44 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   heading: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 40,
   },
   form: {
     width: '80%',
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   input: {
+    flex: 1,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
-    marginBottom: 10,
+    marginLeft: 10,
+    color: '#333',
   },
   messageInput: {
     height: 100,
+  },
+  button: {
+    alignSelf: 'center',
+    backgroundColor: '#A04AAA',
+    width: 370,
+    alignItems: 'center',
+    borderRadius: 50,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginTop: 40,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });

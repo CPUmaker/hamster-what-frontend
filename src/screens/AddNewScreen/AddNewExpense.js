@@ -53,7 +53,7 @@ export function Expense({ navigation }) {
 
   // variable for category select
   const [selectedCategoryName, setSelectedCategoryName] = useState("Food");
-  const [selectedWallet, setselectedWallet] = useState("");
+  const [selectedWallet, setselectedWallet] = useState("Credit account");
 
   // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {
