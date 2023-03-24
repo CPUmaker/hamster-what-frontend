@@ -4,45 +4,24 @@ import {
   View,
   Text,
   SafeAreaView,
-  ScrollView,
   ImageBackground,
   TextInput,
   TouchableOpacity,
   Dimensions,
+  FlatList
 } from "react-native";
 import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import PaymentSwitch from "../components/PaymentSwitch";
 import ListItem from "../components/ListItem";
 import { ProfileContext } from "../context/ProfileContext";
+import axios from "axios";
+import { BASE_URL, endpoints } from "../config";
+import { useFocusEffect } from "@react-navigation/native";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const dayBills = [
-  {
-    key: 1,
-    name: "Food",
-    money: "13,122",
-  },
-  {
-    key: 2,
-    name: "Groceries",
-    money: "59",
-  },
-];
-const monthBills = [
-  {
-    key: 3,
-    name: "Food",
-    money: "14,122",
-  },
-  {
-    key: 4,
-    name: "Groceries",
-    money: "49",
-  },
-];
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
   const [switchTab, setSwitchTab] = useState(1);
   const [ifReadProfile, setReadProfile] = useState(true);
   const {readProfile, userProfile} = useContext(ProfileContext);
@@ -54,6 +33,8 @@ export default function HomeScreen({ navigation }) {
                       require('../../assets/profile05.png'),
                       require('../../assets/profile06.png'),
       ];
+  const [dayBills, setDayBills] = useState(null);
+  const [monthBills, setMonthBills] = useState(null);
   //readProfile();
   useEffect(() => {
     if(ifReadProfile) {
@@ -65,9 +46,59 @@ export default function HomeScreen({ navigation }) {
     setSwitchTab(value);
   };
 
+  function todaySum(){
+    axios
+      .get(`${endpoints.pricesum}`, {params: {item: "today"}} )
+      .then((response) => {
+    data =  Object.entries(response.data).map(([key, value])=>({key, value}))
+    data = data
+      .filter(item => item.value !== null)
+      .sort((a, b) => b.value - a.value)
+    setDayBills(data)
+    //console.log(dayBills)
+    })
+    .catch((error) => {console.log(`Get sum: ${error}`);});
+  }
+
+  function monthSum(){
+    axios
+    .get(`${endpoints.pricesum}`, {params: {item: "month"}} )
+    .then((response) => {
+      data =  Object.entries(response.data).map(([key, value])=>({key, value}))
+      data = data
+        .filter(item => item.value !== null)
+        .sort((a, b) => b.value - a.value)
+      setMonthBills(data);
+      //console.log(dayBills);
+    })
+    .catch((error) => {
+      console.log(`Get sum: ${error}`);
+    });
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      todaySum();
+      monthSum();
+    }, [])
+  );
+
+  const renderItem = ({item}) => {
+    return(<ListItem
+      key={item.key}
+      name={item.key}
+      money={item.value}
+      onPressCallback={() =>
+        navigation.navigate("BillDetails", {
+          title: item.name,
+          id: item.key,
+        })
+      }
+    />)
+  }
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ padding: 20 }}>
+      <View style={{ padding: 20 }}>
         <View style={styles.profile_container}>
           <Text style={styles.profile_font}>Hello {userProfile.user.username}</Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -104,38 +135,27 @@ export default function HomeScreen({ navigation }) {
             onSelectSwitch={onSelectSwitch}
           />
         </View>
-
-        {switchTab == 1 &&
-          dayBills.map((item) => (
-            <ListItem
-              key={item.key}
-              name={item.name}
-              //date={item.date}
-              money={item.money}
-              onPressCallback={() =>
-                navigation.navigate("BillDetails", {
-                  title: item.name,
-                  id: item.key,
-                })
-              }
-            />
-          ))}
+        {switchTab == 1 &&     
+          (
+          <FlatList
+            data = {dayBills}
+            renderItem = {renderItem}
+            keyExtractor={(item) => item.key.toString()}
+            extraData = {dayBills}
+            scrollEnabled = {true}
+          />)
+        }
         {switchTab == 2 &&
-          monthBills.map((item) => (
-            <ListItem
-              key={item.key}
-              name={item.name}
-              //date={item.date}
-              money={item.money}
-              onPressCallback={() =>
-                navigation.navigate("BillDetails", {
-                  title: item.name,
-                  id: item.key,
-                })
-              }
-            />
-          ))}
-      </ScrollView>
+          (
+            <FlatList
+            data = {monthBills}
+            renderItem = {renderItem}
+            keyExtractor={(item) => item.key.toString()}
+            extraData = {monthBills}
+            scrollEnabled = {true}
+          />)
+          }
+      </View>
       <TouchableOpacity
         onPress={() => navigation.navigate('AddNew')}
         style={{

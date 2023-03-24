@@ -22,17 +22,6 @@ export function MoneyInput(amount, setAmount) {
     }
   }
 
-  const handleSavePress = (amount) => {
-    setAmount(amount)
-    console.log(`Amount confirmed: ${amount}`);
-    Keyboard.dismiss();
-  };
-
-  function handleConfirmClick() {
-    console.log(`Amount confirmed: ${amount}`);
-    Keyboard.dismiss();
-  }
-
   return (
     <View style={styles.container}>
       <TextInput
@@ -44,7 +33,7 @@ export function MoneyInput(amount, setAmount) {
         value={amount}
       />
      
-      <TouchableOpacity onPress={() => handleMoneyPress(amount)}>
+      <TouchableOpacity onPress={() => Keyboard.dismiss()}>
         <Ionicons name="checkmark-outline" size={30} color="#4CAF50" />
       </TouchableOpacity>
     </View>
