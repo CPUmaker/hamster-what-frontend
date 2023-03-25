@@ -4,6 +4,11 @@ import axios from "axios";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as Google from "expo-auth-session/providers/google";
 import * as Facebook from "expo-auth-session/providers/facebook";
+import {
+  hasHardwareAsync,
+  isEnrolledAsync,
+  authenticateAsync,
+} from "expo-local-authentication";
 
 import { BASE_URL, endpoints } from "../config";
 import {
@@ -16,6 +21,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isUsingBioAuth, setIsUsingBioAuth] = useState(false);
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
@@ -82,18 +88,60 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(true);
       let userInfo = await SecureStore.getItemAsync("userInfo");
       let userToken = await SecureStore.getItemAsync("userToken");
+      let bioAuthSwitch = await SecureStore.getItemAsync("bioAuthSwitch");
       userInfo = JSON.parse(userInfo);
+      bioAuthSwitch = JSON.parse(bioAuthSwitch);
 
       if (userInfo && isTokenValid()) {
         axios.defaults.headers.common["Authorization"] = `Token ${userToken}`;
         setUserInfo(userInfo);
         setUserToken(userToken);
+        setIsUsingBioAuth(bioAuthSwitch);
       }
 
       setIsLoading(false);
     } catch (error) {
       console.log(`isLoggedIn error: ${error}`);
     }
+  };
+
+  const turnOnBioAuth = async () => {
+    try {
+      const result = await bioAuth();
+      if (result) {
+        console.log(`turnOnBioAuth sucessful.`);
+        setIsUsingBioAuth(true);
+        SecureStore.setItemAsync("bioAuthSwitch", "true");
+      }
+      return result;
+    } catch (error) {
+      console.log(`turnOnBioAuth error: ${error}`);
+      return false;
+    }
+  };
+
+  const turnOffBioAuth = async () => {
+    setIsUsingBioAuth(false);
+    SecureStore.setItemAsync("bioAuthSwitch", "false");
+    console.log(`turnOffBioAuth sucessful.`);
+  };
+
+  const bioAuth = async () => {
+    const compatiable = await hasHardwareAsync();
+    if (!compatiable) {
+      throw Error("Device not supported.");
+    }
+    const enrolled = await isEnrolledAsync();
+    if (enrolled) {
+      return true;
+    }
+    const result = await authenticateAsync({
+      promptMessage: "Please authenticate",
+    });
+    if (!result.success) {
+      throw Error("Authentication failed.");
+    }
+    return true;
   };
 
   useEffect(() => {
@@ -190,10 +238,14 @@ export const AuthProvider = ({ children }) => {
       value={{
         login,
         logout,
+        bioAuth,
         googleAuth,
         facebookAuth,
         appleAuth,
+        turnOnBioAuth,
+        turnOffBioAuth,
         isLoading,
+        isUsingBioAuth,
         userToken,
         userInfo,
       }}

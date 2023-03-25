@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,11 +6,9 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  Switch,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-
-// for password and faceID
-import ReactNativeBiometrics from "react-native-biometrics";
 
 import { Card, Icon, ListItem } from "@rneui/themed";
 
@@ -25,7 +23,8 @@ import {
 import { AuthContext } from "../context/AuthContext";
 
 export default function SettingsScreen({ navigation }) {
-  const { logout } = useContext(AuthContext);
+  const { logout, turnOnBioAuth, turnOffBioAuth, isUsingBioAuth } =
+    useContext(AuthContext);
   const deleteCheck = () => {
     Alert.alert(
       "Deleting profile",
@@ -46,6 +45,20 @@ export default function SettingsScreen({ navigation }) {
       ]
     );
   };
+
+  const [isFaceIDEnabled, setFaceID] = useState(false);
+  const faceIDHandler = async () => {
+    //setFaceID(!isFaceIDEnabled);
+    console.log("faceIDHandler", isUsingBioAuth);
+    if (!isUsingBioAuth) {
+      const result = await turnOnBioAuth();
+      setFaceID(result);
+    } else {
+      turnOffBioAuth();
+      setFaceID(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ padding: 20 }}>
@@ -145,23 +158,22 @@ export default function SettingsScreen({ navigation }) {
             </ListItem>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("FaceID_TouchID");
-            }}
-          >
-            <ListItem containerStyle={styles.container_item}>
-              <MaterialCommunityIcons
-                name="face-recognition"
-                size={24}
-                color="black"
-              />
-              <ListItem.Content>
-                <ListItem.Title>FaceID / TouchID</ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </TouchableOpacity>
+          <ListItem containerStyle={styles.container_item}>
+            <MaterialCommunityIcons
+              name="face-recognition"
+              size={24}
+              color="black"
+            />
+            <ListItem.Content>
+              <ListItem.Title>FaceID / TouchID</ListItem.Title>
+            </ListItem.Content>
+            <Switch
+              value={isUsingBioAuth}
+              onValueChange={faceIDHandler}
+              thumbColor="#fff"
+              //   trackColor={{ true: '#0066CC' }}
+            />
+          </ListItem>
 
           <Text style={styles.settings_title}>Support</Text>
           <TouchableOpacity

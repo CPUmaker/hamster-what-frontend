@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
-  FlatList
+  FlatList,
 } from "react-native";
 import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import PaymentSwitch from "../components/PaymentSwitch";
@@ -18,62 +18,70 @@ import axios from "axios";
 import { BASE_URL, endpoints } from "../config";
 import { useFocusEffect } from "@react-navigation/native";
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export default function HomeScreen({ navigation, route }) {
   const [switchTab, setSwitchTab] = useState(1);
   const [ifReadProfile, setReadProfile] = useState(true);
-  const {readProfile, userProfile} = useContext(ProfileContext);
-  const photoAddr = [require(`../../assets/profile.jpg`),
-                      require('../../assets/profile01.png'),
-                      require('../../assets/profile02.png'),
-                      require('../../assets/profile03.png'),
-                      require('../../assets/profile04.png'),
-                      require('../../assets/profile05.png'),
-                      require('../../assets/profile06.png'),
-      ];
+  const { readProfile, userProfile } = useContext(ProfileContext);
+  const photoAddr = [
+    require(`../../assets/profile.jpg`),
+    require("../../assets/profile01.png"),
+    require("../../assets/profile02.png"),
+    require("../../assets/profile03.png"),
+    require("../../assets/profile04.png"),
+    require("../../assets/profile05.png"),
+    require("../../assets/profile06.png"),
+  ];
   const [dayBills, setDayBills] = useState(null);
   const [monthBills, setMonthBills] = useState(null);
   //readProfile();
   useEffect(() => {
-    if(ifReadProfile) {
-        readProfile();
-        setReadProfile(false);
+    if (ifReadProfile) {
+      readProfile();
+      setReadProfile(false);
     }
-  })
+  });
   const onSelectSwitch = (value) => {
     setSwitchTab(value);
   };
 
-  function todaySum(){
+  function todaySum() {
     axios
-      .get(`${endpoints.pricesum}`, {params: {item: "today"}} )
+      .get(`${endpoints.pricesum}`, { params: { item: "today" } })
       .then((response) => {
-    data =  Object.entries(response.data).map(([key, value])=>({key, value}))
-    data = data
-      .filter(item => item.value !== null)
-      .sort((a, b) => b.value - a.value)
-    setDayBills(data)
-    //console.log(dayBills)
-    })
-    .catch((error) => {console.log(`Get sum: ${error}`);});
+        data = Object.entries(response.data).map(([key, value]) => ({
+          key,
+          value,
+        }));
+        data = data
+          .filter((item) => item.value !== null)
+          .sort((a, b) => b.value - a.value);
+        setDayBills(data);
+        //console.log(dayBills)
+      })
+      .catch((error) => {
+        console.log(`Get sum: ${error}`);
+      });
   }
 
-  function monthSum(){
+  function monthSum() {
     axios
-    .get(`${endpoints.pricesum}`, {params: {item: "month"}} )
-    .then((response) => {
-      data =  Object.entries(response.data).map(([key, value])=>({key, value}))
-      data = data
-        .filter(item => item.value !== null)
-        .sort((a, b) => b.value - a.value)
-      setMonthBills(data);
-      //console.log(dayBills);
-    })
-    .catch((error) => {
-      console.log(`Get sum: ${error}`);
-    });
+      .get(`${endpoints.pricesum}`, { params: { item: "month" } })
+      .then((response) => {
+        data = Object.entries(response.data).map(([key, value]) => ({
+          key,
+          value,
+        }));
+        data = data
+          .filter((item) => item.value !== null)
+          .sort((a, b) => b.value - a.value);
+        setMonthBills(data);
+        //console.log(dayBills);
+      })
+      .catch((error) => {
+        console.log(`Get sum: ${error}`);
+      });
   }
 
   useFocusEffect(
@@ -83,24 +91,28 @@ export default function HomeScreen({ navigation, route }) {
     }, [])
   );
 
-  const renderItem = ({item}) => {
-    return(<ListItem
-      key={item.key}
-      name={item.key}
-      money={item.value}
-      onPressCallback={() =>
-        navigation.navigate("BillDetails", {
-          title: item.name,
-          id: item.key,
-        })
-      }
-    />)
-  }
+  const renderItem = ({ item }) => {
+    return (
+      <ListItem
+        key={item.key}
+        name={item.key}
+        money={item.value}
+        onPressCallback={() =>
+          navigation.navigate("BillDetails", {
+            title: item.name,
+            id: item.key,
+          })
+        }
+      />
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ padding: 20 }}>
         <View style={styles.profile_container}>
-          <Text style={styles.profile_font}>Hello {userProfile.user.username}</Text>
+          <Text style={styles.profile_font}>
+            Hello {userProfile.user?.username}
+          </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <ImageBackground
               source={photoAddr[userProfile.photo]}
@@ -135,33 +147,31 @@ export default function HomeScreen({ navigation, route }) {
             onSelectSwitch={onSelectSwitch}
           />
         </View>
-        {switchTab == 1 &&     
-          (
+        {switchTab == 1 && (
           <FlatList
-            data = {dayBills}
-            renderItem = {renderItem}
+            data={dayBills}
+            renderItem={renderItem}
             keyExtractor={(item) => item.key.toString()}
-            extraData = {dayBills}
-            scrollEnabled = {true}
-          />)
-        }
-        {switchTab == 2 &&
-          (
-            <FlatList
-            data = {monthBills}
-            renderItem = {renderItem}
+            extraData={dayBills}
+            scrollEnabled={true}
+          />
+        )}
+        {switchTab == 2 && (
+          <FlatList
+            data={monthBills}
+            renderItem={renderItem}
             keyExtractor={(item) => item.key.toString()}
-            extraData = {monthBills}
-            scrollEnabled = {true}
-          />)
-          }
+            extraData={monthBills}
+            scrollEnabled={true}
+          />
+        )}
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate('AddNew')}
+        onPress={() => navigation.navigate("AddNew")}
         style={{
-          position: 'absolute',
-          justifyContent: 'center',
-          alignItems: 'center',
+          position: "absolute",
+          justifyContent: "center",
+          alignItems: "center",
           bottom: 1,
           left: SCREEN_WIDTH * 0.5 - 25,
         }}
