@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -17,8 +17,9 @@ import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import RegisterSVG from "../../assets/misc/register.svg";
 import GoogleSVG from "../../assets/misc/google.svg";
 import AppleSVG from "../../assets/misc/apple.svg";
-import TwitterSVG from "../../assets/misc/twitter.svg";
+import MetaSVG from "../../assets/misc/meta.svg";
 import Exclamation from "../../assets/misc/exclamation-circle.svg";
+import { AuthContext } from "../context/AuthContext";
 import { BASE_URL } from "../config";
 import {
   useTogglePasswordVisibility,
@@ -49,6 +50,7 @@ const SignUpSchema = Yup.object().shape({
 
 export default function RegisterScreen({ navigation }) {
   const [modalMessage, setModalMessage] = useState(null);
+  const { googleAuth, facebookAuth, appleAuth } = useContext(AuthContext);
   const { passwordVisibility, pvIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
   const {
@@ -61,7 +63,7 @@ export default function RegisterScreen({ navigation }) {
   useEffect(() => {
     setTimeout(() => {
       isModalVisible && toggleModal();
-    }, 5000);
+    }, 3000);
   }, [isModalVisible]);
 
   return (
@@ -258,21 +260,27 @@ export default function RegisterScreen({ navigation }) {
             <View style={styles.alter_login_container}>
               <TouchableOpacity
                 style={styles.alter_login_icon}
-                onPress={() => {}}
+                onPress={() => {
+                  googleAuth();
+                }}
               >
                 <GoogleSVG height={24} width={24} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.alter_login_icon}
-                onPress={() => {}}
+                onPress={() => {
+                  appleAuth();
+                }}
               >
                 <AppleSVG height={24} width={24} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.alter_login_icon}
-                onPress={() => {}}
+                onPress={() => {
+                  facebookAuth();
+                }}
               >
-                <TwitterSVG height={24} width={24} />
+                <MetaSVG height={24} width={24} />
               </TouchableOpacity>
             </View>
 
@@ -333,7 +341,7 @@ const styles = StyleSheet.create({
   },
   alter_login_container: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     marginBottom: 30,
   },
   alter_login_text: {
@@ -345,7 +353,7 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderWidth: 2,
     borderRadius: 10,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     paddingVertical: 10,
   },
   register_container: {
