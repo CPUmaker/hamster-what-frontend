@@ -1,59 +1,63 @@
-import React from "react";
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ScrollView,
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import PieChartHelper from "../../components/PieChartHelper";
+import { AnimatedText } from "../../components/AnimatedText";
 
 export default function PieChartScreen() {
+  const [date, setDate] = useState(new Date());
+  const [year, setYear] = useState(date.getFullYear());
+  const [month, setMonth] = useState(
+    new Intl.DateTimeFormat("en-US", { month: "long" }).format(date)
+  );
+  const [numBills, setNumBills] = useState(2);
+
+  useEffect(() => {
+    setYear(date.getFullYear());
+    setMonth(new Intl.DateTimeFormat("en-US", { month: "long" }).format(date));
+    setNumBills(Math.floor(Math.random() * 20));
+  }, [date]);
+
   const pieData = [
-    {
-      name: "Seoul",
-      population: 21500000,
-      color: "rgba(131, 167, 234, 1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Toronto",
-      population: 2800000,
-      color: "#F00",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Beijing",
-      population: 527612,
-      color: "orange",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "New York",
-      population: 8538000,
-      color: "gold",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Moscow",
-      population: 11920000,
-      color: "rgb(0, 0, 255)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
+    { x: "Liquid", y: Math.floor(Math.random() * 100) },
+    { x: "Iced", y: Math.floor(Math.random() * 100) },
+    { x: "Total", y: Math.floor(Math.random() * 100) },
   ];
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.arrow} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.arrow}
+          onPress={() => {
+            setDate(new Date(date.setMonth(date.getMonth() - 1)));
+          }}
+        >
           <AntDesign name="left" size={24} color="white" />
         </TouchableOpacity>
-        <View style={{alignItems: "center"}}>
-          <Text style={styles.header_text_up}>April 2023</Text>
-          <Text style={styles.header_text_down}>2 TRANSACTIONS</Text>
+        <View style={{ alignItems: "center" }}>
+          <AnimatedText
+            style={styles.header_text_up}
+            text={`${month} ${year}`}
+          />
+          <AnimatedText
+            style={styles.header_text_down}
+            text={`${numBills} TRANSACTIONS`}
+          />
         </View>
-        <TouchableOpacity style={styles.arrow} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.arrow}
+          onPress={() => {
+            setDate(new Date(date.setMonth(date.getMonth() + 1)));
+          }}
+        >
           <AntDesign name="right" size={24} color="white" />
         </TouchableOpacity>
       </View>
