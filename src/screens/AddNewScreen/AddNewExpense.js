@@ -7,44 +7,89 @@ import {
   Dimensions,
   TextInput,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from "@react-navigation/stack";
 import Modal from "react-native-modal";
 import { ListItem } from "@rneui/base";
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-import { Entypo, FontAwesome5 } from '@expo/vector-icons';
-import { CategorySelectionExpense } from './CategorySelectExpense.js'
-import { MoneyInput } from './MoneyInput.js'
-import { WalletSelect } from './WalletSelect.js'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import { CategorySelectionExpense } from "./CategorySelectExpense.js";
+import { MoneyInput } from "./MoneyInput.js";
+import { WalletSelect } from "./WalletSelect.js";
 import axios from "axios";
-import { endpoints} from '../../config'
+import { endpoints } from "../../config";
 import { getToday } from "react-native-common-date-picker/src/utils/dateFormat.js";
 
 // get the screen height
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 const Stack = createStackNavigator();
 
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
+
+const categories_map = {
+  Food: 1,
+  Groceries: 2,
+  Transportation: 3,
+  clothing: 4,
+  Entertainment: 5,
+  Bill: 6,
+  Sports: 7,
+  Electronics: 8,
+  Travel: 9,
+  "House & Car": 10,
+  Others: 11,
+};
+
+const wallets_map = {
+  "Checking account": 1,
+  "Credit account": 2,
+  "Cash": 3,
+  "Savings account": 4,
+  "Other": 5
+};
+
 //// content for Expense interface -------------
-export function Expense({ navigation }) {
-  const [text, setText] = useState('');
+export function Expense({ route, navigation }) {
+  // initialize the details for a bill
+  let {
+    categories = 1,
+    comment = "",
+    date = getToday(),
+    price = "",
+    wallet = 2,
+  } = route.params === undefined ? {} : route.params;
+  categories = getKeyByValue(categories_map, categories);
+  wallet = getKeyByValue(wallets_map, wallet);;
+
+  const [text, setText] = useState(comment);
 
   // Category modal
   const [modalVisible, setModalVisible] = useState(false);
-  const openModal = () => { setModalVisible(true); };
-  const closeModal = () => { setModalVisible(false); };
+  const openModal = () => {
+    setModalVisible(true);
+  };
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   // From Modal
   const [WalletmodalVisible, setWalletModalVisible] = useState(false);
-  const WalletOpenModal = () => { setWalletModalVisible(true); };
-  const WalletCloseModal = () => { setWalletModalVisible(false); };
+  const WalletOpenModal = () => {
+    setWalletModalVisible(true);
+  };
+  const WalletCloseModal = () => {
+    setWalletModalVisible(false);
+  };
 
   // variable for date picker
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(getToday);
+  const [selectedDate, setSelectedDate] = useState(date);
   const handleDateConfirm = (date) => {
-    setSelectedDate(moment(date).format('YYYY-MM-DD'));
+    setSelectedDate(moment(date).format("YYYY-MM-DD"));
     setIsDatePickerVisible(false);
   };
   const handleDateCancel = () => {
@@ -52,51 +97,37 @@ export function Expense({ navigation }) {
   };
 
   // variable for category select
-  const [selectedCategoryName, setSelectedCategoryName] = useState("Food");
-  const [selectedWallet, setselectedWallet] = useState("Credit account");
+  const [selectedCategoryName, setSelectedCategoryName] = useState(categories);
+  const [selectedWallet, setselectedWallet] = useState(wallet);
 
   // fix the issues when swipe to the right will bring out sidebar
   useEffect(() => {
     navigation.getParent().setOptions({ swipeEnabled: false });
-  }, [])
+  }, []);
 
   useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
+    navigation.addListener("beforeRemove", (e) => {
       navigation.getParent().setOptions({ swipeEnabled: true });
-    })
-  }, [navigation])
+    });
+  }, [navigation]);
 
   // for money input
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(price);
 
-  const categories_map = {
-    "Food": 1,
-    "Groceries": 2,
-    "Transportation": 3,
-    "clothing": 4,
-    "Entertainment": 5,
-    "Bill": 6,
-    "Sports": 7,
-    "Electronics": 8,
-    "Travel": 9,
-    "House & Car": 10,
-    "Others": 11
-  }
   const done = (amount) => {
     data = {
-      title:selectedCategoryName.toString(),
-      date:selectedDate.toString(),
-      price: amount == "" ? "0" : amount.replace(/[^0-9.]/g, '').toString(),
-      categories:categories_map[selectedCategoryName.toString()],
-      comment:text.toString()
+      title: selectedCategoryName.toString(),
+      date: selectedDate.toString(),
+      price: amount == "" ? "0" : "-" + amount.replace(/[^0-9.]/g, "").toString(),
+      categories: categories_map[selectedCategoryName.toString()],
+      wallet: wallets_map[selectedWallet.toString()],
+      comment: text.toString(),
     };
     console.log(data);
-    axios
-      .post(endpoints.bill, data)
+    axios.post(endpoints.bill, data);
     // console.log(text.toString())
-    navigation.navigate('Home')
+    navigation.navigate("Home");
   };
-
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -106,9 +137,12 @@ export function Expense({ navigation }) {
 
         {/* -------------1--------------- */}
         <TouchableOpacity onPress={openModal}>
-          <Modal visible={modalVisible} animationType="slide" onRequestClose={closeModal}>
+          <Modal
+            visible={modalVisible}
+            animationType="slide"
+            onRequestClose={closeModal}
+          >
             <View style={styles.modal}>
-
               {CategorySelectionExpense(setSelectedCategoryName)}
               <TouchableOpacity onPress={closeModal} style={styles.button}>
                 <Text style={styles.buttonText}>Done</Text>
@@ -119,7 +153,6 @@ export function Expense({ navigation }) {
             <Entypo name="box" size={24} color="#B2B2B2" />
             <ListItem.Content>
               <ListItem.Title>Category: {selectedCategoryName}</ListItem.Title>
-
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -127,11 +160,17 @@ export function Expense({ navigation }) {
 
         {/* -------------2--------------- */}
         <TouchableOpacity onPress={WalletOpenModal}>
-          <Modal visible={WalletmodalVisible} animationType="slide" onRequestClose={WalletCloseModal}>
+          <Modal
+            visible={WalletmodalVisible}
+            animationType="slide"
+            onRequestClose={WalletCloseModal}
+          >
             <View style={styles.modal}>
-
               {WalletSelect(setselectedWallet)}
-              <TouchableOpacity onPress={WalletCloseModal} style={styles.button}>
+              <TouchableOpacity
+                onPress={WalletCloseModal}
+                style={styles.button}
+              >
                 <Text style={styles.buttonText}>Done</Text>
               </TouchableOpacity>
             </View>
@@ -140,7 +179,6 @@ export function Expense({ navigation }) {
             <Entypo name="wallet" size={24} color="#B2B2B2" />
             <ListItem.Content>
               <ListItem.Title>From: {selectedWallet}</ListItem.Title>
-
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -153,7 +191,7 @@ export function Expense({ navigation }) {
             <TextInput
               style={styles.input}
               placeholder="Type here to write down your note "
-              onChangeText={newText => setText(newText)}
+              onChangeText={(newText) => setText(newText)}
               defaultValue={text}
               keyboardType="default"
               onSubmitEditing={Keyboard.dismiss}
@@ -184,29 +222,27 @@ export function Expense({ navigation }) {
         />
 
         {/* -------------save button--------------- */}
-        <TouchableOpacity onPress={() => done(amount)} style={styles.saveButton}>
+        <TouchableOpacity
+          onPress={() => done(amount)}
+          style={styles.saveButton}
+        >
           <Text style={styles.buttonText}>SAVE</Text>
         </TouchableOpacity>
-
       </View>
     </KeyboardAvoidingView>
-
-
   );
-};
-
-
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 8,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
   },
   content: {
-    margin: 3
+    margin: 3,
   },
   input: {
     height: 40,
@@ -216,27 +252,27 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#A04AAA',
+    backgroundColor: "#A04AAA",
     width: 160,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 50,
     paddingVertical: 12,
     paddingHorizontal: 20,
     marginTop: 40,
   },
   saveButton: {
-    alignSelf: 'center',
-    backgroundColor: '#A04AAA',
+    alignSelf: "center",
+    backgroundColor: "#A04AAA",
     width: 370,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 50,
     paddingVertical: 12,
     paddingHorizontal: 20,
     marginTop: 40,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   selectedDateText: {
     marginVertical: 10,
@@ -244,9 +280,9 @@ const styles = StyleSheet.create({
   modal: {
     flex: 0.7,
     margin: 0,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
 });

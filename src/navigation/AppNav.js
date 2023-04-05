@@ -13,12 +13,14 @@ export default function AppNav() {
   const { readProfile, userProfile } = useContext(ProfileContext);
 
   useEffect(() => {
-    console.log(userToken)
-    if(userToken !== null) {
-        readProfile();
-        setIsReading(false);
+    if (userToken !== null) {
+      readProfile();
     }
   }, [userToken]);
+
+  useEffect(() => {
+    setIsReading(userProfile === null);
+  }, [userProfile]);
 
   if (isLoading || (isReading && userToken !== null)) {
     return (

@@ -1,36 +1,89 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { BASE_URL, endpoints } from "../config";
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { AntDesign } from '@expo/vector-icons';
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { AntDesign } from "@expo/vector-icons";
 
-const ItemCategory = ["Food", "Groceries", "Transportation", "clothing", "Entertainment", "Bill", "Sports", "Electronics", "Travel", "House & Car", "Others"];
+const ItemCategory = [
+  "Food",
+  "Groceries",
+  "Transportation",
+  "clothing",
+  "Entertainment",
+  "Bill",
+  "Sports",
+  "Electronics",
+  "Travel",
+  "House & Car",
+  "Others",
+];
 
 export default function ListAllScreen({ navigation }) {
   useEffect(() => {
-    navigation.getParent().setOptions({swipeEnabled: false});
-  }, [])
+    navigation.getParent().setOptions({ swipeEnabled: false });
+  }, []);
 
   useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      navigation.getParent().setOptions({swipeEnabled: true});
-    })
+    navigation.addListener("beforeRemove", (e) => {
+      navigation.getParent().setOptions({ swipeEnabled: true });
+    });
   }, [navigation]);
 
   const [listAll, setListAll] = useState(null);
   const [selectMonth, setSelectMonth] = useState(false);
   const [selectToday, setSelectToday] = useState(false);
-  const [monthColor, setMonthColor] = useState('#fff');
-  const [todayColor, setTodayColor] = useState('#fff');
+  const [monthColor, setMonthColor] = useState("#fff");
+  const [todayColor, setTodayColor] = useState("#fff");
+
+  const retrieveItem = (id) => {
+    axios
+      .get(`${id}`)
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        if (parseFloat(data.price) >= 0) {
+          navigation.navigate("AddNew", {
+            screen: "Income",
+            params: {
+              categories: data.categories,
+              comment: data.comment,
+              date: data.date,
+              price: data.price,
+              wallet: data.wallet,
+            },
+          });
+        } else {
+          navigation.navigate("AddNew", {
+            screen: "Expense",
+            params: {
+              categories: data.categories,
+              comment: data.comment,
+              date: data.date,
+              price: data.price,
+              wallet: data.wallet,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(`RetrieveItem: ${error}`);
+      });
+  };
 
   const deleteItem = (id) => {
     axios
       .delete(`${id}`)
       .then(() => {
-        const newList = listAll.filter(item => item.url !== id);
+        const newList = listAll.filter((item) => item.url !== id);
         setListAll(newList);
       })
       .catch((error) => {
@@ -38,85 +91,96 @@ export default function ListAllScreen({ navigation }) {
       });
   };
 
-  function ListAll(){
+  function ListAll() {
     axios
-    .get(`${endpoints.bill}`)
-    .then((response) => {
-      setListAll(response.data.reverse());
-    })
-    .catch((error) => {
-      console.log(`Get List: ${error}`);
-    });
+      .get(`${endpoints.bill}`)
+      .then((response) => {
+        setListAll(response.data.reverse());
+      })
+      .catch((error) => {
+        console.log(`Get List: ${error}`);
+      });
   }
 
-  function ListToday(){
+  function ListToday() {
     axios
-    .get(`${endpoints.search}`, {params: {item: "date", keyword:"today"}})
-    .then((response) => {
-      setListAll(response.data.reverse());
-    })
-    .catch((error) => {
-      console.log(`Get List: ${error}`);
-    });
+      .get(`${endpoints.search}`, {
+        params: { item: "date", keyword: "today" },
+      })
+      .then((response) => {
+        setListAll(response.data.reverse());
+      })
+      .catch((error) => {
+        console.log(`Get List: ${error}`);
+      });
   }
 
-  function ListMonth(){
+  function ListMonth() {
     axios
-    .get(`${endpoints.search}`, {params: {item: "date", keyword:"month"}})
-    .then((response) => {
-      setListAll(response.data.reverse());
-    })
-    .catch((error) => {
-      console.log(`Get List: ${error}`);
-    });
+      .get(`${endpoints.search}`, {
+        params: { item: "date", keyword: "month" },
+      })
+      .then((response) => {
+        setListAll(response.data.reverse());
+      })
+      .catch((error) => {
+        console.log(`Get List: ${error}`);
+      });
   }
 
-  const searchToday = () =>{
-    if(selectToday){
+  const searchToday = () => {
+    if (selectToday) {
       setSelectToday(false);
-      setTodayColor('#fff');
+      setTodayColor("#fff");
       ListAll();
-    }
-    else{
+    } else {
       setSelectToday(true);
-      setTodayColor('#ddd');
-      setMonthColor('#fff');
+      setTodayColor("#ddd");
+      setMonthColor("#fff");
       setSelectMonth(false);
       ListToday();
     }
-  }
+  };
 
-  const searchMonthly = () =>{
-    if(selectMonth){
+  const searchMonthly = () => {
+    if (selectMonth) {
       setSelectMonth(false);
-      setMonthColor('#fff');
+      setMonthColor("#fff");
       ListAll();
-    }
-    else{
+    } else {
       setSelectMonth(true);
-      setMonthColor('#ddd');
-      setTodayColor('#fff');
+      setMonthColor("#ddd");
+      setTodayColor("#fff");
       setSelectToday(false);
       ListMonth();
     }
-  }
+  };
 
-  const renderLeftActions = () => (
-    <TouchableOpacity style={[styles.button, styles.leftButton]}>
+  const renderLeftActions = (id) => (
+    <TouchableOpacity
+      style={[styles.button, styles.leftButton]}
+      onPress={() => retrieveItem(id)}
+    >
       <Text style={styles.money_text}>Details</Text>
     </TouchableOpacity>
   );
-  
+
   const renderRightActions = (id) => (
-    <TouchableOpacity style={[styles.button, styles.rightButton]} onPress={() => deleteItem(id)}>
+    <TouchableOpacity
+      style={[styles.button, styles.rightButton]}
+      onPress={() => deleteItem(id)}
+    >
       <Text style={styles.money_text}>Delete</Text>
     </TouchableOpacity>
   );
 
   const renderItem = ({ item }) => (
-    <Swipeable renderLeftActions={renderLeftActions} renderRightActions={() => renderRightActions(item.url)}>
+    <Swipeable
+      renderLeftActions={() => renderLeftActions(item.url)}
+      renderRightActions={() => renderRightActions(item.url)}
+    >
       <CatagoryItem
-        name={ItemCategory[item.categories-1]}
+        name={ItemCategory[item.categories - 1]}
         money={item.price}
         date={item.date}
       />
@@ -129,14 +193,16 @@ export default function ListAllScreen({ navigation }) {
 
   useEffect(() => {
     axios
-    .get(`${endpoints.search}`, {params: {item: "categories", keyword: "1"}} )
-    .then((response) => {
-      console.log(response.data)
-    })
-    .catch((error) => {
-      console.log(`Get sum: ${error}`);
-    });
-  })
+      .get(`${endpoints.search}`, {
+        params: { item: "categories", keyword: "1" },
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(`Get sum: ${error}`);
+      });
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -144,10 +210,16 @@ export default function ListAllScreen({ navigation }) {
         <View style={styles.filterIcon}>
           <AntDesign name="filter" size={24} color="black" />
         </View>
-        <TouchableOpacity style={[styles.emptyButton, {backgroundColor: todayColor}]} onPress = {searchToday}>
+        <TouchableOpacity
+          style={[styles.emptyButton, { backgroundColor: todayColor }]}
+          onPress={searchToday}
+        >
           <Text>Today</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.emptyButton, {backgroundColor: monthColor}]} onPress = {searchMonthly}>
+        <TouchableOpacity
+          style={[styles.emptyButton, { backgroundColor: monthColor }]}
+          onPress={searchMonthly}
+        >
           <Text>Month</Text>
         </TouchableOpacity>
       </View>
@@ -165,12 +237,12 @@ export default function ListAllScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -183,24 +255,24 @@ const styles = StyleSheet.create({
     width: 100,
     margin: 10,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  emptyButton:{
+  emptyButton: {
     margin: 5,
     borderRadius: 30,
     borderWidth: 1,
-    borderColor: '#888',
+    borderColor: "#888",
     height: 30,
     width: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },  
+    alignItems: "center",
+    justifyContent: "center",
+  },
   leftButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
   },
   rightButton: {
-    backgroundColor: '#f44336',
+    backgroundColor: "#f44336",
   },
   money_text: {
     color: "#fff",
