@@ -41,8 +41,10 @@ export default function ListAllScreen({ navigation }) {
   const [listAll, setListAll] = useState(null);
   const [selectMonth, setSelectMonth] = useState(false);
   const [selectToday, setSelectToday] = useState(false);
+  const [selectAll, setSelectAll] = useState(true);
   const [monthColor, setMonthColor] = useState("#fff");
   const [todayColor, setTodayColor] = useState("#fff");
+  const [allColor, setAllColor] = useState("#ddd");
 
   const retrieveItem = (id) => {
     axios
@@ -111,7 +113,7 @@ export default function ListAllScreen({ navigation }) {
         setListAll(response.data.reverse());
       })
       .catch((error) => {
-        console.log(`Get List: ${error}`);
+        console.log(`ListToday: ${error}`);
       });
   }
 
@@ -124,36 +126,41 @@ export default function ListAllScreen({ navigation }) {
         setListAll(response.data.reverse());
       })
       .catch((error) => {
-        console.log(`Get List: ${error}`);
+        console.log(`ListMonth: ${error}`);
       });
   }
 
+  const resetFilters = () => {
+    setSelectAll(false);
+    setAllColor("#fff");
+    setSelectToday(false);
+    setTodayColor("#fff");
+    setSelectMonth(false);
+    setMonthColor("#fff");
+  };
+
+  const searchAll = () => {
+    if (selectAll) { return; }
+    resetFilters();
+    setSelectAll(true);
+    setAllColor("#ddd");
+    ListAll();
+  };
+
   const searchToday = () => {
-    if (selectToday) {
-      setSelectToday(false);
-      setTodayColor("#fff");
-      ListAll();
-    } else {
-      setSelectToday(true);
-      setTodayColor("#ddd");
-      setMonthColor("#fff");
-      setSelectMonth(false);
-      ListToday();
-    }
+    if (selectToday) { return; }
+    resetFilters();
+    setSelectToday(true);
+    setTodayColor("#ddd");
+    ListToday();
   };
 
   const searchMonthly = () => {
-    if (selectMonth) {
-      setSelectMonth(false);
-      setMonthColor("#fff");
-      ListAll();
-    } else {
-      setSelectMonth(true);
-      setMonthColor("#ddd");
-      setTodayColor("#fff");
-      setSelectToday(false);
-      ListMonth();
-    }
+    if (selectMonth) { return; }
+    resetFilters();
+    setSelectMonth(true);
+    setMonthColor("#ddd");
+    ListMonth();
   };
 
   const renderLeftActions = (id) => (
@@ -191,25 +198,15 @@ export default function ListAllScreen({ navigation }) {
     ListAll();
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${endpoints.search}`, {
-        params: { item: "categories", keyword: "1" },
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(`Get sum: ${error}`);
-      });
-  });
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.filterIcon}>
-          <AntDesign name="filter" size={24} color="black" />
-        </View>
+      <View style={styles.buttonGroups}>
+        <TouchableOpacity
+          style={[styles.emptyButton, { backgroundColor: allColor }]}
+          onPress={searchAll}
+        >
+          <Text>All</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={[styles.emptyButton, { backgroundColor: todayColor }]}
           onPress={searchToday}
@@ -220,7 +217,7 @@ export default function ListAllScreen({ navigation }) {
           style={[styles.emptyButton, { backgroundColor: monthColor }]}
           onPress={searchMonthly}
         >
-          <Text>Month</Text>
+          <Text>This Month</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -239,16 +236,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  header: {
+  buttonGroups: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  filterIcon: {
-    marginRight: 10,
-    marginLeft: 20,
+    justifyContent: "space-evenly",
+    paddingHorizontal: 5,
   },
   button: {
     padding: 10,
@@ -259,12 +251,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   emptyButton: {
-    margin: 5,
-    borderRadius: 30,
+    flex: 1,
+    margin: 0,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: "#888",
     height: 30,
-    width: 60,
+    //width: 150,
     alignItems: "center",
     justifyContent: "center",
   },

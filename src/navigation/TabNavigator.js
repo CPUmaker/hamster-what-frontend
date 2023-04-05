@@ -37,7 +37,10 @@ const HomeStack = () => {
       <Stack.Screen
         name="SeeAll"
         component={ListAllScreen}
-        options={() => ({ title: "See All" })}
+        options={() => ({
+          title: "Your Bills",
+          headerShown: true,
+        })}
       />
       <Stack.Screen
         name={`AddNew`}

@@ -67,7 +67,7 @@ export default function SettingsScreen({ navigation }) {
 
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("");
+              navigation.navigate("Profile");
             }}
           >
             <ListItem containerStyle={styles.container_item}>

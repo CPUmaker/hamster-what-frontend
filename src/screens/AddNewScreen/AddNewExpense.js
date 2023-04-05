@@ -41,7 +41,8 @@ const categories_map = {
   Electronics: 8,
   Travel: 9,
   "House & Car": 10,
-  Others: 11,
+  Salary: 11,
+  Others: 12,
 };
 
 const wallets_map = {
