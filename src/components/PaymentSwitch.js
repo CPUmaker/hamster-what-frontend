@@ -18,10 +18,10 @@ export default function PaymentSwitch({
     <View style={styles.switch_container}>
       <TouchableOpacity
         activeOpacity={1}
-        onPress={() => updateSwitchData(1)}
+        onPress={() => updateSwitchData(option1)}
         style={{
           flex: 1,
-          backgroundColor: getSelectionMode == 1 ? "#AD40AF" : "#E4E4E4",
+          backgroundColor: getSelectionMode === option1 ? "#AD40AF" : "#E4E4E4",
           borderRadius: 10,
           justifyContent: "center",
           alignItems: "center",
@@ -29,7 +29,7 @@ export default function PaymentSwitch({
       >
         <Text
           style={{
-            color: getSelectionMode == 1 ? "white" : "#AD40AF",
+            color: getSelectionMode === option1 ? "white" : "#AD40AF",
             fontSize: 14,
             fontFamily: "Roboto-Medium",
           }}
@@ -38,11 +38,11 @@ export default function PaymentSwitch({
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        activeOpacity={2}
-        onPress={() => updateSwitchData(2)}
+        activeOpacity={1}
+        onPress={() => updateSwitchData(option2)}
         style={{
           flex: 1,
-          backgroundColor: getSelectionMode == 2 ? "#AD40AF" : "#E4E4E4",
+          backgroundColor: getSelectionMode === option2 ? "#AD40AF" : "#E4E4E4",
           borderRadius: 10,
           justifyContent: "center",
           alignItems: "center",
@@ -50,7 +50,7 @@ export default function PaymentSwitch({
       >
         <Text
           style={{
-            color: getSelectionMode == 2 ? "white" : "#AD40AF",
+            color: getSelectionMode === option2 ? "white" : "#AD40AF",
             fontSize: 14,
             fontFamily: "Roboto-Medium",
           }}

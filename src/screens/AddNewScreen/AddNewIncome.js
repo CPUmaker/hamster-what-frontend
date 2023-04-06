@@ -15,43 +15,18 @@ import { ListItem } from "@rneui/base";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import axios from "axios";
+import { getToday } from "react-native-common-date-picker/src/utils/dateFormat.js";
+
 import { CategorySelectionIncome } from "./CategorySelectIncome.js";
+import { endpoints } from "../../config";
 import { MoneyInput } from "./MoneyInput.js";
 import { WalletSelect } from "./WalletSelect.js";
-import axios from "axios";
-import { endpoints } from "../../config";
-import { getToday } from "react-native-common-date-picker/src/utils/dateFormat.js";
+import { categories_map, wallets_map, getKeyByValue } from "./utils.js";
 
 // get the screen height
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const Stack = createStackNavigator();
-
-function getKeyByValue(object, value) {
-  return Object.keys(object).find((key) => object[key] === value);
-}
-
-const categories_map = {
-  Food: 1,
-  Groceries: 2,
-  Transportation: 3,
-  clothing: 4,
-  Entertainment: 5,
-  Bill: 6,
-  Sports: 7,
-  Electronics: 8,
-  Travel: 9,
-  "House & Car": 10,
-  Salary: 11,
-  Others: 12,
-};
-
-const wallets_map = {
-  "Checking account": 1,
-  "Credit account": 2,
-  "Cash": 3,
-  "Savings account": 4,
-  "Other": 5
-};
 
 //// content for Expense interface -------------
 export function Income({ route, navigation }) {
