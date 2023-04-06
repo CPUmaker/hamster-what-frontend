@@ -22,7 +22,7 @@ import { CategorySelectionIncome } from "./CategorySelectIncome.js";
 import { endpoints } from "../../config";
 import { MoneyInput } from "./MoneyInput.js";
 import { WalletSelect } from "./WalletSelect.js";
-import { categories_income_map, wallets_map, getKeyByValue } from "./utils.js";
+import { categories_map, wallets_map, getKeyByValue } from "./utils.js";
 
 // get the screen height
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -38,7 +38,7 @@ export function Income({ route, navigation }) {
     price = "",
     wallet = 4,
   } = route.params === undefined ? {} : route.params;
-  categories = getKeyByValue(categories_income_map, categories);
+  categories = getKeyByValue(categories_map, categories);
   wallet = getKeyByValue(wallets_map, wallet);
 
   const [text, setText] = useState(comment);
@@ -95,7 +95,7 @@ export function Income({ route, navigation }) {
       title: selectedCategoryName.toString(),
       date: selectedDate.toString(),
       price: amount == "" ? "0" : amount.replace(/[^0-9.]/g, "").toString(),
-      categories: wallets_map[selectedCategoryName.toString()],
+      categories: categories_map[selectedCategoryName.toString()],
       wallet: wallets_map[selectedWallet.toString()],
       comment: text.toString(),
     };
@@ -186,11 +186,7 @@ export function Income({ route, navigation }) {
             <ListItem.Chevron />
           </ListItem>
         </TouchableOpacity>
-        {/* {selectedDate && (
-        <Text style={styles.selectedDateText}>
-          Selected Date: {selectedDate}
-        </Text>
-      )} */}
+
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"

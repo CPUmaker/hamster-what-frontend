@@ -36,34 +36,34 @@ export default function AddNewTab() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8,
-    backgroundColor: "#fff",
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-  },
-  content: {
-    margin: 3,
-  },
-  input: {
-    height: 40,
-    margin: -5,
-    borderWidth: 0,
-    padding: 5,
-  },
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     margin: 8,
+//     backgroundColor: "#fff",
+//     borderBottomLeftRadius: 50,
+//     borderBottomRightRadius: 50,
+//   },
+//   content: {
+//     margin: 3,
+//   },
+//   input: {
+//     height: 40,
+//     margin: -5,
+//     borderWidth: 0,
+//     padding: 5,
+//   },
 
-  button: {
-    backgroundColor: "#007AFF",
-    borderRadius: 5,
-    padding: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  selectedDateText: {
-    marginVertical: 10,
-  },
-});
+//   button: {
+//     backgroundColor: "#007AFF",
+//     borderRadius: 5,
+//     padding: 10,
+//   },
+//   buttonText: {
+//     color: "white",
+//     fontWeight: "bold",
+//   },
+//   selectedDateText: {
+//     marginVertical: 10,
+//   },
+// });

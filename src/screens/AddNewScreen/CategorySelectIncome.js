@@ -61,7 +61,7 @@ const categories = [
     name: "Income",
     icon: null,
     other_icon: (
-      <FontAwesome5 name="money-bill-alt" size={30} color="#68B984" />
+      <FontAwesome5 name="money-bill-alt" size={24} color="#68B984" />
     ),
     color: "#68B984",
   },
