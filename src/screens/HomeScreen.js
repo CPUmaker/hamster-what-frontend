@@ -77,7 +77,7 @@ export default function HomeScreen({ navigation, route }) {
           .filter((item) => item.value !== null)
           .sort((a, b) => b.value - a.value);
         setMonthBills(data);
-        //console.log(dayBills);
+        console.log("month:", dayBills);
       })
       .catch((error) => {
         console.log(`Get sum: ${error}`);

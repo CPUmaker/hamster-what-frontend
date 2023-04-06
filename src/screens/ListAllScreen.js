@@ -1,11 +1,10 @@
-import React, { useEffect, useReducer, useState, useRef } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
   FlatList,
-  PanResponder,
 } from "react-native";
 import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,20 +28,6 @@ const ItemCategory = [
 ];
 
 export default function ListAllScreen({ navigation }) {
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (evt, gestureState) => {
-        return gestureState.dx > 0 && Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
-      },
-      onPanResponderRelease: (evt, gestureState) => {
-        if (Math.abs(gestureState.dx) > 200) {
-          navigation.goBack();
-        }
-      },
-    })
-  ).current;
-
   useEffect(() => {
     navigation.getParent().setOptions({ swipeEnabled: false });
   }, []);
@@ -215,11 +200,17 @@ export default function ListAllScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.filterIcon}>
-          <AntDesign name="filter" size={24} color="black" />
-        </View>
-        <TouchableOpacity style={[styles.emptyButton, {backgroundColor: todayColor}]} onPress = {searchToday}>
+      <View style={styles.buttonGroups}>
+        <TouchableOpacity
+          style={[styles.emptyButton, { backgroundColor: allColor }]}
+          onPress={searchAll}
+        >
+          <Text>All</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.emptyButton, { backgroundColor: todayColor }]}
+          onPress={searchToday}
+        >
           <Text>Today</Text>
         </TouchableOpacity>
         <TouchableOpacity

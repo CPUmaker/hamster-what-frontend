@@ -6,8 +6,21 @@ import axios from "axios";
 import { BASE_URL, endpoints } from "../config";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-const ItemCategory = ["Food", "Groceries", "Transportation", "clothing", "Entertainment", "Bill", "Sports", "Electronics", "Travel", "House & Car", "Others"];
-
+const ItemCategory = [
+  "Food",
+  "Transportation",
+  "Shopping",
+  "Entertainment",
+  "Housing",
+  "Utilities",
+  "Other",
+  "Salary",
+  "Interest",
+  "Investment",
+  "Child benefit",
+  "Pension",
+  "Income"
+];
 export default function BillDetaisScreen({ navigation, route }) {
 
   const panResponder = useRef(
