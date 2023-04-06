@@ -141,13 +141,13 @@ export default function HomeScreen({ navigation, route }) {
 
         <View>
           <PaymentSwitch
-            selectionMode={1}
+            selectionMode={"Today"}
             option1="Today"
             option2="Monthly"
             onSelectSwitch={onSelectSwitch}
           />
         </View>
-        {switchTab == 1 && (
+        {switchTab == "Today" && (
           <FlatList
             data={dayBills}
             renderItem={renderItem}
@@ -156,7 +156,7 @@ export default function HomeScreen({ navigation, route }) {
             scrollEnabled={true}
           />
         )}
-        {switchTab == 2 && (
+        {switchTab == "Monthly" && (
           <FlatList
             data={monthBills}
             renderItem={renderItem}

@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useContext } from "react";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
 
-export function PasswordSettingScreen ({ route }) {
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+import { endpoints } from "../../config";
+import { AuthContext } from "../../context/AuthContext";
+
+export function PasswordSettingScreen({ route }) {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { logout } = useContext(AuthContext);
 
   const handleUpdatePassword = () => {
     if (newPassword !== confirmPassword) {
-      setErrorMessage('Passwords do not match');
+      setErrorMessage("Passwords do not match");
     } else {
-      // TODO: Send API request to update password
-      setErrorMessage('');
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
+      // Send API request to update password
+      axios
+      .put(
+        endpoints.change_password,
+        data = { old_password: currentPassword, new_password: newPassword }
+      )
+      .then(() => logout())
+      .catch((error) => {
+        console.log(`handleUpdatePassword: ${error}`)
+      });
+      setErrorMessage("");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     }
   };
 
@@ -39,7 +60,6 @@ export function PasswordSettingScreen ({ route }) {
         value={newPassword}
         onChangeText={setNewPassword}
         style={styles.input}
-        keyboardType="numeric"
       />
       <TextInput
         secureTextEntry={true}
@@ -47,62 +67,63 @@ export function PasswordSettingScreen ({ route }) {
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         style={styles.input}
-        keyboardType="numeric"
       />
-      {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
+      {errorMessage ? (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      ) : null}
       <TouchableOpacity onPress={handleUpdatePassword} style={styles.button}>
         <Text style={styles.buttonText}>Update Password</Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
   },
   input: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: "#F0F0F0",
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
   },
   button: {
-    backgroundColor: '#0066CC',
+    backgroundColor: "#0066CC",
     padding: 10,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
   },
   errorMessage: {
-    color: 'red',
+    color: "red",
     marginBottom: 10,
   },
 });
 
-export function PasswordSettingWrapper ({ navigation }) {
-  const [password, setPassword] = useState('');
+export function PasswordSettingWrapper({ navigation }) {
+  const [password, setPassword] = useState("");
 
   const handlePasswordEnter = () => {
     // TODO: Check if the entered password is correct
-    setPassword('');
-    navigation.navigate('Password Setting');
+    setPassword("");
+    navigation.navigate("Password Setting");
   };
 
   return (
@@ -118,6 +139,4 @@ export function PasswordSettingWrapper ({ navigation }) {
       />
     </View>
   );
-};
-
-
+}

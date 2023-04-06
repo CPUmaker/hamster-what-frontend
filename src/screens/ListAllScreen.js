@@ -1,13 +1,32 @@
 import React, { useEffect, useReducer, useState, useRef } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, PanResponder } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  PanResponder,
+} from "react-native";
 import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { BASE_URL, endpoints } from "../config";
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { AntDesign } from '@expo/vector-icons';
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { AntDesign } from "@expo/vector-icons";
 
-const ItemCategory = ["Food", "Groceries", "Transportation", "clothing", "Entertainment", "Bill", "Sports", "Electronics", "Travel", "House & Car", "Others"];
+const ItemCategory = [
+  "Food",
+  "Groceries",
+  "Transportation",
+  "clothing",
+  "Entertainment",
+  "Bill",
+  "Sports",
+  "Electronics",
+  "Travel",
+  "House & Car",
+  "Others",
+];
 
 export default function ListAllScreen({ navigation }) {
 
@@ -25,26 +44,63 @@ export default function ListAllScreen({ navigation }) {
   ).current;
 
   useEffect(() => {
-    navigation.getParent().setOptions({swipeEnabled: false});
-  }, [])
+    navigation.getParent().setOptions({ swipeEnabled: false });
+  }, []);
 
   useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      navigation.getParent().setOptions({swipeEnabled: true});
-    })
+    navigation.addListener("beforeRemove", (e) => {
+      navigation.getParent().setOptions({ swipeEnabled: true });
+    });
   }, [navigation]);
 
   const [listAll, setListAll] = useState(null);
   const [selectMonth, setSelectMonth] = useState(false);
   const [selectToday, setSelectToday] = useState(false);
-  const [monthColor, setMonthColor] = useState('#fff');
-  const [todayColor, setTodayColor] = useState('#fff');
+  const [selectAll, setSelectAll] = useState(true);
+  const [monthColor, setMonthColor] = useState("#fff");
+  const [todayColor, setTodayColor] = useState("#fff");
+  const [allColor, setAllColor] = useState("#ddd");
+
+  const retrieveItem = (id) => {
+    axios
+      .get(`${id}`)
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        if (parseFloat(data.price) >= 0) {
+          navigation.navigate("AddNew", {
+            screen: "Income",
+            params: {
+              categories: data.categories,
+              comment: data.comment,
+              date: data.date,
+              price: data.price,
+              wallet: data.wallet,
+            },
+          });
+        } else {
+          navigation.navigate("AddNew", {
+            screen: "Expense",
+            params: {
+              categories: data.categories,
+              comment: data.comment,
+              date: data.date,
+              price: data.price,
+              wallet: data.wallet,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(`RetrieveItem: ${error}`);
+      });
+  };
 
   const deleteItem = (id) => {
     axios
       .delete(`${id}`)
       .then(() => {
-        const newList = listAll.filter(item => item.url !== id);
+        const newList = listAll.filter((item) => item.url !== id);
         setListAll(newList);
       })
       .catch((error) => {
@@ -52,85 +108,101 @@ export default function ListAllScreen({ navigation }) {
       });
   };
 
-  function ListAll(){
+  function ListAll() {
     axios
-    .get(`${endpoints.bill}`)
-    .then((response) => {
-      setListAll(response.data.reverse());
-    })
-    .catch((error) => {
-      console.log(`Get List: ${error}`);
-    });
+      .get(`${endpoints.bill}`)
+      .then((response) => {
+        setListAll(response.data.reverse());
+      })
+      .catch((error) => {
+        console.log(`Get List: ${error}`);
+      });
   }
 
-  function ListToday(){
+  function ListToday() {
     axios
-    .get(`${endpoints.search}`, {params: {item: "date", keyword:"today"}})
-    .then((response) => {
-      setListAll(response.data.reverse());
-    })
-    .catch((error) => {
-      console.log(`Get List: ${error}`);
-    });
+      .get(`${endpoints.search}`, {
+        params: { item: "date", keyword: "today" },
+      })
+      .then((response) => {
+        setListAll(response.data.reverse());
+      })
+      .catch((error) => {
+        console.log(`ListToday: ${error}`);
+      });
   }
 
-  function ListMonth(){
+  function ListMonth() {
     axios
-    .get(`${endpoints.search}`, {params: {item: "date", keyword:"month"}})
-    .then((response) => {
-      setListAll(response.data.reverse());
-    })
-    .catch((error) => {
-      console.log(`Get List: ${error}`);
-    });
+      .get(`${endpoints.search}`, {
+        params: { item: "date", keyword: "month" },
+      })
+      .then((response) => {
+        setListAll(response.data.reverse());
+      })
+      .catch((error) => {
+        console.log(`ListMonth: ${error}`);
+      });
   }
 
-  const searchToday = () =>{
-    if(selectToday){
-      setSelectToday(false);
-      setTodayColor('#fff');
-      ListAll();
-    }
-    else{
-      setSelectToday(true);
-      setTodayColor('#ddd');
-      setMonthColor('#fff');
-      setSelectMonth(false);
-      ListToday();
-    }
-  }
+  const resetFilters = () => {
+    setSelectAll(false);
+    setAllColor("#fff");
+    setSelectToday(false);
+    setTodayColor("#fff");
+    setSelectMonth(false);
+    setMonthColor("#fff");
+  };
 
-  const searchMonthly = () =>{
-    if(selectMonth){
-      setSelectMonth(false);
-      setMonthColor('#fff');
-      ListAll();
-    }
-    else{
-      setSelectMonth(true);
-      setMonthColor('#ddd');
-      setTodayColor('#fff');
-      setSelectToday(false);
-      ListMonth();
-    }
-  }
+  const searchAll = () => {
+    if (selectAll) { return; }
+    resetFilters();
+    setSelectAll(true);
+    setAllColor("#ddd");
+    ListAll();
+  };
 
-  const renderLeftActions = () => (
-    <TouchableOpacity style={[styles.button, styles.leftButton]}>
+  const searchToday = () => {
+    if (selectToday) { return; }
+    resetFilters();
+    setSelectToday(true);
+    setTodayColor("#ddd");
+    ListToday();
+  };
+
+  const searchMonthly = () => {
+    if (selectMonth) { return; }
+    resetFilters();
+    setSelectMonth(true);
+    setMonthColor("#ddd");
+    ListMonth();
+  };
+
+  const renderLeftActions = (id) => (
+    <TouchableOpacity
+      style={[styles.button, styles.leftButton]}
+      onPress={() => retrieveItem(id)}
+    >
       <Text style={styles.money_text}>Details</Text>
     </TouchableOpacity>
   );
-  
+
   const renderRightActions = (id) => (
-    <TouchableOpacity style={[styles.button, styles.rightButton]} onPress={() => deleteItem(id)}>
+    <TouchableOpacity
+      style={[styles.button, styles.rightButton]}
+      onPress={() => deleteItem(id)}
+    >
       <Text style={styles.money_text}>Delete</Text>
     </TouchableOpacity>
   );
 
   const renderItem = ({ item }) => (
-    <Swipeable renderLeftActions={renderLeftActions} renderRightActions={() => renderRightActions(item.url)}>
+    <Swipeable
+      renderLeftActions={() => renderLeftActions(item.url)}
+      renderRightActions={() => renderRightActions(item.url)}
+    >
       <CatagoryItem
-        name={ItemCategory[item.categories-1]}
+        name={ItemCategory[item.categories - 1]}
         money={item.price}
         date={item.date}
       />
@@ -141,19 +213,8 @@ export default function ListAllScreen({ navigation }) {
     ListAll();
   }, []);
 
-  useEffect(() => {
-    axios
-    .get(`${endpoints.search}`, {params: {item: "categories", keyword: "1"}} )
-    .then((response) => {
-      console.log(response.data)
-    })
-    .catch((error) => {
-      console.log(`Get sum: ${error}`);
-    });
-  })
-
   return (
-    <SafeAreaView style={styles.container} {...panResponder.panHandlers}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.filterIcon}>
           <AntDesign name="filter" size={24} color="black" />
@@ -161,8 +222,11 @@ export default function ListAllScreen({ navigation }) {
         <TouchableOpacity style={[styles.emptyButton, {backgroundColor: todayColor}]} onPress = {searchToday}>
           <Text>Today</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.emptyButton, {backgroundColor: monthColor}]} onPress = {searchMonthly}>
-          <Text>Month</Text>
+        <TouchableOpacity
+          style={[styles.emptyButton, { backgroundColor: monthColor }]}
+          onPress={searchMonthly}
+        >
+          <Text>This Month</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -179,42 +243,38 @@ export default function ListAllScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  filterIcon: {
-    marginRight: 10,
-    marginLeft: 20,
+  buttonGroups: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    paddingHorizontal: 5,
   },
   button: {
     padding: 10,
     width: 100,
     margin: 10,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  emptyButton:{
-    margin: 5,
-    borderRadius: 30,
+  emptyButton: {
+    flex: 1,
+    margin: 0,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#888',
+    borderColor: "#888",
     height: 30,
-    width: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },  
+    //width: 150,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   leftButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
   },
   rightButton: {
-    backgroundColor: '#f44336',
+    backgroundColor: "#f44336",
   },
   money_text: {
     color: "#fff",
