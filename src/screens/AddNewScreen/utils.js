@@ -1,28 +1,29 @@
 const categories_map = {
-  "Food": 1,
-  "Groceries": 2,
-  "Transportation": 3,
-  "clothing": 4,
-  "Entertainment": 5,
-  "Bill": 6,
-  "Sports": 7,
-  "Electronics": 8,
-  "Travel": 9,
-  "House & Car": 10,
-  "Salary": 11,
-  "Others": 12,
+  Food: 1,
+  Transportation: 2,
+  Shopping: 3,
+  Entertainment: 4,
+  Housing: 5,
+  Utilities: 6,
+  Other: 7,
+  Salary: 8,
+  Interest: 9,
+  Investments: 10,
+  "Child benefit": 11,
+  Pension: 12,
+  Income: 13,
 };
 
 const wallets_map = {
   "Checking account": 1,
   "Credit account": 2,
-  "Cash": 3,
+  Cash: 3,
   "Savings account": 4,
-  "Other": 5,
+  Other: 5,
 };
 
 function getKeyByValue(object, value) {
-  return Object.keys(object).find(key => object[key] === value);
+  return Object.keys(object).find((key) => object[key] === value);
 }
 
 export { categories_map, wallets_map, getKeyByValue };

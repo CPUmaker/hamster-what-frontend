@@ -32,7 +32,7 @@ const Stack = createStackNavigator();
 export function Income({ route, navigation }) {
   // initialize the details for a bill
   let {
-    categories = 11,
+    categories = 8,
     comment = "",
     date = getToday(),
     price = "",
@@ -120,7 +120,7 @@ export function Income({ route, navigation }) {
           >
             <View style={styles.modal}>
               {CategorySelectionIncome(setSelectedCategoryName)}
-              <TouchableOpacity onPress={closeModal} style={styles.button}>
+              <TouchableOpacity onPress={closeModal} style={styles.doneButton}>
                 <Text style={styles.buttonText}>Done</Text>
               </TouchableOpacity>
             </View>
@@ -186,11 +186,7 @@ export function Income({ route, navigation }) {
             <ListItem.Chevron />
           </ListItem>
         </TouchableOpacity>
-        {/* {selectedDate && (
-        <Text style={styles.selectedDateText}>
-          Selected Date: {selectedDate}
-        </Text>
-      )} */}
+
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
@@ -229,6 +225,15 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    backgroundColor: "#A04AAA",
+    width: 160,
+    alignItems: "center",
+    borderRadius: 50,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginTop: 40,
+  },
+  doneButton: {
     backgroundColor: "#A04AAA",
     width: 160,
     alignItems: "center",

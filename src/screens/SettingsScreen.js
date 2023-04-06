@@ -86,23 +86,19 @@ export default function SettingsScreen({ navigation }) {
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
-          <ListItem containerStyle={styles.container_item}>
+          {/* <ListItem containerStyle={styles.container_item}>
             <Entypo name="bell" size={24} color="black" />
             <ListItem.Content>
               <ListItem.Title>Subscription</ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
-          </ListItem>
+          </ListItem> */}
 
           <Text style={styles.settings_title}>App Settings</Text>
           <ListItem containerStyle={styles.container_item}>
-            <MaterialCommunityIcons
-              name="cloud-sync-outline"
-              size={24}
-              color="black"
-            />
+            <MaterialIcons name="attach-money" size={24} color="black" />
             <ListItem.Content>
-              <ListItem.Title>Sync</ListItem.Title>
+              <ListItem.Title>Unit Settings</ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -125,7 +121,7 @@ export default function SettingsScreen({ navigation }) {
             </ListItem>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate("Notification");
             }}
@@ -137,7 +133,7 @@ export default function SettingsScreen({ navigation }) {
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <Text style={styles.settings_title}>Security</Text>
           <TouchableOpacity
