@@ -23,7 +23,7 @@ import {
 import { AuthContext } from "../context/AuthContext";
 
 export default function SettingsScreen({ navigation }) {
-  const { logout, turnOnBioAuth, turnOffBioAuth, isUsingBioAuth } =
+  const { accountDelete, turnOnBioAuth, turnOffBioAuth, isUsingBioAuth } =
     useContext(AuthContext);
   const deleteCheck = () => {
     Alert.alert(
@@ -33,7 +33,7 @@ export default function SettingsScreen({ navigation }) {
         {
           text: "Confirm",
           onPress: () => {
-            logout();
+            accountDelete();
             console.log("Confirm Pressed");
           },
           style: "destructive",

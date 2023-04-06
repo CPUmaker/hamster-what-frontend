@@ -77,6 +77,19 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const accountDelete = () => {
+    setIsLoading(true);
+
+    axios
+      .delete(endpoints.delete_account)
+      .then((res) => {
+        clearUserAuthContext();
+        console.log(`${res.data.msg}`);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(`accountDelete: ${error}`));
+  };
+
   const isTokenValid = async () => {
     const { data } = await axios.get(endpoints.validate_token);
     console.log(`isTokenValid: ${data.valid}`);
@@ -238,6 +251,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         login,
         logout,
+        accountDelete,
         bioAuth,
         googleAuth,
         facebookAuth,

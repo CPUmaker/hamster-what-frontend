@@ -1,4 +1,4 @@
-export const BASE_URL = "http://127.0.0.1:8000";
+export const BASE_URL = "https://hamsterwhat.com";
 
 const API_URL = BASE_URL + "/api";
 
@@ -7,6 +7,7 @@ export const endpoints = {
   login: API_URL + "/auth/login",
   logout: API_URL + "/auth/logout",
   validate_token: API_URL + "/auth/validate-token",
+  delete_account: API_URL + "/auth/delete-account",
   apple: API_URL + "/auth/apple",
   google: API_URL + "/auth/google",
   facebook: API_URL + "/auth/facebook",
