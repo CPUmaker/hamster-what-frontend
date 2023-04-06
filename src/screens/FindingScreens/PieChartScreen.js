@@ -64,7 +64,6 @@ export default function PieChartScreen() {
       })
       .then((res) => {
         // preprocess response.data
-        console.log(`transDir: ${transDir}`)
         const data = res.data.filter((item) => {
           if (transDir === TransDirection.Expense) {
             return parseFloat(item.price) < 0;
