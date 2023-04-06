@@ -10,7 +10,7 @@ import {
 
 const categories = [
   {
-    id: 1,
+    id: 8,
     name: "Salary",
     icon: null,
     other_icon: (
@@ -19,7 +19,7 @@ const categories = [
     color: "#f39c12",
   },
   {
-    id: 2,
+    id: 9,
     name: "Interest",
     icon: null,
     other_icon: (
@@ -28,7 +28,7 @@ const categories = [
     color: "#9b59b6",
   },
   {
-    id: 3,
+    id: 10,
     name: "Investments",
     icon: null,
     other_icon: (
@@ -37,7 +37,7 @@ const categories = [
     color: "#3498db",
   },
   {
-    id: 4,
+    id: 11,
     name: "Child benefit",
     icon: null,
     other_icon: (
@@ -50,14 +50,14 @@ const categories = [
     color: "#f39c12",
   },
   {
-    id: 5,
+    id: 12,
     name: "Pension",
     icon: null,
     other_icon: <Entypo name="shield" size={30} color="#4E6E81" />,
     color: "#4E6E81",
   },
   {
-    id: 6,
+    id: 13,
     name: "Income",
     icon: null,
     other_icon: (

@@ -32,7 +32,7 @@ const Stack = createStackNavigator();
 export function Income({ route, navigation }) {
   // initialize the details for a bill
   let {
-    categories = 1,
+    categories = 8,
     comment = "",
     date = getToday(),
     price = "",

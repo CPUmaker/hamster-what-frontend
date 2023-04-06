@@ -14,12 +14,12 @@ const categories_map = {
 };
 
 const categories_income_map = {
-  Salary: 1,
-  Interest: 2,
-  Investments: 3,
-  "Child benefit": 4,
-  Pension: 5,
-  Income: 6,
+  Salary: 8,
+  Interest: 9,
+  Investments: 10,
+  "Child benefit": 11,
+  Pension: 12,
+  Income: 13,
   Other: 7,
 };
 
