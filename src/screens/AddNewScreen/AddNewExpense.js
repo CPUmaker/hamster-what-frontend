@@ -39,7 +39,7 @@ export function Expense({ route, navigation }) {
     wallet = 2,
   } = route.params === undefined ? {} : route.params;
   categories = getKeyByValue(categories_map, categories);
-  wallet = getKeyByValue(wallets_map, wallet);;
+  wallet = getKeyByValue(wallets_map, wallet);
 
   const [text, setText] = useState(comment);
 
@@ -94,7 +94,8 @@ export function Expense({ route, navigation }) {
     data = {
       title: selectedCategoryName.toString(),
       date: selectedDate.toString(),
-      price: amount == "" ? "0" : "-" + amount.replace(/[^0-9.]/g, "").toString(),
+      price:
+        amount == "" ? "0" : "-" + amount.replace(/[^0-9.]/g, "").toString(),
       categories: categories_map[selectedCategoryName.toString()],
       wallet: wallets_map[selectedWallet.toString()],
       comment: text.toString(),
@@ -120,11 +121,12 @@ export function Expense({ route, navigation }) {
           >
             <View style={styles.modal}>
               {CategorySelectionExpense(setSelectedCategoryName)}
-              <TouchableOpacity onPress={closeModal} style={styles.button}>
+              <TouchableOpacity onPress={closeModal} style={styles.doneButton}>
                 <Text style={styles.buttonText}>Done</Text>
               </TouchableOpacity>
             </View>
           </Modal>
+
           <ListItem bottomDivider>
             <Entypo name="box" size={24} color="#B2B2B2" />
             <ListItem.Content>
@@ -143,6 +145,7 @@ export function Expense({ route, navigation }) {
           >
             <View style={styles.modal}>
               {WalletSelect(setselectedWallet)}
+              {/* this is the done button in wallet */}
               <TouchableOpacity
                 onPress={WalletCloseModal}
                 style={styles.button}
@@ -236,6 +239,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 40,
   },
+  doneButton: {
+    backgroundColor: "#A04AAA",
+    width: 160,
+    alignItems: "center",
+    borderRadius: 50,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginTop: 40,
+  },
+
   saveButton: {
     alignSelf: "center",
     backgroundColor: "#A04AAA",
