@@ -1,69 +1,171 @@
-import React from "react";
-import { StyleSheet, View, ScrollView} from "react-native";
-
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, PanResponder } from "react-native";
 import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
+import { BASE_URL, endpoints } from "../config";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-const groceriesBills = [
-  {
-    key: 1,
-    name: "Costco",
-    date:"2023-1-12",
-    money: "120",
-  },
-  {
-    key: 2,
-    name: "Walmart",
-    date: "2022-1-13",
-    money: "59",
-  },
+const ItemCategory = [
+  "Food",
+  "Transportation",
+  "Shopping",
+  "Entertainment",
+  "Housing",
+  "Utilities",
+  "Other",
+  "Salary",
+  "Interest",
+  "Investment",
+  "Child benefit",
+  "Pension",
+  "Income"
 ];
+export default function BillDetaisScreen({ navigation, route }) {
 
-export default function BillDetailsScreen() {
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        return gestureState.dx > 0 && Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        if (Math.abs(gestureState.dx) > 200) {
+          navigation.goBack();
+        }
+      },
+    })
+  ).current;
 
-  const mapItems = groceriesBills.map((l) =>
-    <CatagoryItem 
-      key={l.key}
-      name={l.name}
-      money={l.money}
-      date={l.date}
-    >
-    </CatagoryItem>       
-  )
+  useEffect(() => {
+    navigation.getParent().setOptions({swipeEnabled: false});
+  }, [])
+
+  useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      navigation.getParent().setOptions({swipeEnabled: true});
+    })
+  }, [navigation]);
+
+  const [listAll, setListAll] = useState(null);
+
+  const deleteItem = (id) => {
+    axios
+      .delete(`${id}`)
+      .then(() => {
+        const newList = listAll.filter(item => item.url !== id);
+        setListAll(newList);
+      })
+      .catch((error) => {
+        console.log(`Delete Item: ${error}`);
+      });
+  };
+
+  function ListAll(callback) {
+    axios
+      .get(`${endpoints.bill}`)
+      .then((response) => {
+        const newListAll = response.data.reverse();
+        callback(newListAll);
+      })
+      .catch((error) => {
+        console.log(`Get List: ${error}`);
+      });
+  }
+
+  function filterList(list, category, filterType) {
+    const categoryKey = ItemCategory.indexOf(category) + 1;
+    let filteredList = [];
+  
+    if (filterType === "Monthly") {
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() - 30);
+      filteredList = list.filter((item) => {
+        const itemDate = new Date(item.date);
+        const itemCategory = item.categories;
+        return itemDate >= currentDate && itemCategory === categoryKey;
+      });
+    } else if (filterType === "Today") {
+      const currentDate = new Date();
+      currentDate.setHours(currentDate.getHours() - 24);
+      filteredList = list.filter((item) => {
+        const itemDate = new Date(item.date);
+        const itemCategory = item.categories;
+        return itemDate >= currentDate && itemCategory === categoryKey;
+      });
+    }
+    return filteredList;
+  }
+
+  const renderLeftActions = () => (
+    <TouchableOpacity style={[styles.button, styles.leftButton]}>
+      <Text style={styles.money_text}>Details</Text>
+    </TouchableOpacity>
+  );
+  
+  const renderRightActions = (id) => (
+    <TouchableOpacity style={[styles.button, styles.rightButton]} onPress={() => deleteItem(id)}>
+      <Text style={styles.money_text}>Delete</Text>
+    </TouchableOpacity>
+  );
+
+  const renderItem = ({ item }) => (
+    <Swipeable renderLeftActions={renderLeftActions} renderRightActions={() => renderRightActions(item.url)}>
+      <CatagoryItem
+        name={ItemCategory[item.categories-1]}
+        money={item.price}
+        date={item.date}
+      />
+    </Swipeable>
+  );
+
+  useEffect(() => {
+    ListAll((newListAll) => {
+      const filteredListAll = filterList(newListAll, route.params.title, route.params.id);
+      setListAll(filteredListAll);
+    });
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={{ padding: 20 }}>
-      <View>
-        {mapItems}
-      </View>
-    </ScrollView>
+    <SafeAreaView style={styles.container} {...panResponder.panHandlers}>
+      <FlatList
+        data={listAll}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.url.toString()}
+        contentContainerStyle={{ padding: 20 }}
+        extraData={listAll}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: '#fff',
-    alignItems: "center",
-    margin: 4,
-  },
-  item_container: {
-    flexDirection: "row",
-    alignContent: "center",
     flex: 1,
-  },
-  detail_text: {
-    color: "#333",
-    fontFamily: "Roboto-Medium",
-    fontSize: 14,
+    backgroundColor: '#fff',
   },
   button: {
-    backgroundColor: "#0aada8",
     padding: 10,
     width: 100,
+    margin: 10,
     borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyButton:{
+    margin: 5,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#888',
+    height: 30,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },  
+  leftButton: {
+    backgroundColor: '#4CAF50',
+  },
+  rightButton: {
+    backgroundColor: '#f44336',
   },
   money_text: {
     color: "#fff",
@@ -72,4 +174,3 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
-

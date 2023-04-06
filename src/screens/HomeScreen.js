@@ -77,7 +77,7 @@ export default function HomeScreen({ navigation, route }) {
           .filter((item) => item.value !== null)
           .sort((a, b) => b.value - a.value);
         setMonthBills(data);
-        //console.log(dayBills);
+        console.log("month:", dayBills);
       })
       .catch((error) => {
         console.log(`Get sum: ${error}`);
@@ -99,8 +99,8 @@ export default function HomeScreen({ navigation, route }) {
         money={item.value}
         onPressCallback={() =>
           navigation.navigate("BillDetails", {
-            title: item.name,
-            id: item.key,
+            title: item.key,
+            id: switchTab,
           })
         }
       />
