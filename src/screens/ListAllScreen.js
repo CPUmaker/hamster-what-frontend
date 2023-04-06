@@ -15,16 +15,18 @@ import { AntDesign } from "@expo/vector-icons";
 
 const ItemCategory = [
   "Food",
-  "Groceries",
   "Transportation",
-  "clothing",
+  "Shopping",
   "Entertainment",
-  "Bill",
-  "Sports",
-  "Electronics",
-  "Travel",
-  "House & Car",
-  "Others",
+  "Housing",
+  "Utilities",
+  "Other",
+  "Salary",
+  "Interest",
+  "Investment",
+  "Child benefit",
+  "Pension",
+  "Income"
 ];
 
 export default function ListAllScreen({ navigation }) {
