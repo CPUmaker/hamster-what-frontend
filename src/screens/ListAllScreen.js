@@ -1,5 +1,5 @@
-import React, { useEffect, useReducer, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from "react-native";
+import React, { useEffect, useReducer, useState, useRef } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, PanResponder } from "react-native";
 import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
@@ -10,6 +10,20 @@ import { AntDesign } from '@expo/vector-icons';
 const ItemCategory = ["Food", "Groceries", "Transportation", "clothing", "Entertainment", "Bill", "Sports", "Electronics", "Travel", "House & Car", "Others"];
 
 export default function ListAllScreen({ navigation }) {
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        return gestureState.dx > 0 && Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        if (Math.abs(gestureState.dx) > 200) {
+          navigation.goBack();
+        }
+      },
+    })
+  ).current;
+
   useEffect(() => {
     navigation.getParent().setOptions({swipeEnabled: false});
   }, [])
@@ -139,7 +153,7 @@ export default function ListAllScreen({ navigation }) {
   })
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} {...panResponder.panHandlers}>
       <View style={styles.header}>
         <View style={styles.filterIcon}>
           <AntDesign name="filter" size={24} color="black" />

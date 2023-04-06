@@ -99,8 +99,8 @@ export default function HomeScreen({ navigation, route }) {
         money={item.value}
         onPressCallback={() =>
           navigation.navigate("BillDetails", {
-            title: item.name,
-            id: item.key,
+            title: item.key,
+            id: switchTab,
           })
         }
       />
