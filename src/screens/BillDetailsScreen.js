@@ -63,7 +63,7 @@ export default function BillDetaisScreen({ navigation, route }) {
     const categoryKey = ItemCategory.indexOf(category) + 1;
     let filteredList = [];
   
-    if (filterType === 2) {
+    if (filterType === "Monthly") {
       const currentDate = new Date();
       currentDate.setDate(currentDate.getDate() - 30);
       filteredList = list.filter((item) => {
@@ -71,7 +71,7 @@ export default function BillDetaisScreen({ navigation, route }) {
         const itemCategory = item.categories;
         return itemDate >= currentDate && itemCategory === categoryKey;
       });
-    } else if (filterType === 1) {
+    } else if (filterType === "Today") {
       const currentDate = new Date();
       currentDate.setHours(currentDate.getHours() - 24);
       filteredList = list.filter((item) => {

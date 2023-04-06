@@ -21,7 +21,7 @@ import { useFocusEffect } from "@react-navigation/native";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export default function HomeScreen({ navigation, route }) {
-  const [switchTab, setSwitchTab] = useState(1);
+  const [switchTab, setSwitchTab] = useState("Today");
   const [ifReadProfile, setReadProfile] = useState(true);
   const { readProfile, userProfile } = useContext(ProfileContext);
   const photoAddr = [
