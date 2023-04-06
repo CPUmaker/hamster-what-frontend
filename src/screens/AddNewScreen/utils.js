@@ -13,6 +13,16 @@ const categories_map = {
   // "Others": 12,
 };
 
+const categories_income_map = {
+  Salary: 1,
+  Interest: 2,
+  Investments: 3,
+  "Child benefit": 4,
+  Pension: 5,
+  Income: 6,
+  Other: 7,
+};
+
 const wallets_map = {
   "Checking account": 1,
   "Credit account": 2,
@@ -25,4 +35,4 @@ function getKeyByValue(object, value) {
   return Object.keys(object).find((key) => object[key] === value);
 }
 
-export { categories_map, wallets_map, getKeyByValue };
+export { categories_income_map, categories_map, wallets_map, getKeyByValue };

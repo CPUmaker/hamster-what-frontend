@@ -12,21 +12,18 @@ import {
   Dimensions,
   TextInput,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 
 import Modal from "react-native-modal";
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 // import different screen
-import { Expense } from './AddNewScreen/AddNewExpense.js'
-import { Income } from './AddNewScreen/AddNewIncome.js'
-import { Transfer } from './AddNewScreen/AddNewTransfer.js'
+import { Expense } from "./AddNewScreen/AddNewExpense.js";
+import { Income } from "./AddNewScreen/AddNewIncome.js";
 
 // get the screen heightr
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-
-const categories = ['Food', 'Shopping', 'Accommodation', 'Transportation', 'Entertainment'];
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -35,22 +32,20 @@ export default function AddNewTab() {
     <Tab.Navigator>
       <Tab.Screen name="Expense" component={Expense} />
       <Tab.Screen name="Income" component={Income} />
-      {/* <Tab.Screen name="Transfer" component={Transfer} /> */}
     </Tab.Navigator>
   );
-};
+}
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     margin: 8,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
   },
   content: {
-    margin: 3
+    margin: 3,
   },
   input: {
     height: 40,
@@ -60,16 +55,15 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: "#007AFF",
     borderRadius: 5,
     padding: 10,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   selectedDateText: {
     marginVertical: 10,
   },
-
 });
