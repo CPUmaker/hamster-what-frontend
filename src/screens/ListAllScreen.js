@@ -15,16 +15,18 @@ import { AntDesign } from "@expo/vector-icons";
 
 const ItemCategory = [
   "Food",
-  "Groceries",
   "Transportation",
-  "clothing",
+  "Shopping",
   "Entertainment",
-  "Bill",
-  "Sports",
-  "Electronics",
-  "Travel",
-  "House & Car",
-  "Others",
+  "Housing",
+  "Utilities",
+  "Other",
+  "Salary",
+  "Interest",
+  "Investment",
+  "Child benefit",
+  "Pension",
+  "Income"
 ];
 
 export default function ListAllScreen({ navigation }) {
@@ -107,7 +109,7 @@ export default function ListAllScreen({ navigation }) {
   function ListToday() {
     axios
       .get(`${endpoints.search}`, {
-        params: { item: "date", keyword: "today" },
+        params: { item: "date", keyword: "day" },
       })
       .then((response) => {
         setListAll(response.data.reverse());
