@@ -195,7 +195,11 @@ export default function HomeScreen({ navigation, route }) {
           left: SCREEN_WIDTH * 0.5 - 25,
         }}
       >
-        <Ionicons name="add-circle" size={50} color="#283044" />
+        <Ionicons
+          name="add-circle"
+          size={50}
+          color={isDarkModeEnabled ? "#aaa" : "#283044"}
+        />
       </TouchableOpacity>
     </SafeAreaView>
   );

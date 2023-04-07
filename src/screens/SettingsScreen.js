@@ -112,9 +112,7 @@ export default function SettingsScreen({ navigation }) {
             >
               <MaterialCommunityIcons name="account" size={24} color="black" />
               <ListItem.Content>
-                <ListItem.Title>
-                  <Text style={[styles.text, themeTextStyle]}>Profile</Text>
-                </ListItem.Title>
+                <ListItem.Title style={themeTextStyle}>Profile</ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
@@ -125,10 +123,8 @@ export default function SettingsScreen({ navigation }) {
           >
             <Octicons name="checklist" size={24} color="black" />
             <ListItem.Content>
-              <ListItem.Title>
-                <Text style={[styles.text, themeTextStyle]}>
-                  Account Information
-                </Text>
+              <ListItem.Title style={themeTextStyle}>
+                Account Information
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
@@ -141,13 +137,17 @@ export default function SettingsScreen({ navigation }) {
             <ListItem.Chevron />
           </ListItem> */}
 
-          <Text style={styles.settings_title}>App Settings</Text>
+          <Text style={[styles.settings_title, themeTextStyle]}>
+            App Settings
+          </Text>
           <ListItem
             containerStyle={[styles.container_item, themeContainerStyle]}
           >
             <MaterialIcons name="attach-money" size={24} color="black" />
             <ListItem.Content>
-              <ListItem.Title>Unit Settings</ListItem.Title>
+              <ListItem.Title style={themeTextStyle}>
+                Unit Settings
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -161,7 +161,7 @@ export default function SettingsScreen({ navigation }) {
               color="black"
             />
             <ListItem.Content>
-              <ListItem.Title>Dark Mode</ListItem.Title>
+              <ListItem.Title style={themeTextStyle}>Dark Mode</ListItem.Title>
             </ListItem.Content>
             <Switch
               value={isDarkModeEnabled}
@@ -185,7 +185,7 @@ export default function SettingsScreen({ navigation }) {
             </ListItem>
           </TouchableOpacity> */}
 
-          <Text style={styles.settings_title}>Security</Text>
+          <Text style={[styles.settings_title, themeTextStyle]}>Security</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Password");
@@ -200,7 +200,7 @@ export default function SettingsScreen({ navigation }) {
                 color="black"
               />
               <ListItem.Content>
-                <ListItem.Title>Password</ListItem.Title>
+                <ListItem.Title style={themeTextStyle}>Password</ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
@@ -215,7 +215,9 @@ export default function SettingsScreen({ navigation }) {
               color="black"
             />
             <ListItem.Content>
-              <ListItem.Title>FaceID / TouchID</ListItem.Title>
+              <ListItem.Title style={themeTextStyle}>
+                FaceID / TouchID
+              </ListItem.Title>
             </ListItem.Content>
             <Switch
               value={isUsingBioAuth}
@@ -225,7 +227,7 @@ export default function SettingsScreen({ navigation }) {
             />
           </ListItem>
 
-          <Text style={styles.settings_title}>Support</Text>
+          <Text style={[styles.settings_title, themeTextStyle]}>Support</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Contact Us");
@@ -236,7 +238,9 @@ export default function SettingsScreen({ navigation }) {
             >
               <AntDesign name="phone" size={24} color="black" />
               <ListItem.Content>
-                <ListItem.Title>Contact us</ListItem.Title>
+                <ListItem.Title style={themeTextStyle}>
+                  Contact us
+                </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
@@ -259,7 +263,9 @@ export default function SettingsScreen({ navigation }) {
           <View style={{ marginBottom: 5 }}></View>
           <View></View>
 
-          <Text style={styles.settings_title}>Miscellaneous</Text>
+          <Text style={[styles.settings_title, themeTextStyle]}>
+            Miscellaneous
+          </Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Terms & Conditions");
@@ -269,7 +275,9 @@ export default function SettingsScreen({ navigation }) {
               containerStyle={[styles.container_item, themeContainerStyle]}
             >
               <ListItem.Content>
-                <ListItem.Title>Terms & Conditions</ListItem.Title>
+                <ListItem.Title style={themeTextStyle}>
+                  Terms & Conditions
+                </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
@@ -284,7 +292,9 @@ export default function SettingsScreen({ navigation }) {
               containerStyle={[styles.container_item, themeContainerStyle]}
             >
               <ListItem.Content>
-                <ListItem.Title>Privacy Policy</ListItem.Title>
+                <ListItem.Title style={themeTextStyle}>
+                  Privacy Policy
+                </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
@@ -312,7 +322,6 @@ const styles = StyleSheet.create({
   darkThemeText: {
     color: "#d0d0c0",
   },
-
   settings_title: {
     fontSize: 18,
     fontFamily: "Roboto-Medium",

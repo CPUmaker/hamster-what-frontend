@@ -14,6 +14,7 @@ import PieChartHelper from "../../components/PieChartHelper";
 import { AnimatedText } from "../../components/AnimatedText";
 import { endpoints } from "../../config";
 import { categories_map, getKeyByValue } from "../AddNewScreen/utils";
+import categoryIcons from "../../components/CategoryIcons";
 import PaymentSwitch from "../../components/PaymentSwitch";
 import ListItem from "../../components/ListItem";
 import { ThemeContext } from "../../context/ThemeContext";
@@ -91,6 +92,7 @@ export default function PieChartScreen() {
         let pieData = categoriesSum.map((item, index) => ({
           x: getKeyByValue(categories_map, index + 1),
           y: item,
+          fill: categoryIcons.find((c) => c.id === index + 1).color,
         }));
         if (transDir === TransDirection.Expense) {
           setExpenseData(pieData);
@@ -98,7 +100,10 @@ export default function PieChartScreen() {
           setIncomeData(pieData);
         }
         pieData = pieData.filter((item) => item.y !== 0);
-        pieData = pieData.length === 0 ? [{ x: "No Bill", y: 100 }] : pieData;
+        pieData =
+          pieData.length === 0
+            ? [{ x: "No Bill", y: 100, fill: "grey" }]
+            : pieData;
         setPieData(pieData);
         console.log(JSON.stringify(pieData));
       })

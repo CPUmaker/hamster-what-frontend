@@ -44,10 +44,10 @@ const categories = [
       <MaterialCommunityIcons
         name="baby-face-outline"
         size={30}
-        color={"#f39c12"}
+        color={"#f300f3"}
       />
     ),
-    color: "#f39c12",
+    color: "#f300f3",
   },
   {
     id: 12,

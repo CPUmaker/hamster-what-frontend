@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
-import { BASE_URL, endpoints } from "../config";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { AntDesign } from "@expo/vector-icons";
+
+import { ThemeContext } from "../context/ThemeContext";
+import CatagoryItem from "../components/CatagoryItem";
+import { endpoints } from "../config";
 
 const ItemCategory = [
   "Food",
@@ -26,7 +28,7 @@ const ItemCategory = [
   "Investment",
   "Child benefit",
   "Pension",
-  "Income"
+  "Income",
 ];
 
 export default function ListAllScreen({ navigation }) {
@@ -39,6 +41,8 @@ export default function ListAllScreen({ navigation }) {
       navigation.getParent().setOptions({ swipeEnabled: true });
     });
   }, [navigation]);
+
+  const { isDarkModeEnabled } = useContext(ThemeContext);
 
   const [listAll, setListAll] = useState(null);
   const [selectMonth, setSelectMonth] = useState(false);
@@ -207,7 +211,9 @@ export default function ListAllScreen({ navigation }) {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={isDarkModeEnabled ? styles.dark_container : styles.light_container}
+    >
       <View style={styles.buttonGroups}>
         <TouchableOpacity
           style={[styles.emptyButton, { backgroundColor: allColor }]}
@@ -240,9 +246,13 @@ export default function ListAllScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  light_container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  dark_container: {
+    flex: 1,
+    backgroundColor: "#242c40",
   },
   buttonGroups: {
     flexDirection: "row",

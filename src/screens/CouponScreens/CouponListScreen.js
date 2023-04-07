@@ -124,7 +124,9 @@ export default function CouponListScreen() {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{ backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff" }}
+    >
       <FlatList
         data={coupons}
         initialNumToRender={5}
@@ -132,7 +134,7 @@ export default function CouponListScreen() {
           return (
             <Card
               containerStyle={{
-                backgroundColor: isDarkModeEnabled ? "#121212" : "#fff",
+                backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff",
               }}
             >
               <Card.Title

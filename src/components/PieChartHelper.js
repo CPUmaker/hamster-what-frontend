@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View } from "react-native";
 import { VictoryPie, VictoryTheme } from "victory-native";
+import { ThemeContext } from "../context/ThemeContext";
 
 const defaultGraphicData = [
   { x: "Liquid", y: 0 },
@@ -9,6 +10,7 @@ const defaultGraphicData = [
 ];
 
 const PieChartHelper = ({ data }) => {
+  const { isDarkModeEnabled } = useContext(ThemeContext);
   const [graphicData, setGraphicData] = useState(defaultGraphicData);
 
   useEffect(() => {
@@ -20,17 +22,18 @@ const PieChartHelper = ({ data }) => {
       <VictoryPie
         animate={{ easing: "exp", duration: 2000 }}
         data={graphicData}
-        // theme={VictoryTheme.material}
-        colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+        theme={VictoryTheme.material}
+        colorScale="qualitative"
         innerRadius={60}
         style={{
           data: {
+            fill: ({ datum }) => datum.fill,
             fillOpacity: 0.9,
             stroke: "#fff",
             strokeWidth: 2,
           },
           labels: {
-            fill: "#212121",
+            fill: isDarkModeEnabled ? "#ccc" : "#333",
           },
         }}
       />
