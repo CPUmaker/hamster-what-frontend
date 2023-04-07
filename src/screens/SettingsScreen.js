@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,8 +7,18 @@ import {
   TouchableOpacity,
   Alert,
   Switch,
+  Appearance,
+  useColorScheme,
+  Button,
 } from "react-native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
+
+import { StatusBar } from "expo-status-bar";
 
 import { Card, Icon, ListItem } from "@rneui/themed";
 
@@ -25,6 +35,7 @@ import { AuthContext } from "../context/AuthContext";
 export default function SettingsScreen({ navigation }) {
   const { accountDelete, turnOnBioAuth, turnOffBioAuth, isUsingBioAuth } =
     useContext(AuthContext);
+
   const deleteCheck = () => {
     Alert.alert(
       "Deleting profile",
@@ -59,30 +70,65 @@ export default function SettingsScreen({ navigation }) {
     }
   };
 
+  // for switching light/dark mode
+
+  const colorScheme = "light";
+
+  //////////
+  const [isDarkModeEnabled, setDarkMode] = useState(false);
+  const themeTextStyle =
+    isDarkModeEnabled === false ? styles.lightThemeText : styles.darkThemeText;
+  const themeContainerStyle =
+    isDarkModeEnabled === false ? styles.lightContainer : styles.darkContainer;
+
+  const handlethemeSwitch = async () => {
+    setDarkMode(!isDarkModeEnabled);
+  };
+  console.log("darkModeHandler2", isDarkModeEnabled);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={(styles.container, themeContainerStyle)}>
       <ScrollView style={{ padding: 20 }}>
         <View>
-          <Text style={styles.settings_title}>Account Settings</Text>
+          {/* <View style={[styles.container, themeContainerStyle]}>
+            <Text style={[styles.text, themeTextStyle]}>
+              Color scheme: {colorScheme}
+            </Text>
+            <StatusBar />
+          </View> */}
+
+          <Text style={[styles.settings_title, themeTextStyle]}>
+            Account Settings
+          </Text>
 
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Profile");
             }}
           >
-            <ListItem containerStyle={styles.container_item}>
+            <ListItem
+              containerStyle={[styles.container_item, themeContainerStyle]}
+            >
               <MaterialCommunityIcons name="account" size={24} color="black" />
               <ListItem.Content>
-                <ListItem.Title>Profile</ListItem.Title>
+                <ListItem.Title>
+                  <Text style={[styles.text, themeTextStyle]}>Profile</Text>
+                </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
           </TouchableOpacity>
 
-          <ListItem containerStyle={styles.container_item}>
+          <ListItem
+            containerStyle={[styles.container_item, themeContainerStyle]}
+          >
             <Octicons name="checklist" size={24} color="black" />
             <ListItem.Content>
-              <ListItem.Title>Account Information</ListItem.Title>
+              <ListItem.Title>
+                <Text style={[styles.text, themeTextStyle]}>
+                  Account Information
+                </Text>
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -95,7 +141,9 @@ export default function SettingsScreen({ navigation }) {
           </ListItem> */}
 
           <Text style={styles.settings_title}>App Settings</Text>
-          <ListItem containerStyle={styles.container_item}>
+          <ListItem
+            containerStyle={[styles.container_item, themeContainerStyle]}
+          >
             <MaterialIcons name="attach-money" size={24} color="black" />
             <ListItem.Content>
               <ListItem.Title>Unit Settings</ListItem.Title>
@@ -103,23 +151,24 @@ export default function SettingsScreen({ navigation }) {
             <ListItem.Chevron />
           </ListItem>
 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("ApperaranceScreen");
-            }}
+          <ListItem
+            containerStyle={[styles.container_item, themeContainerStyle]}
           >
-            <ListItem containerStyle={styles.container_item}>
-              <MaterialCommunityIcons
-                name="theme-light-dark"
-                size={24}
-                color="black"
-              />
-              <ListItem.Content>
-                <ListItem.Title>Apperarance</ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </TouchableOpacity>
+            <MaterialCommunityIcons
+              name="theme-light-dark"
+              size={24}
+              color="black"
+            />
+            <ListItem.Content>
+              <ListItem.Title>Dark Mode</ListItem.Title>
+            </ListItem.Content>
+            <Switch
+              value={isDarkModeEnabled}
+              onValueChange={handlethemeSwitch}
+              thumbColor="#fff"
+              //   trackColor={{ true: '#0066CC' }}
+            />
+          </ListItem>
 
           {/* <TouchableOpacity
             onPress={() => {
@@ -141,7 +190,9 @@ export default function SettingsScreen({ navigation }) {
               navigation.navigate("Password");
             }}
           >
-            <ListItem containerStyle={styles.container_item}>
+            <ListItem
+              containerStyle={[styles.container_item, themeContainerStyle]}
+            >
               <MaterialCommunityIcons
                 name="form-textbox-password"
                 size={24}
@@ -154,7 +205,9 @@ export default function SettingsScreen({ navigation }) {
             </ListItem>
           </TouchableOpacity>
 
-          <ListItem containerStyle={styles.container_item}>
+          <ListItem
+            containerStyle={[styles.container_item, themeContainerStyle]}
+          >
             <MaterialCommunityIcons
               name="face-recognition"
               size={24}
@@ -177,7 +230,9 @@ export default function SettingsScreen({ navigation }) {
               navigation.navigate("Contact Us");
             }}
           >
-            <ListItem containerStyle={styles.container_item}>
+            <ListItem
+              containerStyle={[styles.container_item, themeContainerStyle]}
+            >
               <AntDesign name="phone" size={24} color="black" />
               <ListItem.Content>
                 <ListItem.Title>Contact us</ListItem.Title>
@@ -187,7 +242,9 @@ export default function SettingsScreen({ navigation }) {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={deleteCheck}>
-            <ListItem containerStyle={styles.container_item}>
+            <ListItem
+              containerStyle={[styles.container_item, themeContainerStyle]}
+            >
               <MaterialIcons name="delete-outline" size={24} color="black" />
               <ListItem.Content>
                 <ListItem.Title style={{ color: "red", fontWeight: "bold" }}>
@@ -207,7 +264,9 @@ export default function SettingsScreen({ navigation }) {
               navigation.navigate("Terms & Conditions");
             }}
           >
-            <ListItem containerStyle={styles.container_item}>
+            <ListItem
+              containerStyle={[styles.container_item, themeContainerStyle]}
+            >
               <ListItem.Content>
                 <ListItem.Title>Terms & Conditions</ListItem.Title>
               </ListItem.Content>
@@ -220,7 +279,9 @@ export default function SettingsScreen({ navigation }) {
               navigation.navigate("Privacy Policy");
             }}
           >
-            <ListItem containerStyle={styles.container_item}>
+            <ListItem
+              containerStyle={[styles.container_item, themeContainerStyle]}
+            >
               <ListItem.Content>
                 <ListItem.Title>Privacy Policy</ListItem.Title>
               </ListItem.Content>
@@ -236,12 +297,26 @@ export default function SettingsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
   },
+  lightContainer: {
+    backgroundColor: "#d0d0c0",
+  },
+  darkContainer: {
+    backgroundColor: "#242c40",
+  },
+  lightThemeText: {
+    color: "#242c40",
+  },
+  darkThemeText: {
+    color: "#d0d0c0",
+  },
+
   settings_title: {
     fontSize: 18,
     fontFamily: "Roboto-Medium",
     paddingTop: 10,
+    fontWeight: "bold",
   },
   container_item: {
     flex: 1,
@@ -279,5 +354,10 @@ const styles = StyleSheet.create({
   bank_title: {
     fontSize: 18,
     fontFamily: "Roboto-Medium",
+  },
+  dark_theme: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
