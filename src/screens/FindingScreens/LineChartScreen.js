@@ -16,6 +16,7 @@ import { endpoints } from "../../config";
 import { categories_map, getKeyByValue } from "../AddNewScreen/utils";
 import PaymentSwitch from "../../components/PaymentSwitch";
 import ListItem from "../../components/ListItem";
+import { Line } from "react-native-svg";
 
 const lineData = [
   { x: "Jan", y: Math.random() * 200 },
@@ -109,6 +110,11 @@ export default function LineChartScreen() {
           x: Months[index],
           y: item,
         }));
+        if (transDir === TransDirection.Expense) {
+          setExpenseData(lineData);
+        } else {
+          setIncomeData(lineData);
+        }
         setLineData(lineData);
         console.log(JSON.stringify(lineData));
       })
