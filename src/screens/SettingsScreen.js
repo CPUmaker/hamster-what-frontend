@@ -31,10 +31,12 @@ import {
 } from "@expo/vector-icons";
 
 import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function SettingsScreen({ navigation }) {
   const { accountDelete, turnOnBioAuth, turnOffBioAuth, isUsingBioAuth } =
     useContext(AuthContext);
+  const { isDarkModeEnabled, setDarkMode } = useContext(ThemeContext);
 
   const deleteCheck = () => {
     Alert.alert(
@@ -75,7 +77,6 @@ export default function SettingsScreen({ navigation }) {
   const colorScheme = "light";
 
   //////////
-  const [isDarkModeEnabled, setDarkMode] = useState(false);
   const themeTextStyle =
     isDarkModeEnabled === false ? styles.lightThemeText : styles.darkThemeText;
   const themeContainerStyle =

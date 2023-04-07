@@ -140,7 +140,9 @@ export default function ListAllScreen({ navigation }) {
   };
 
   const searchAll = () => {
-    if (selectAll) { return; }
+    if (selectAll) {
+      return;
+    }
     resetFilters();
     setSelectAll(true);
     setAllColor("#ddd");
@@ -148,7 +150,9 @@ export default function ListAllScreen({ navigation }) {
   };
 
   const searchToday = () => {
-    if (selectToday) { return; }
+    if (selectToday) {
+      return;
+    }
     resetFilters();
     setSelectToday(true);
     setTodayColor("#ddd");
@@ -156,7 +160,9 @@ export default function ListAllScreen({ navigation }) {
   };
 
   const searchMonthly = () => {
-    if (selectMonth) { return; }
+    if (selectMonth) {
+      return;
+    }
     resetFilters();
     setSelectMonth(true);
     setMonthColor("#ddd");

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -13,9 +13,11 @@ import { Card, Skeleton, Button } from "@rneui/themed";
 import axios from "axios";
 
 import { endpoints } from "../../config";
+import { ThemeContext } from "../../context/ThemeContext";
 
 export default function CouponListScreen() {
   const [coupons, setCoupons] = useState(null);
+  const { isDarkModeEnabled } = useContext(ThemeContext);
 
   if (coupons === null) {
     axios
@@ -128,7 +130,11 @@ export default function CouponListScreen() {
         initialNumToRender={5}
         renderItem={({ item }) => {
           return (
-            <Card>
+            <Card
+              containerStyle={{
+                backgroundColor: isDarkModeEnabled ? "#121212" : "#fff",
+              }}
+            >
               <Card.Title
                 style={styles.title}
               >{`${item.store}: ${item.title}`}</Card.Title>
@@ -143,12 +149,30 @@ export default function CouponListScreen() {
                         : "https://img.freepik.com/premium-vector/coupon-icon-coupon-discount-promotion-sale-shopping-voucher-money-saving-shopping-concept_97458-1054.jpg?w=2000",
                   }}
                 />
-                <Text style={styles.coupon_name}>{item.description}</Text>
-                <Text style={styles.coupon_name}>{`CODE: ${
+                <Text
+                  style={
+                    isDarkModeEnabled
+                      ? styles.dark_coupon_name
+                      : styles.light_coupon_name
+                  }
+                >
+                  {item.description}
+                </Text>
+                <Text
+                  style={
+                    isDarkModeEnabled
+                      ? styles.dark_coupon_name
+                      : styles.light_coupon_name
+                  }
+                >{`CODE: ${
                   item.code !== "" ? item.code : "details on the page"
                 }`}</Text>
                 <Text
-                  style={styles.coupon_name}
+                  style={
+                    isDarkModeEnabled
+                      ? styles.dark_coupon_name
+                      : styles.light_coupon_name
+                  }
                 >{`Expire at: ${item.expire_date}`}</Text>
                 <Button
                   icon={
@@ -185,10 +209,17 @@ const styles = StyleSheet.create({
   coupon_image: {
     padding: 0,
   },
-  coupon_name: {
+  light_coupon_name: {
     fontSize: 16,
     marginTop: 10,
     fontFamily: "Roboto-Medium",
+    color: "#000",
+  },
+  dark_coupon_name: {
+    fontSize: 16,
+    marginTop: 10,
+    fontFamily: "Roboto-Medium",
+    color: "#fff",
   },
   button: {
     backgroundColor: "#A04AAA",

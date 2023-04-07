@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   ScrollView,
   Text,
@@ -17,6 +17,7 @@ import { categories_map, getKeyByValue } from "../AddNewScreen/utils";
 import PaymentSwitch from "../../components/PaymentSwitch";
 import ListItem from "../../components/ListItem";
 import { Line } from "react-native-svg";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const lineData = [
   { x: "Jan", y: Math.random() * 200 },
@@ -62,6 +63,8 @@ export default function LineChartScreen() {
 
   const [expenseData, setExpenseData] = useState([]);
   const [incomeData, setIncomeData] = useState([]);
+
+  const { isDarkModeEnabled } = useContext(ThemeContext);
 
   const onSelectSwitch = (value) => {
     setTransDir(value);
@@ -137,7 +140,9 @@ export default function LineChartScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={isDarkModeEnabled ? styles.dark_container : styles.light_container}
+    >
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.arrow}
@@ -202,9 +207,13 @@ export default function LineChartScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  light_container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  dark_container: {
+    flex: 1,
+    backgroundColor: "#242c40",
   },
   header: {
     flexDirection: "row",

@@ -10,13 +10,15 @@ import {
   Dimensions,
   FlatList,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { EvilIcons, Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+
 import PaymentSwitch from "../components/PaymentSwitch";
 import ListItem from "../components/ListItem";
 import { ProfileContext } from "../context/ProfileContext";
-import axios from "axios";
-import { BASE_URL, endpoints } from "../config";
-import { useFocusEffect } from "@react-navigation/native";
+import { ThemeContext } from "../context/ThemeContext";
+import { endpoints } from "../config";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -24,6 +26,7 @@ export default function HomeScreen({ navigation, route }) {
   const [switchTab, setSwitchTab] = useState("Today");
   const [ifReadProfile, setReadProfile] = useState(true);
   const { readProfile, userProfile } = useContext(ProfileContext);
+  const { isDarkModeEnabled } = useContext(ThemeContext);
   const photoAddr = [
     require(`../../assets/profile.jpg`),
     require("../../assets/profile01.png"),
@@ -107,10 +110,18 @@ export default function HomeScreen({ navigation, route }) {
     );
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={isDarkModeEnabled ? styles.dark_container : styles.light_container}
+    >
       <View style={{ padding: 20 }}>
         <View style={styles.profile_container}>
-          <Text style={styles.profile_font}>
+          <Text
+            style={
+              isDarkModeEnabled
+                ? styles.dark_profile_font
+                : styles.dark_profile_font
+            }
+          >
             Hello {userProfile.user?.username}
           </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -133,7 +144,15 @@ export default function HomeScreen({ navigation, route }) {
         </View>
 
         <View style={styles.bank_container}>
-          <Text style={styles.bank_title}>Bank Account</Text>
+          <Text
+            style={
+              isDarkModeEnabled
+                ? styles.dark_bank_title
+                : styles.light_bank_title
+            }
+          >
+            Bank Account
+          </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SeeAll")}>
             <Text style={{ color: "#0aada8" }}>See all</Text>
           </TouchableOpacity>
@@ -183,9 +202,13 @@ export default function HomeScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  light_container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  dark_container: {
+    flex: 1,
+    backgroundColor: "#242c40",
   },
   profile_container: {
     flexDirection: "row",
@@ -197,9 +220,15 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  profile_font: {
+  light_profile_font: {
     fontSize: 18,
     fontFamily: "Roboto-Medium",
+    color: "#000",
+  },
+  dark_profile_font: {
+    fontSize: 18,
+    fontFamily: "Roboto-Medium",
+    color: "#fff",
   },
   search_container: {
     flexDirection: "row",
@@ -215,8 +244,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  bank_title: {
+  light_bank_title: {
     fontSize: 18,
     fontFamily: "Roboto-Medium",
+    color: "#000",
+  },
+  dark_bank_title: {
+    fontSize: 18,
+    fontFamily: "Roboto-Medium",
+    color: "#fff",
   },
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   ScrollView,
   Text,
@@ -16,6 +16,7 @@ import { endpoints } from "../../config";
 import { categories_map, getKeyByValue } from "../AddNewScreen/utils";
 import PaymentSwitch from "../../components/PaymentSwitch";
 import ListItem from "../../components/ListItem";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const defaultPieData = [
   { x: "Liquid", y: 100 },
@@ -39,6 +40,7 @@ export default function PieChartScreen() {
   const [pieData, setPieData] = useState(defaultPieData);
   const [expenseData, setExpenseData] = useState([]);
   const [incomeData, setIncomeData] = useState([]);
+  const { isDarkModeEnabled } = useContext(ThemeContext);
 
   const onSelectSwitch = (value) => {
     setTransDir(value);
@@ -119,7 +121,9 @@ export default function PieChartScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={isDarkModeEnabled ? styles.dark_container : styles.light_container}
+    >
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.arrow}
@@ -187,9 +191,13 @@ export default function PieChartScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  light_container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  dark_container: {
+    flex: 1,
+    backgroundColor: "#242c40",
   },
   header: {
     flexDirection: "row",

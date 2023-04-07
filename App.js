@@ -1,15 +1,13 @@
-import 'react-native-gesture-handler';
-import React, { useCallback, useEffect, useState } from "react";
+import "react-native-gesture-handler";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import {
-  SafeAreaView,
-} from "react-native";
-// import { NativeBaseProvider } from 'native-base';
+import { SafeAreaView } from "react-native";
 
 import useFonts from "./hooks/useFonts";
-import { AuthProvider } from './src/context/AuthContext';
-import { PeofileProvider } from './src/context/ProfileContext'
-import AppNav from './src/navigation/AppNav';
+import { AuthProvider } from "./src/context/AuthContext";
+import { PeofileProvider } from "./src/context/ProfileContext";
+import { ThemeProvider } from "./src/context/ThemeContext";
+import AppNav from "./src/navigation/AppNav";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync()
@@ -18,10 +16,9 @@ SplashScreen.preventAutoHideAsync()
   )
   .catch(console.warn);
 
-
-
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const mainViewRef = useRef(null);
 
   useEffect(() => {
     async function prepare() {
@@ -51,11 +48,17 @@ export default function App() {
   return (
     <AuthProvider>
       <PeofileProvider>
-      {/* <NativeBaseProvider> */}
-        <SafeAreaView style={{flex: 1}} onLayout={onLayoutRootView}>
-          <AppNav />
-        </SafeAreaView>
-      {/* </NativeBaseProvider> */}
+        <ThemeProvider>
+          <SafeAreaView
+            ref={mainViewRef}
+            style={{
+              flex: 1,
+            }}
+            onLayout={onLayoutRootView}
+          >
+            <AppNav mainViewRef={mainViewRef} />
+          </SafeAreaView>
+        </ThemeProvider>
       </PeofileProvider>
     </AuthProvider>
   );
