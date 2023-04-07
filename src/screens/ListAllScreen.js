@@ -109,7 +109,7 @@ export default function ListAllScreen({ navigation }) {
   function ListToday() {
     axios
       .get(`${endpoints.search}`, {
-        params: { item: "date", keyword: "today" },
+        params: { item: "date", keyword: "day" },
       })
       .then((response) => {
         setListAll(response.data.reverse());
