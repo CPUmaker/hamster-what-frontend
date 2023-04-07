@@ -5,14 +5,17 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 
-import { endpoints } from "../../config";
 import LineChartHelper from "../../components/LineChartHelper";
 import { AnimatedText } from "../../components/AnimatedText";
+import { endpoints } from "../../config";
+import { categories_map, getKeyByValue } from "../AddNewScreen/utils";
 import PaymentSwitch from "../../components/PaymentSwitch";
+import ListItem from "../../components/ListItem";
 
 const lineData = [
   { x: "Jan", y: Math.random() * 200 },
@@ -55,6 +58,9 @@ export default function LineChartScreen() {
   const [year, setYear] = useState(date.getFullYear());
   const [numBills, setNumBills] = useState(3);
   const [getLineData, setLineData] = useState(lineData);
+
+  const [expenseData, setExpenseData] = useState([]);
+  const [incomeData, setIncomeData] = useState([]);
 
   const onSelectSwitch = (value) => {
     setTransDir(value);
@@ -113,6 +119,17 @@ export default function LineChartScreen() {
     loadFilteredData();
   }, [date, transDir]);
 
+  const renderItem = ({ item }) => {
+    return (
+      <ListItem
+        key={item.x}
+        name={item.x}
+        money={item.y}
+        onPressCallback={() => {}}
+      />
+    );
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -141,17 +158,38 @@ export default function LineChartScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={{ alignItems: "center" }}>
+      <View style={styles.graph}>
         <LineChartHelper data={getLineData} />
       </View>
 
-      <View>
+      <View style={styles.PaymentSwitch}>
         <PaymentSwitch
           selectionMode={TransDirection.Expense}
           option1={TransDirection.Expense}
           option2={TransDirection.Income}
           onSelectSwitch={onSelectSwitch}
         />
+      </View>
+
+      <View style={styles.PaymentSwitch}>
+        {transDir === TransDirection.Expense && (
+          <FlatList
+            data={expenseData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.x + "expense"}
+            extraData={expenseData}
+            scrollEnabled={false}
+          />
+        )}
+        {transDir === TransDirection.Income && (
+          <FlatList
+            data={incomeData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.x + "income"}
+            extraData={incomeData}
+            scrollEnabled={false}
+          />
+        )}
       </View>
     </ScrollView>
   );
@@ -170,6 +208,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginHorizontal: 25,
     marginTop: 30,
+
     backgroundColor: "#002FA7",
   },
   header_text_up: {
@@ -188,5 +227,14 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Roboto-Bold",
     fontSize: 20,
+  },
+  graph: {
+    marginLeft: 50,
+    marginRight: 20,
+    alignItems: "center",
+  },
+  PaymentSwitch: {
+    marginLeft: 20,
+    marginRight: 20,
   },
 });

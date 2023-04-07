@@ -153,7 +153,7 @@ export default function PieChartScreen() {
         <PieChartHelper data={pieData} />
       </View>
 
-      <View>
+      <View style={styles.PaymentSwitch}>
         <PaymentSwitch
           selectionMode={TransDirection.Expense}
           option1={TransDirection.Expense}
@@ -162,24 +162,26 @@ export default function PieChartScreen() {
         />
       </View>
 
-      {transDir === TransDirection.Expense && (
-        <FlatList
-          data={expenseData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.x + "expense"}
-          extraData={expenseData}
-          scrollEnabled={false}
-        />
-      )}
-      {transDir === TransDirection.Income && (
-        <FlatList
-          data={incomeData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.x + "income"}
-          extraData={incomeData}
-          scrollEnabled={false}
-        />
-      )}
+      <View style={styles.PaymentSwitch}>
+        {transDir === TransDirection.Expense && (
+          <FlatList
+            data={expenseData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.x + "expense"}
+            extraData={expenseData}
+            scrollEnabled={false}
+          />
+        )}
+        {transDir === TransDirection.Income && (
+          <FlatList
+            data={incomeData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.x + "income"}
+            extraData={incomeData}
+            scrollEnabled={false}
+          />
+        )}
+      </View>
     </ScrollView>
   );
 }
@@ -215,5 +217,14 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Roboto-Bold",
     fontSize: 20,
+  },
+  graph: {
+    marginLeft: 50,
+    marginRight: 20,
+    alignItems: "center",
+  },
+  PaymentSwitch: {
+    marginLeft: 20,
+    marginRight: 20,
   },
 });
