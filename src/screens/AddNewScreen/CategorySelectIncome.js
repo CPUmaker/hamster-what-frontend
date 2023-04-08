@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import {
   Ionicons,
@@ -7,6 +7,7 @@ import {
   MaterialIcons,
   Entypo,
 } from "@expo/vector-icons";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const categories = [
   {
@@ -69,6 +70,7 @@ const categories = [
 ];
 
 export function CategorySelectionIncome(setSelectedCategoryName) {
+  const { isDarkModeEnabled } = useContext(ThemeContext);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const handleCategoryPress = (categoryId, categoryName) => {
@@ -78,7 +80,11 @@ export function CategorySelectionIncome(setSelectedCategoryName) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Select a category:</Text>
+      <Text
+        style={[styles.title, { color: isDarkModeEnabled ? "#ccc" : "#333" }]}
+      >
+        Select a category:
+      </Text>
       {categories.map((category) => (
         <TouchableOpacity
           key={category.id}
@@ -100,6 +106,7 @@ export function CategorySelectionIncome(setSelectedCategoryName) {
           <Text
             style={[
               styles.categoryName,
+              { color: isDarkModeEnabled ? "#ccc" : "#333" },
               selectedCategoryId === category.id && { color: "#ffffff" },
             ]}
           >
@@ -116,7 +123,6 @@ const styles = StyleSheet.create({
     flex: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
     marginTop: 5,
   },
   title: {
@@ -128,7 +134,6 @@ const styles = StyleSheet.create({
     width: 380,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
     borderRadius: 50,
     paddingVertical: 10,
     paddingHorizontal: 20,

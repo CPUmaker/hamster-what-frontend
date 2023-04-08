@@ -67,6 +67,7 @@ export default function ListAllScreen({ navigation }) {
               date: data.date,
               price: data.price,
               wallet: data.wallet,
+              id: id,
             },
           });
         } else {
@@ -76,8 +77,9 @@ export default function ListAllScreen({ navigation }) {
               categories: data.categories,
               comment: data.comment,
               date: data.date,
-              price: data.price,
+              price: data.price.substring(1),
               wallet: data.wallet,
+              id: id,
             },
           });
         }

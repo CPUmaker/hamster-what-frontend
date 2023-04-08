@@ -23,6 +23,7 @@ import { CategorySelectionExpense } from "./CategorySelectExpense.js";
 import { MoneyInput } from "./MoneyInput.js";
 import { WalletSelect } from "./WalletSelect.js";
 import { categories_map, wallets_map, getKeyByValue } from "./utils.js";
+import { ThemeContext } from "../../context/ThemeContext";
 
 // get the screen height
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -30,6 +31,7 @@ const Stack = createStackNavigator();
 
 //// content for Expense interface -------------
 export function Expense({ route, navigation }) {
+  const { isDarkModeEnabled } = useContext(ThemeContext);
   // initialize the details for a bill
   let {
     categories = 1,
@@ -37,6 +39,7 @@ export function Expense({ route, navigation }) {
     date = getToday(),
     price = "",
     wallet = 2,
+    id,
   } = route.params === undefined ? {} : route.params;
   categories = getKeyByValue(categories_map, categories);
   wallet = getKeyByValue(wallets_map, wallet);
@@ -101,14 +104,28 @@ export function Expense({ route, navigation }) {
       comment: text.toString(),
     };
     console.log(data);
-    axios.post(endpoints.bill, data);
-    // console.log(text.toString())
+    if (id !== undefined) {
+      axios
+        .put(`${id}`, data)
+        .catch((error) => console.log(`Bill Update: ${error}`));
+    } else {
+      axios
+        .post(endpoints.bill, data)
+        .catch((error) => console.log(`Bill Create: ${error}`));
+    }
     navigation.navigate("Home");
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={isDarkModeEnabled ? styles.dark_container : styles.light_container}
+      behavior="padding"
+    >
+      <View
+        style={
+          isDarkModeEnabled ? styles.dark_container : styles.light_container
+        }
+      >
         {/* -------------0--------------- */}
         {MoneyInput(amount, setAmount)}
 
@@ -119,7 +136,12 @@ export function Expense({ route, navigation }) {
             animationType="slide"
             onRequestClose={closeModal}
           >
-            <View style={styles.modal}>
+            <View
+              style={[
+                styles.modal,
+                { backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff" },
+              ]}
+            >
               {CategorySelectionExpense(setSelectedCategoryName)}
               <TouchableOpacity onPress={closeModal} style={styles.doneButton}>
                 <Text style={styles.buttonText}>Done</Text>
@@ -127,10 +149,19 @@ export function Expense({ route, navigation }) {
             </View>
           </Modal>
 
-          <ListItem bottomDivider>
+          <ListItem
+            bottomDivider
+            containerStyle={{
+              backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff",
+            }}
+          >
             <Entypo name="box" size={24} color="#B2B2B2" />
             <ListItem.Content>
-              <ListItem.Title>Category: {selectedCategoryName}</ListItem.Title>
+              <ListItem.Title
+                style={{ color: isDarkModeEnabled ? "#ccc" : "#333" }}
+              >
+                Category: {selectedCategoryName}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -143,7 +174,12 @@ export function Expense({ route, navigation }) {
             animationType="slide"
             onRequestClose={WalletCloseModal}
           >
-            <View style={styles.modal}>
+            <View
+              style={[
+                styles.modal,
+                { backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff" },
+              ]}
+            >
               {WalletSelect(setselectedWallet)}
               {/* this is the done button in wallet */}
               <TouchableOpacity
@@ -154,19 +190,38 @@ export function Expense({ route, navigation }) {
               </TouchableOpacity>
             </View>
           </Modal>
-          <ListItem bottomDivider>
+
+          <ListItem
+            bottomDivider
+            containerStyle={{
+              backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff",
+            }}
+          >
             <Entypo name="wallet" size={24} color="#B2B2B2" />
             <ListItem.Content>
-              <ListItem.Title>From: {selectedWallet}</ListItem.Title>
+              <ListItem.Title
+                style={{ color: isDarkModeEnabled ? "#ccc" : "#333" }}
+              >
+                From: {selectedWallet}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
         </TouchableOpacity>
 
-        <ListItem bottomDivider>
+        <ListItem
+          bottomDivider
+          containerStyle={{
+            backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff",
+          }}
+        >
           <FontAwesome5 name="sticky-note" size={24} color="#B2B2B2" />
           <ListItem.Content>
-            <ListItem.Title>Note: </ListItem.Title>
+            <ListItem.Title
+              style={{ color: isDarkModeEnabled ? "#ccc" : "#333" }}
+            >
+              Note:{" "}
+            </ListItem.Title>
             <TextInput
               style={styles.input}
               placeholder="Type here to write down your note "
@@ -180,10 +235,19 @@ export function Expense({ route, navigation }) {
         </ListItem>
 
         <TouchableOpacity onPress={() => setIsDatePickerVisible(true)}>
-          <ListItem bottomDivider>
+          <ListItem
+            bottomDivider
+            containerStyle={{
+              backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff",
+            }}
+          >
             <Entypo name="calendar" size={24} color="#B2B2B2" />
             <ListItem.Content>
-              <ListItem.Title>Date: {selectedDate}</ListItem.Title>
+              <ListItem.Title
+                style={{ color: isDarkModeEnabled ? "#ccc" : "#333" }}
+              >
+                Date: {selectedDate}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -213,10 +277,17 @@ export function Expense({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  light_container: {
     flex: 1,
     margin: 8,
     backgroundColor: "#fff",
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+  },
+  dark_container: {
+    flex: 1,
+    margin: 8,
+    backgroundColor: "#242c40",
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
   },
@@ -269,7 +340,6 @@ const styles = StyleSheet.create({
   modal: {
     flex: 0.7,
     margin: 0,
-    backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
     alignItems: "center",
