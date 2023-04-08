@@ -119,7 +119,7 @@ export default function HomeScreen({ navigation, route }) {
             style={
               isDarkModeEnabled
                 ? styles.dark_profile_font
-                : styles.dark_profile_font
+                : styles.light_profile_font
             }
           >
             Hello {userProfile.user?.username}
