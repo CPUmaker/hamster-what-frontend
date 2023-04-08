@@ -13,7 +13,13 @@
       "backgroundColor": "#ffffff"
     },
     "plugins": [
-      "expo-apple-authentication"
+      "expo-apple-authentication",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
+      ]
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -25,6 +31,9 @@
       "bundleIdentifier": "com.hamsterwhat.ios",
       "config": {
         "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app wants to use your Face ID. Plaese Hit OK to activate Face ID."
       },
       "supportsTablet": true
     },
