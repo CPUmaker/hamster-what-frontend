@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, PanResponder } from "react-native";
 import CatagoryItem from "../components/CatagoryItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { BASE_URL, endpoints } from "../config";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { ThemeContext } from "../context/ThemeContext";
 
 const ItemCategory = [
   "Food",
@@ -46,6 +47,7 @@ export default function BillDetaisScreen({ navigation, route }) {
     })
   }, [navigation]);
 
+  const { isDarkModeEnabled } = useContext(ThemeContext);
   const [listAll, setListAll] = useState(null);
 
   const deleteItem = (id) => {
@@ -126,7 +128,7 @@ export default function BillDetaisScreen({ navigation, route }) {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container} {...panResponder.panHandlers}>
+    <SafeAreaView style={isDarkModeEnabled ? styles.dark_container : styles.light_container} {...panResponder.panHandlers}>
       <FlatList
         data={listAll}
         renderItem={renderItem}
@@ -139,9 +141,13 @@ export default function BillDetaisScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  light_container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
+  },
+  dark_container: {
+    flex: 1,
+    backgroundColor: "#242c40",
   },
   button: {
     padding: 10,

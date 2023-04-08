@@ -32,7 +32,7 @@ const HomeStack = () => {
       <Stack.Screen
         name="BillDetails"
         component={BillDetailsScreen}
-        options={({ route }) => ({ title: route.params?.title , id: route.params?.id})}
+        options={({ route }) => ({ title: route.params?.title , id: route.params?.id, headerShown: true})}
       />
       <Stack.Screen
         name="SeeAll"
