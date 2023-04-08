@@ -20,6 +20,7 @@ import AppleSVG from "../../assets/misc/apple.svg";
 import MetaSVG from "../../assets/misc/meta.svg";
 import Exclamation from "../../assets/misc/exclamation-circle.svg";
 import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 import { BASE_URL } from "../config";
 import {
   useTogglePasswordVisibility,
@@ -51,6 +52,7 @@ const SignUpSchema = Yup.object().shape({
 export default function RegisterScreen({ navigation }) {
   const [modalMessage, setModalMessage] = useState(null);
   const { googleAuth, facebookAuth, appleAuth } = useContext(AuthContext);
+  const { isDarkModeEnabled } = useContext(ThemeContext);
   const { passwordVisibility, pvIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
   const {
@@ -107,7 +109,11 @@ export default function RegisterScreen({ navigation }) {
         isValid,
         handleSubmit,
       }) => (
-        <View style={styles.container}>
+        <View
+          style={
+            isDarkModeEnabled ? styles.dark_container : styles.light_container
+          }
+        >
           <Modal
             isVisible={isModalVisible}
             hasBackdrop={false}
@@ -130,7 +136,11 @@ export default function RegisterScreen({ navigation }) {
               <RegisterSVG height={300} width={300} />
             </View>
 
-            <Text style={styles.font}>Register</Text>
+            <Text
+              style={isDarkModeEnabled ? styles.dark_font : styles.light_font}
+            >
+              Register
+            </Text>
 
             {touched.username && errors.username && (
               <Text style={styles.error_text}>{errors.username}</Text>
@@ -146,7 +156,10 @@ export default function RegisterScreen({ navigation }) {
               <TextInput
                 placeholder="Username"
                 autoCapitalize="none"
-                style={styles.text_input}
+                style={[
+                  styles.text_input,
+                  { color: isDarkModeEnabled ? "white" : "black" },
+                ]}
                 value={values.username}
                 onChangeText={handleChange("username")}
                 onBlur={() => setFieldTouched("username")}
@@ -167,7 +180,10 @@ export default function RegisterScreen({ navigation }) {
               <TextInput
                 placeholder="Email"
                 autoCapitalize="none"
-                style={styles.text_input}
+                style={[
+                  styles.text_input,
+                  { color: isDarkModeEnabled ? "white" : "black" },
+                ]}
                 value={values.email}
                 onChangeText={handleChange("email")}
                 onBlur={() => setFieldTouched("email")}
@@ -190,7 +206,10 @@ export default function RegisterScreen({ navigation }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 enablesReturnKeyAutomatically={true}
-                style={styles.text_input}
+                style={[
+                  styles.text_input,
+                  { color: isDarkModeEnabled ? "white" : "black" },
+                ]}
                 secureTextEntry={passwordVisibility}
                 value={values.password}
                 onChangeText={handleChange("password")}
@@ -217,7 +236,10 @@ export default function RegisterScreen({ navigation }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 enablesReturnKeyAutomatically={true}
-                style={styles.text_input}
+                style={[
+                  styles.text_input,
+                  { color: isDarkModeEnabled ? "white" : "black" },
+                ]}
                 secureTextEntry={confirmPasswordVisibility}
                 value={values.confirmPassword}
                 onChangeText={handleChange("confirmPassword")}
@@ -285,7 +307,9 @@ export default function RegisterScreen({ navigation }) {
             </View>
 
             <View style={styles.register_container}>
-              <Text>Already registered?</Text>
+              <Text style={{ color: isDarkModeEnabled ? "white" : "black" }}>
+                Already registered?
+              </Text>
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Text style={styles.register_text}> Login</Text>
               </TouchableOpacity>
@@ -298,19 +322,31 @@ export default function RegisterScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  light_container: {
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
   },
+  dark_container: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#242c40",
+  },
   svg_container: {
     alignItems: "center",
   },
-  font: {
+  light_font: {
     fontFamily: "Roboto-Medium",
     fontSize: 28,
     fontWeight: "500",
     color: "#333",
+    marginBottom: 30,
+  },
+  dark_font: {
+    fontFamily: "Roboto-Medium",
+    fontSize: 28,
+    fontWeight: "500",
+    color: "#ccc",
     marginBottom: 30,
   },
   text_input_container: {

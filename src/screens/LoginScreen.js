@@ -16,6 +16,7 @@ import AppleSVG from "../../assets/misc/apple.svg";
 import MetaSVG from "../../assets/misc/meta.svg";
 import Exclamation from "../../assets/misc/exclamation-circle.svg";
 import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState(null);
@@ -25,6 +26,7 @@ export default function LoginScreen({ navigation }) {
 
   const { login, googleAuth, facebookAuth, appleAuth } =
     useContext(AuthContext);
+  const { isDarkModeEnabled } = useContext(ThemeContext);
 
   const loginErrorHandle = (errorMessage) => {
     setModalMessage(errorMessage);
@@ -38,7 +40,12 @@ export default function LoginScreen({ navigation }) {
   }, [isModalVisible]);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff" },
+      ]}
+    >
       <Modal
         isVisible={isModalVisible}
         hasBackdrop={false}
@@ -61,7 +68,9 @@ export default function LoginScreen({ navigation }) {
           <LoginSVG height={300} width={300} />
         </View>
 
-        <Text style={styles.font}>Login</Text>
+        <Text style={isDarkModeEnabled ? styles.dark_font : styles.light_font}>
+          Login
+        </Text>
 
         <View style={styles.text_input_container}>
           <AntDesign
@@ -73,7 +82,10 @@ export default function LoginScreen({ navigation }) {
           <TextInput
             placeholder="Username/Email"
             autoCapitalize="none"
-            style={styles.text_input}
+            style={[
+              styles.text_input,
+              { color: isDarkModeEnabled ? "white" : "black" },
+            ]}
             value={username}
             onChangeText={(text) => setUsername(text)}
           />
@@ -88,7 +100,10 @@ export default function LoginScreen({ navigation }) {
           />
           <TextInput
             placeholder="Password"
-            style={styles.text_input}
+            style={[
+              styles.text_input,
+              { color: isDarkModeEnabled ? "white" : "black" },
+            ]}
             secureTextEntry={true}
             value={password}
             onChangeText={(text) => setPassword(text)}
@@ -107,7 +122,15 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.login_text}>Login</Text>
         </TouchableOpacity>
 
-        <Text style={styles.alter_login_text}>Or, login with ...</Text>
+        <Text
+          style={
+            isDarkModeEnabled
+              ? styles.dark_alter_login_text
+              : styles.light_alter_login_text
+          }
+        >
+          Or, login with ...
+        </Text>
 
         <View style={styles.alter_login_container}>
           <TouchableOpacity
@@ -137,7 +160,9 @@ export default function LoginScreen({ navigation }) {
         </View>
 
         <View style={styles.register_container}>
-          <Text>New to the app?</Text>
+          <Text style={{ color: isDarkModeEnabled ? "white" : "black" }}>
+            New to the app?
+          </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text style={styles.register_text}> Register</Text>
           </TouchableOpacity>
@@ -152,16 +177,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 25,
     justifyContent: "center",
-    backgroundColor: "#fff",
   },
   svg_container: {
     alignItems: "center",
   },
-  font: {
+  light_font: {
     fontFamily: "Roboto-Medium",
     fontSize: 28,
     fontWeight: "500",
     color: "#333",
+    marginBottom: 30,
+  },
+  dark_font: {
+    fontFamily: "Roboto-Medium",
+    fontSize: 28,
+    fontWeight: "500",
+    color: "#ccc",
     marginBottom: 30,
   },
   text_input_container: {
@@ -196,9 +227,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginBottom: 30,
   },
-  alter_login_text: {
+  light_alter_login_text: {
     textAlign: "center",
     color: "#666",
+    marginBottom: 30,
+  },
+  dark_alter_login_text: {
+    textAlign: "center",
+    color: "#aaa",
     marginBottom: 30,
   },
   alter_login_icon: {

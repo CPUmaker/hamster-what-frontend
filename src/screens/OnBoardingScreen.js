@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -12,12 +12,26 @@ import {
 import Fund from "../../assets/fund-collection.svg";
 import Billing from "../../assets/billing.svg";
 import Account from "../../assets/account.svg";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function OnBoardingScreen({ navigation }) {
+  const { isDarkModeEnabled } = useContext(ThemeContext);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff" },
+      ]}
+    >
       <View style={{ marginTop: 20 }}>
-        <Text style={styles.title_font}>RECORD YOUR BILLS</Text>
+        <Text
+          style={
+            isDarkModeEnabled ? styles.dark_title_font : styles.light_title_font
+          }
+        >
+          RECORD YOUR BILLS
+        </Text>
       </View>
       <View
         style={{
@@ -46,15 +60,20 @@ export default function OnBoardingScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
-  title_font: {
+  light_title_font: {
     fontSize: 30,
     fontWeight: "bold",
     fontFamily: "Inter-Bold",
     color: "#20315f",
+  },
+  dark_title_font: {
+    fontSize: 30,
+    fontWeight: "bold",
+    fontFamily: "Inter-Bold",
+    color: "#2091ff",
   },
   button_font: {
     fontSize: 18,
