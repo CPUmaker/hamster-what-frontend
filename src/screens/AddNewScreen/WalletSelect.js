@@ -1,7 +1,16 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemeContext } from "../../context/ThemeContext";
+
+const deviceWidth = Dimensions.get('window').width;
 
 const categories = [
   { id: 1, name: "Checking account", icon: "wallet", color: "#f39c12" },
@@ -35,36 +44,41 @@ export function WalletSelect(WalletName) {
       >
         Select a Wallet:
       </Text>
-      {categories.map((category) => (
-        <TouchableOpacity
-          key={category.id}
-          style={[
-            styles.categoryButton,
-            selectedCategoryId === category.id && {
-              backgroundColor: category.color,
-            },
-          ]}
-          onPress={() => handleCategoryPress(category.id, category.name)}
-        >
-          <View style={styles.categoryIcon}>
-            {category.icon === null ? (
-              category.other_icon
-            ) : (
-              <Ionicons name={category.icon} size={32} color={category.color} />
-            )}
-          </View>
-          <Text
+      <ScrollView>
+        {categories.map((category) => (
+          <TouchableOpacity
+            key={category.id}
             style={[
-              styles.categoryName,
-              { color: isDarkModeEnabled ? "#ccc" : "#333" },
-              selectedCategoryId === category.id && { color: "#ffffff" },
+              styles.categoryButton,
+              selectedCategoryId === category.id && {
+                backgroundColor: category.color,
+              },
             ]}
+            onPress={() => handleCategoryPress(category.id, category.name)}
           >
-            {category.name}
-          </Text>
-        </TouchableOpacity>
-      ))}
-      <Text>{/* You selected the {selectedCategoryName} category. */}</Text>
+            <View style={styles.categoryIcon}>
+              {category.icon === null ? (
+                category.other_icon
+              ) : (
+                <Ionicons
+                  name={category.icon}
+                  size={32}
+                  color={category.color}
+                />
+              )}
+            </View>
+            <Text
+              style={[
+                styles.categoryName,
+                { color: isDarkModeEnabled ? "#ccc" : "#333" },
+                selectedCategoryId === category.id && { color: "#ffffff" },
+              ]}
+            >
+              {category.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -74,6 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 10,
   },
   title: {
     fontSize: 20,
@@ -81,7 +96,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   categoryButton: {
-    width: 380,
+    width: deviceWidth * 0.9,
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 50,
@@ -97,5 +112,6 @@ const styles = StyleSheet.create({
   },
   categoryName: {
     fontSize: 16,
+    color: "#333333",
   },
 });

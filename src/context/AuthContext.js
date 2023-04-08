@@ -145,8 +145,8 @@ export const AuthProvider = ({ children }) => {
       throw Error("Device not supported.");
     }
     const enrolled = await isEnrolledAsync();
-    if (enrolled) {
-      return true;
+    if (!enrolled) {
+      throw Error("This device does not have biometric authentication enabled");
     }
     const result = await authenticateAsync({
       promptMessage: "Please authenticate",

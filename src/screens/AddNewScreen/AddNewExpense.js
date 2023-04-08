@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, Component } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -26,7 +26,8 @@ import { categories_map, wallets_map, getKeyByValue } from "./utils.js";
 import { ThemeContext } from "../../context/ThemeContext";
 
 // get the screen height
-const SCREEN_HEIGHT = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 const Stack = createStackNavigator();
 
 //// content for Expense interface -------------
@@ -133,13 +134,16 @@ export function Expense({ route, navigation }) {
         <TouchableOpacity onPress={openModal}>
           <Modal
             visible={modalVisible}
+            deviceWidth={deviceWidth}
+            deviceHeight={deviceHeight}
             animationType="slide"
+            style={{ margin: 0 }}
             onRequestClose={closeModal}
           >
             <View
               style={[
                 styles.modal,
-                { backgroundColor: isDarkModeEnabled ? "#242c40" : "#fff" },
+                { backgroundColor: isDarkModeEnabled ? "#242c40" : "#0ff" },
               ]}
             >
               {CategorySelectionExpense(setSelectedCategoryName)}
@@ -171,7 +175,10 @@ export function Expense({ route, navigation }) {
         <TouchableOpacity onPress={WalletOpenModal}>
           <Modal
             visible={WalletmodalVisible}
+            deviceWidth={deviceWidth}
+            deviceHeight={deviceHeight}
             animationType="slide"
+            style={{ margin: 0 }}
             onRequestClose={WalletCloseModal}
           >
             <View
@@ -252,11 +259,7 @@ export function Expense({ route, navigation }) {
             <ListItem.Chevron />
           </ListItem>
         </TouchableOpacity>
-        {/* {selectedDate && (
-        <Text style={styles.selectedDateText}>
-          Selected Date: {selectedDate}
-        </Text>
-      )} */}
+
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
@@ -279,20 +282,11 @@ export function Expense({ route, navigation }) {
 const styles = StyleSheet.create({
   light_container: {
     flex: 1,
-    margin: 8,
     backgroundColor: "#fff",
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
   },
   dark_container: {
     flex: 1,
-    margin: 8,
     backgroundColor: "#242c40",
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-  },
-  content: {
-    margin: 3,
   },
   input: {
     height: 40,
@@ -300,7 +294,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     padding: 5,
   },
-
   button: {
     backgroundColor: "#A04AAA",
     width: 160,
@@ -308,7 +301,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    marginTop: 40,
+    marginTop: 30,
+    marginBottom: 10,
   },
   doneButton: {
     backgroundColor: "#A04AAA",
@@ -317,9 +311,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    marginTop: 40,
+    marginTop: 30,
+    marginBottom: 10,
   },
-
   saveButton: {
     alignSelf: "center",
     backgroundColor: "#A04AAA",
@@ -334,13 +328,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
-  selectedDateText: {
-    marginVertical: 10,
-  },
   modal: {
-    flex: 0.7,
-    margin: 0,
-    padding: 20,
+    flex: 0.8,
     borderRadius: 10,
     alignItems: "center",
   },
