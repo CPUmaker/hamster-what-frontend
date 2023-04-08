@@ -276,10 +276,12 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   light_container: {
     flex: 1,
+    paddingHorizontal: 5,
     backgroundColor: "#fff",
   },
   dark_container: {
     flex: 1,
+    paddingHorizontal: 5,
     backgroundColor: "#242c40",
   },
   content: {
