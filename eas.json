@@ -3,6 +3,11 @@
     "version": ">= 3.5.2"
   },
   "build": {
+    "production": {
+      "ios": {
+        "resourceClass": "m1-medium"
+      }
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal",
@@ -16,14 +21,15 @@
         "resourceClass": "m1-medium",
         "simulator": true
       }
-    },
-    "production": {
-      "ios": {
-        "resourceClass": "m1-medium"
-      }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "xjhmlcy@gmail.com",
+        "ascAppId": "6447453922",
+        "appleTeamId": "PY285N28T6"
+      }
+    }
   }
 }
