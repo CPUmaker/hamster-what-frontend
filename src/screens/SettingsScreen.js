@@ -88,48 +88,44 @@ export default function SettingsScreen({ navigation }) {
   console.log("darkModeHandler2", isDarkModeEnabled);
 
   return (
-    <SafeAreaView style={(styles.container, themeContainerStyle)}>
-      <ScrollView style={{ padding: 20 }}>
-        <View>
-          {/* <View style={[styles.container, themeContainerStyle]}>
+    <ScrollView
+      style={[{ paddingHorizontal: 20 }, styles.container, themeContainerStyle]}
+    >
+      {/* <View style={[styles.container, themeContainerStyle]}>
             <Text style={[styles.text, themeTextStyle]}>
               Color scheme: {colorScheme}
             </Text>
             <StatusBar />
           </View> */}
 
-          <Text style={[styles.settings_title, themeTextStyle]}>
-            Account Settings
-          </Text>
+      <Text style={[styles.settings_title, themeTextStyle]}>
+        Account Settings
+      </Text>
 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Profile");
-            }}
-          >
-            <ListItem
-              containerStyle={[styles.container_item, themeContainerStyle]}
-            >
-              <MaterialCommunityIcons name="account" size={24} color="black" />
-              <ListItem.Content>
-                <ListItem.Title style={themeTextStyle}>Profile</ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Profile");
+        }}
+      >
+        <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+          <MaterialCommunityIcons name="account" size={24} color="black" />
+          <ListItem.Content>
+            <ListItem.Title style={themeTextStyle}>Profile</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
 
-          <ListItem
-            containerStyle={[styles.container_item, themeContainerStyle]}
-          >
-            <Octicons name="checklist" size={24} color="black" />
-            <ListItem.Content>
-              <ListItem.Title style={themeTextStyle}>
-                Account Information
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          {/* <ListItem containerStyle={styles.container_item}>
+      <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+        <Octicons name="checklist" size={24} color="black" />
+        <ListItem.Content>
+          <ListItem.Title style={themeTextStyle}>
+            Account Information
+          </ListItem.Title>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+      {/* <ListItem containerStyle={styles.container_item}>
             <Entypo name="bell" size={24} color="black" />
             <ListItem.Content>
               <ListItem.Title>Subscription</ListItem.Title>
@@ -137,41 +133,33 @@ export default function SettingsScreen({ navigation }) {
             <ListItem.Chevron />
           </ListItem> */}
 
-          <Text style={[styles.settings_title, themeTextStyle]}>
-            App Settings
-          </Text>
-          <ListItem
-            containerStyle={[styles.container_item, themeContainerStyle]}
-          >
-            <MaterialIcons name="attach-money" size={24} color="black" />
-            <ListItem.Content>
-              <ListItem.Title style={themeTextStyle}>
-                Unit Settings
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
+      <Text style={[styles.settings_title, themeTextStyle]}>App Settings</Text>
+      <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+        <MaterialIcons name="attach-money" size={24} color="black" />
+        <ListItem.Content>
+          <ListItem.Title style={themeTextStyle}>Unit Settings</ListItem.Title>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
 
-          <ListItem
-            containerStyle={[styles.container_item, themeContainerStyle]}
-          >
-            <MaterialCommunityIcons
-              name="theme-light-dark"
-              size={24}
-              color="black"
-            />
-            <ListItem.Content>
-              <ListItem.Title style={themeTextStyle}>Dark Mode</ListItem.Title>
-            </ListItem.Content>
-            <Switch
-              value={isDarkModeEnabled}
-              onValueChange={handlethemeSwitch}
-              thumbColor="#fff"
-              //   trackColor={{ true: '#0066CC' }}
-            />
-          </ListItem>
+      <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+        <MaterialCommunityIcons
+          name="theme-light-dark"
+          size={24}
+          color="black"
+        />
+        <ListItem.Content>
+          <ListItem.Title style={themeTextStyle}>Dark Mode</ListItem.Title>
+        </ListItem.Content>
+        <Switch
+          value={isDarkModeEnabled}
+          onValueChange={handlethemeSwitch}
+          thumbColor="#fff"
+          //   trackColor={{ true: '#0066CC' }}
+        />
+      </ListItem>
 
-          {/* <TouchableOpacity
+      {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate("Notification");
             }}
@@ -185,123 +173,105 @@ export default function SettingsScreen({ navigation }) {
             </ListItem>
           </TouchableOpacity> */}
 
-          <Text style={[styles.settings_title, themeTextStyle]}>Security</Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Password");
-            }}
-          >
-            <ListItem
-              containerStyle={[styles.container_item, themeContainerStyle]}
-            >
-              <MaterialCommunityIcons
-                name="form-textbox-password"
-                size={24}
-                color="black"
-              />
-              <ListItem.Content>
-                <ListItem.Title style={themeTextStyle}>Password</ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </TouchableOpacity>
+      <Text style={[styles.settings_title, themeTextStyle]}>Security</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Password");
+        }}
+      >
+        <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+          <MaterialCommunityIcons
+            name="form-textbox-password"
+            size={24}
+            color="black"
+          />
+          <ListItem.Content>
+            <ListItem.Title style={themeTextStyle}>Password</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
 
-          <ListItem
-            containerStyle={[styles.container_item, themeContainerStyle]}
-          >
-            <MaterialCommunityIcons
-              name="face-recognition"
-              size={24}
-              color="black"
-            />
-            <ListItem.Content>
-              <ListItem.Title style={themeTextStyle}>
-                FaceID / TouchID
-              </ListItem.Title>
-            </ListItem.Content>
-            <Switch
-              value={isUsingBioAuth}
-              onValueChange={faceIDHandler}
-              thumbColor="#fff"
-              //   trackColor={{ true: '#0066CC' }}
-            />
-          </ListItem>
+      <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+        <MaterialCommunityIcons
+          name="face-recognition"
+          size={24}
+          color="black"
+        />
+        <ListItem.Content>
+          <ListItem.Title style={themeTextStyle}>
+            FaceID / TouchID
+          </ListItem.Title>
+        </ListItem.Content>
+        <Switch
+          value={isUsingBioAuth}
+          onValueChange={faceIDHandler}
+          thumbColor="#fff"
+          //   trackColor={{ true: '#0066CC' }}
+        />
+      </ListItem>
 
-          <Text style={[styles.settings_title, themeTextStyle]}>Support</Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Contact Us");
-            }}
-          >
-            <ListItem
-              containerStyle={[styles.container_item, themeContainerStyle]}
-            >
-              <AntDesign name="phone" size={24} color="black" />
-              <ListItem.Content>
-                <ListItem.Title style={themeTextStyle}>
-                  Contact us
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </TouchableOpacity>
+      <Text style={[styles.settings_title, themeTextStyle]}>Support</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Contact Us");
+        }}
+      >
+        <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+          <AntDesign name="phone" size={24} color="black" />
+          <ListItem.Content>
+            <ListItem.Title style={themeTextStyle}>Contact us</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
 
-          <TouchableOpacity onPress={deleteCheck}>
-            <ListItem
-              containerStyle={[styles.container_item, themeContainerStyle]}
-            >
-              <MaterialIcons name="delete-outline" size={24} color="black" />
-              <ListItem.Content>
-                <ListItem.Title style={{ color: "red", fontWeight: "bold" }}>
-                  Delete profile
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </TouchableOpacity>
+      <TouchableOpacity onPress={deleteCheck}>
+        <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+          <MaterialIcons name="delete-outline" size={24} color="black" />
+          <ListItem.Content>
+            <ListItem.Title style={{ color: "red", fontWeight: "bold" }}>
+              Delete profile
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
 
-          <View style={{ marginBottom: 5 }}></View>
-          <View></View>
+      <View style={{ marginBottom: 5 }}></View>
+      <View></View>
 
-          <Text style={[styles.settings_title, themeTextStyle]}>
-            Miscellaneous
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Terms & Conditions");
-            }}
-          >
-            <ListItem
-              containerStyle={[styles.container_item, themeContainerStyle]}
-            >
-              <ListItem.Content>
-                <ListItem.Title style={themeTextStyle}>
-                  Terms & Conditions
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </TouchableOpacity>
+      <Text style={[styles.settings_title, themeTextStyle]}>Miscellaneous</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Terms & Conditions");
+        }}
+      >
+        <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+          <ListItem.Content>
+            <ListItem.Title style={themeTextStyle}>
+              Terms & Conditions
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Privacy Policy");
-            }}
-          >
-            <ListItem
-              containerStyle={[styles.container_item, themeContainerStyle]}
-            >
-              <ListItem.Content>
-                <ListItem.Title style={themeTextStyle}>
-                  Privacy Policy
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Privacy Policy");
+        }}
+      >
+        <ListItem containerStyle={[styles.container_item, themeContainerStyle]}>
+          <ListItem.Content>
+            <ListItem.Title style={themeTextStyle}>
+              Privacy Policy
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
@@ -311,7 +281,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   lightContainer: {
-    backgroundColor: "#d0d0c0",
+    backgroundColor: "white",
   },
   darkContainer: {
     backgroundColor: "#242c40",
